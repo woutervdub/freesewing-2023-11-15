@@ -76,6 +76,13 @@
       "design": "Joost De Cock",
       "difficulty": 2,
       "tags": ["accessories"]
+    },
+    "wvw": {
+      "description": "A FreeSewing pattern that needs a description",
+      "code": "Coder name",
+      "design": "Designer name",
+      "difficulty": 1,
+      "tags": ["tagname"]
     }
   },
   "blocks": {
