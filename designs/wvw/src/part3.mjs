@@ -14,6 +14,7 @@ function draftPart3({
   paperless,
   macro,
   part,
+  utils,
 }) {
   console.log('part3')
   const textAttribute = 'text-xs center'
@@ -50,8 +51,10 @@ function draftPart3({
   points.point3Cp1 = points.point3.shift(81.44269285511335, 54.758598457228615 * sizeFactor)
   points.point4 = points.point0.shift(340.927384878832, 52.16879559660159 * sizeFactor)
   points.point4Cp2 = points.point4.shift(274.04106104609286, 50.57373626695976 * sizeFactor)
-  points.dartPoint0 = points.point0.shift(308.7237760289013, 79.45438792162456 * sizeFactor)
-  points.dartPoint0Cp1 = points.dartPoint0.shift(0, 0 * sizeFactor)
+
+  // points.dartPoint0 = points.point0.shift(308.7237760289013, 79.45438792162456 * sizeFactor)
+  // points.dartPoint0 = points.point0.shift(308.7237760289013, 100.45438792162456 * sizeFactor)
+  // points.dartPoint0Cp1 = points.dartPoint0.clone()
   points.dartPoint1 = points.point0.shift(285.96197961706986, 65.4910471438654 * sizeFactor)
   points.dartPoint1Cp1 = points.dartPoint1.shift(
     354.74216521134053,
@@ -61,28 +64,52 @@ function draftPart3({
     356.55115250146685,
     13.680777207454268 * sizeFactor
   )
-  points.dartPoint2 = points.point0.shift(305.70488028612266, 84.29082428117546 * sizeFactor)
-  points.dartPoint2Cp2 = points.dartPoint2.shift(0, 0 * sizeFactor)
+  // points.dartPoint2 = points.point0.shift(305.70488028612266, 84.29082428117546 * sizeFactor)
+  // points.dartPoint2 = points.point0.shift(305.70488028612266, 85.29082428117546 * sizeFactor)
+  // points.dartPoint2Cp2 = points.dartPoint2.clone()
+
+  // paths.dart = new Path()
+  //   .move(points.dartPoint0)
+  //   .curve(points.dartPoint0Cp1, points.dartPoint1Cp2, points.dartPoint1)
+  //   .curve(points.dartPoint1Cp1, points.dartPoint2Cp2, points.dartPoint2)
+  //   // .close()
+
+  // paths.seam = new Path()
+  //   .move(points.point0)
+  //   .curve(points.point0Cp1, points.point1Cp2, points.point1)
+  //   .curve(points.point1Cp1, points.point2Cp2, points.point2)
+  //   .line(points.point3)
+  //   .curve(points.point3Cp1, points.point4Cp2, points.point4)
+  //   .close()
+
+  let point3 = new Point(35.53000000000001, 160.263)
+  let point3Cp1 = new Point(43.67799999999998, 106.11399999999999)
+  let point4Cp2 = new Point(52.86899999999999, 67.49499999999995)
+  let point4 = new Point(49.30499999999999, 17.046999999999944)
+  let dartPoint0 = new Point(62.840895611474686, 78.37158854748301)
+  let dartPoint0Cp1 = new Point(62.840895611474686, 78.37158854748301)
+  let dartPoint1Cp2 = new Point(31.614999999999988, 64.218)
+  let dartPoint1 = new Point(18.009999999999998, 62.966)
+
+  paths.p1 = new Path().move(point3).curve(point3Cp1, point4Cp2, point4)
+  paths.d1 = new Path().move(dartPoint0).curve(dartPoint0Cp1, dartPoint1Cp2, dartPoint1)
+
+  let p1 = utils.curvesIntersect(
+    point3,
+    point3Cp1,
+    point4Cp2,
+    point4,
+    dartPoint0,
+    dartPoint0Cp1,
+    dartPoint1Cp2,
+    dartPoint1
+  )
+  console.log({ p1: p1 })
+  console.log({ pp1: paths.p1.intersects(paths.d1) })
 
   console.log({ points: JSON.parse(JSON.stringify(points)) })
-
-  convertPoints(points)
-
-  paths.eyeBottom = new Path()
-    .move(points.dartPoint0)
-    .curve(points.dartPoint0Cp1, points.dartPoint1Cp2, points.dartPoint1)
-    .curve(points.dartPoint1Cp1, points.dartPoint2Cp2, points.dartPoint2)
-    .close()
-
-  paths.seam = new Path()
-    .move(points.point0)
-    .curve(points.point0Cp1, points.point1Cp2, points.point1)
-    .curve(points.point1Cp1, points.point2Cp2, points.point2)
-    .line(points.point3)
-    .curve(points.point3Cp1, points.point4Cp2, points.point4)
-    .close()
-
-  console.log({ paths: JSON.parse(JSON.stringify(paths)) })
+  // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
+  // convertPoints(points)
 
   // Complete?
   if (complete) {

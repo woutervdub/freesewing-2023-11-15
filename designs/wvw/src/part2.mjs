@@ -1,4 +1,5 @@
 import { pluginBundle } from '@freesewing/plugin-bundle'
+import { part1 } from './part1.mjs'
 import { convertPoints } from './pointsUtil.mjs'
 
 function draftPart2({
@@ -11,6 +12,7 @@ function draftPart2({
   snippets,
   complete,
   sa,
+  store,
   paperless,
   macro,
   part,
@@ -49,7 +51,8 @@ function draftPart2({
   points.point0Cp1 = points.point0.shift(173.93394659874477, 38.41308527689494 * sizeFactor)
   points.point1 = points.point0.shift(165.07215199461328, 129.7747702101221 * sizeFactor)
   points.point1Cp2 = points.point1.shift(326.0735557262152, 42.01723333347876 * sizeFactor)
-  points.point2 = points.point0.shift(155.78697928223406, 122.59835275683763 * sizeFactor)
+  // points.point2 = points.point0.shift(155.78697928223406, 122.59835275683763 * sizeFactor)
+  points.point2 = points.point1.shift(47, 21.64317271104222 * sizeFactor)
   points.point2Cp1 = points.point2.shift(338.225501502238, 23.326308173390814 * sizeFactor)
   points.point3 = points.point0.shift(141.89456943097056, 53.41879968784397 * sizeFactor)
   points.point3Cp1 = points.point3.shift(146.82890730505153, 20.883100248765764 * sizeFactor)
@@ -59,20 +62,27 @@ function draftPart2({
   points.point4Cp2 = points.point4.shift(302.44153405115503, 30.077993300750627 * sizeFactor)
   points.point5 = points.point0.shift(125.6356187763194, 96.73748550220851 * sizeFactor)
   points.point5Cp2 = points.point5.shift(162.2516064465369, 21.11288137606992 * sizeFactor)
-  points.point6 = points.point0.shift(119.0078998582386, 100.03088961560826 * sizeFactor)
+  // points.point6 = points.point0.shift(119.0078998582386, 100.03088961560826 * sizeFactor)
+  points.point6 = points.point5.shift(48.44442389860464, store.get('templeWidth'))
   points.point6Cp1 = points.point6.shift(309.39143738637324, 10.114793621226312 * sizeFactor)
   points.point7 = points.point0.shift(106.83135324063868, 91.72676538115797 * sizeFactor)
   points.point7Cp1 = points.point7.shift(30.822195101920396, 8.874408308214115 * sizeFactor)
   points.point7Cp2 = points.point7.shift(210.82427193940393, 7.2559551404346445 * sizeFactor)
   points.point8 = points.point0.shift(100.36453213741231, 104.78002255825726 * sizeFactor)
   points.point8Cp2 = points.point8.shift(304.5254766583761, 6.962227517109719 * sizeFactor)
-  points.point9 = points.point0.shift(96.0200385798697, 105.5624778408924 * sizeFactor)
+  // points.point9 = points.point0.shift(96.0200385798697, 105.5624778408924 * sizeFactor)
+  points.point9 = points.point8.shift(13.793392692988947, store.get('noseBridgeWidth'))
   points.point9Cp1 = points.point9.shift(322.2548163010328, 16.221492810465996 * sizeFactor)
   points.point0Cp2 = points.point0.shift(81.92955090220643, 37.666339998598225 * sizeFactor)
 
-  convertPoints(points)
+  // console.log( 'points.point2 = points.point1.shift( ' +
+  // points.point1.angle(points.point2) +
+  // ', ' +
+  // points.point1.dist(points.point2) +
+  // ' *sizeFactor )')
 
-  console.log({ points: JSON.parse(JSON.stringify(points)) })
+  // console.log( {d1: (new Path().move(points.point2).curve(points.point2Cp1, points.point3Cp2, points.point3)).length()} )
+  // console.log( {d2: (new Path().move(points.point3).curve(points.point3Cp1, points.point4Cp2, points.point4)).length()} )
 
   paths.eyeBottom = new Path()
     .move(points.point0)
@@ -88,7 +98,9 @@ function draftPart2({
     .curve(points.point9Cp1, points.point0Cp2, points.point0)
     .close()
 
-  console.log({ paths: JSON.parse(JSON.stringify(paths)) })
+  // console.log({ points: JSON.parse(JSON.stringify(points)) })
+  // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
+  // convertPoints(points)
 
   // Complete?
   if (complete) {
@@ -130,6 +142,7 @@ function draftPart2({
 
 export const part2 = {
   name: 'part2',
+  after: part1,
   options: {
     size: { pct: 50, min: 10, max: 100, menu: 'fit' },
   },

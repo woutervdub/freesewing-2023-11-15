@@ -11,6 +11,7 @@ function draftPart1({
   snippets,
   complete,
   sa,
+  store,
   paperless,
   macro,
   part,
@@ -69,10 +70,6 @@ function draftPart1({
   points.point9 = points.point0.shift(86.14503661026949, 8.388980629373263 * sizeFactor)
   points.point9Cp2 = points.point9.shift(5.271212717779854, 18.645853640957277 * sizeFactor)
 
-  convertPoints(points)
-
-  console.log({ points: JSON.parse(JSON.stringify(points)) })
-
   paths.eyeBottom = new Path()
     .move(points.point7)
     .curve(points.point7Cp1, points.point8Cp2, points.point8)
@@ -103,10 +100,16 @@ function draftPart1({
     .curve(points.point5Cp1, points.point6Cp2, points.point6)
     .line(points.point7)
     .join(paths.eyeBottom)
+    .line(points.point0)
     .close()
     .attr('class', 'fabric')
 
-  console.log({ paths: JSON.parse(JSON.stringify(paths)) })
+  store.set('noseBridgeWidth', points.point0.dist(points.point9))
+  store.set('templeWidth', points.point6.dist(points.point7))
+
+  // console.log({ points: JSON.parse(JSON.stringify(points)) })
+  // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
+  // convertPoints(points)
 
   // Complete?
   if (complete) {
