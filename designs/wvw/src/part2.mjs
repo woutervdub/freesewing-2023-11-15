@@ -15,6 +15,7 @@ function draftPart2({
   macro,
   part,
 }) {
+  console.log('part2')
   const textAttribute = 'text-xs center'
   const sizeFactor = 1
 
@@ -67,8 +68,7 @@ function draftPart2({
   points.point8Cp2 = points.point8.shift(304.5254766583761, 6.962227517109719 * sizeFactor)
   points.point9 = points.point0.shift(96.0200385798697, 105.5624778408924 * sizeFactor)
   points.point9Cp1 = points.point9.shift(322.2548163010328, 16.221492810465996 * sizeFactor)
-  points.point10 = points.point0.shift(0, 0 * sizeFactor)
-  points.point10Cp2 = points.point10.shift(81.92955090220643, 37.666339998598225 * sizeFactor)
+  points.point0Cp2 = points.point0.shift(81.92955090220643, 37.666339998598225 * sizeFactor)
 
   convertPoints(points)
 
@@ -85,20 +85,21 @@ function draftPart2({
     .curve(points.point6Cp1, points.point7Cp2, points.point7)
     .curve(points.point7Cp1, points.point8Cp2, points.point8)
     .line(points.point9)
-    .curve(points.point9Cp1, points.point10Cp2, points.point10)
+    .curve(points.point9Cp1, points.point0Cp2, points.point0)
     .close()
 
   console.log({ paths: JSON.parse(JSON.stringify(paths)) })
 
   // Complete?
   if (complete) {
-    points.title = points.point4.shiftFractionTowards(points.point10, 0.5)
+    points.title = points.point4.shiftFractionTowards(points.point0, 0.5)
     macro('title', {
       nr: 2,
       at: points.title,
       scale: 0.5,
       // title: 'pants',
-    }) // points.logo = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)
+    })
+    // points.logo = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)
     // snippets.logo = new Snippet('logo', points.logo)
     // points.text = points.logo
     //   .shift(-90, w / 8)

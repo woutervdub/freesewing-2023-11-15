@@ -15,6 +15,7 @@ function draftPart1({
   macro,
   part,
 }) {
+  console.log('part1')
   const textAttribute = 'text-xs center'
   const sizeFactor = 1
 

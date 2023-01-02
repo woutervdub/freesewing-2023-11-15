@@ -15,6 +15,7 @@ function draftPart3({
   macro,
   part,
 }) {
+  console.log('part3')
   const textAttribute = 'text-xs center'
   const sizeFactor = 1
 
@@ -85,6 +86,13 @@ function draftPart3({
 
   // Complete?
   if (complete) {
+    points.title = points.point0.shiftFractionTowards(points.point3, 0.25)
+    macro('title', {
+      nr: 3,
+      at: points.title,
+      scale: 0.5,
+      // title: 'pants',
+    })
     // points.logo = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)
     // snippets.logo = new Snippet('logo', points.logo)
     // points.text = points.logo
