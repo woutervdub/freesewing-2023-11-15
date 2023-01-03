@@ -54,7 +54,11 @@ function draftPart3({
 
   // points.dartPoint0 = points.point0.shift(308.7237760289013, 79.45438792162456 * sizeFactor)
   // points.dartPoint0 = points.point0.shift(308.7237760289013, 100.45438792162456 * sizeFactor)
-  // points.dartPoint0Cp1 = points.dartPoint0.clone()
+  points.dartPoint0 = new Path()
+    .move(points.point3)
+    .curve(points.point3Cp1, points.point4Cp2, points.point4)
+    .shiftAlong(99.23273836900117 * sizeFactor)
+  points.dartPoint0Cp1 = points.dartPoint0.clone()
   points.dartPoint1 = points.point0.shift(285.96197961706986, 65.4910471438654 * sizeFactor)
   points.dartPoint1Cp1 = points.dartPoint1.shift(
     354.74216521134053,
@@ -64,51 +68,90 @@ function draftPart3({
     356.55115250146685,
     13.680777207454268 * sizeFactor
   )
-  // points.dartPoint2 = points.point0.shift(305.70488028612266, 84.29082428117546 * sizeFactor)
-  // points.dartPoint2 = points.point0.shift(305.70488028612266, 85.29082428117546 * sizeFactor)
-  // points.dartPoint2Cp2 = points.dartPoint2.clone()
+  // points.dartPoint2 = points.point0.shift(305.70488028612266, 84.39082428117546 * sizeFactor)
+  points.dartPoint2 = new Path()
+    .move(points.point3)
+    .curve(points.point3Cp1, points.point4Cp2, points.point4)
+    .shiftAlong(92.81578231343269 * sizeFactor)
+  points.dartPoint2Cp2 = points.dartPoint2.clone()
 
-  // paths.dart = new Path()
-  //   .move(points.dartPoint0)
-  //   .curve(points.dartPoint0Cp1, points.dartPoint1Cp2, points.dartPoint1)
-  //   .curve(points.dartPoint1Cp1, points.dartPoint2Cp2, points.dartPoint2)
-  //   // .close()
+  paths.dart = new Path()
+    .move(points.dartPoint0)
+    .curve(points.dartPoint0Cp1, points.dartPoint1Cp2, points.dartPoint1)
+    .curve(points.dartPoint1Cp1, points.dartPoint2Cp2, points.dartPoint2)
+  // .close()
 
-  // paths.seam = new Path()
-  //   .move(points.point0)
-  //   .curve(points.point0Cp1, points.point1Cp2, points.point1)
-  //   .curve(points.point1Cp1, points.point2Cp2, points.point2)
-  //   .line(points.point3)
-  //   .curve(points.point3Cp1, points.point4Cp2, points.point4)
-  //   .close()
+  paths.seam = new Path()
+    .move(points.point0)
+    .curve(points.point0Cp1, points.point1Cp2, points.point1)
+    .curve(points.point1Cp1, points.point2Cp2, points.point2)
+    .line(points.point3)
+    .curve(points.point3Cp1, points.point4Cp2, points.point4)
+    .close()
 
-  let point3 = new Point(35.53000000000001, 160.263)
-  let point3Cp1 = new Point(43.67799999999998, 106.11399999999999)
-  let point4Cp2 = new Point(52.86899999999999, 67.49499999999995)
-  let point4 = new Point(49.30499999999999, 17.046999999999944)
-  let dartPoint0 = new Point(62.840895611474686, 78.37158854748301)
-  let dartPoint0Cp1 = new Point(62.840895611474686, 78.37158854748301)
-  let dartPoint1Cp2 = new Point(31.614999999999988, 64.218)
-  let dartPoint1 = new Point(18.009999999999998, 62.966)
+  // points.p1 = utils.curvesIntersect(
+  //   points.point3,
+  //   points.point3Cp1,
+  //   points.point4Cp2,
+  //   points.point4,
+  //   points.dartPoint1,
+  //   points.dartPoint1Cp2,
+  //   points.dartPoint0Cp1,
+  //   points.dartPoint0,
+  // )
+  // console.log({ p1: points.p1 })
+  // let s1 = utils.splitCurve(
+  //   points.point3,
+  //   points.point3Cp1,
+  //   points.point4Cp2,
+  //   points.point4,
+  //   points.p1
+  // )
+  // console.log( {s1: s1})
 
-  paths.p1 = new Path().move(point3).curve(point3Cp1, point4Cp2, point4)
-  paths.d1 = new Path().move(dartPoint0).curve(dartPoint0Cp1, dartPoint1Cp2, dartPoint1)
+  // paths.p1 = new Path()
+  //   .move(points.point3)
+  //   .curve(points.point3Cp1,points.point4Cp2,points.point4)
+  //   .addClass('hidden')
 
-  let p1 = utils.curvesIntersect(
-    point3,
-    point3Cp1,
-    point4Cp2,
-    point4,
-    dartPoint0,
-    dartPoint0Cp1,
-    dartPoint1Cp2,
-    dartPoint1
-  )
-  console.log({ p1: p1 })
-  console.log({ pp1: paths.p1.intersects(paths.d1) })
+  // paths.p1a = new Path()
+  // .move(s1[0].start)
+  // .curve(s1[0].cp1,s1[0].cp2,s1[0].end)
+
+  // paths.p1b = new Path()
+  // .move(s1[1].start)
+  // .curve(s1[1].cp1,s1[1].cp2,s1[1].end)
+
+  // console.log( {l1: (paths.p1a).length()})
+  // console.log( {l1: (paths.p1b).length()})
+  // console.log( {l1: (paths.p1).length()})
+
+  // points.p2 = utils.curvesIntersect(
+  //   points.point3,
+  //   points.point3Cp1,
+  //   points.point4Cp2,
+  //   points.point4,
+  //   points.dartPoint1,
+  //   points.dartPoint1Cp1,
+  //   points.dartPoint2Cp2,
+  //   points.dartPoint2
+  // )
+  // console.log({ p2: points.p2 })
+  // let s2 = utils.splitCurve(
+  //   points.point3,
+  //   points.point3Cp1,
+  //   points.point4Cp2,
+  //   points.point4,
+  //   points.p2
+  // )
+  // console.log( {s2: s2})
+
+  // console.log( {l2: (new Path()
+  //   .move(s2[0].start)
+  //   .curve(s2[0].cp1,s2[0].cp2,s2[0].end)).length()})
 
   console.log({ points: JSON.parse(JSON.stringify(points)) })
-  // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
+  console.log({ paths: JSON.parse(JSON.stringify(paths)) })
   // convertPoints(points)
 
   // Complete?
