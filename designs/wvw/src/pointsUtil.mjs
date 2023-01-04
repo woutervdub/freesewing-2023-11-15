@@ -1,26 +1,48 @@
-function convertPoints(points) {
+function convertPoints(points, rotate = 0, flip = false) {
   var p = []
   Object.keys(points).forEach(function (key, index) {
-    const point = points[key]
-    if (point.name == 'point0') {
+    console.log({ key: key })
+    var point = points[key].clone()
+    console.log({ point: point })
+    if (key != 'point0') {
+      console.log({ point0: points.point0 })
+      if (flip) {
+        point = points[key].flipX()
+      }
+      if (rotate != 0) {
+        point = points[key].rotate(rotate, points['point0'])
+      }
+      console.log({ point: point })
+    }
+
+    console.log({ point: point })
+
+    if (key == 'point0') {
       p.push('points.point0 = new Point( 0, 0 );')
-    } else if (point.name.match('.+[0-9]Cp[12]')) {
-      let masterPoint = point.name.replace(/Cp[12]/, '')
+    } else if (key.match('.+[0-9]Cp[12]')) {
+      let masterPointKey = key.replace(/Cp[12]/, '')
+      let masterPoint = points[masterPointKey]
+      if (flip) {
+        masterPoint = masterPoint.flipX()
+      }
+      if (rotate != 0) {
+        masterPoint = masterPoint.rotate(rotate, points['point0'])
+      }
       p.push(
         'points.' +
-          point.name +
+          key +
           ' = points.' +
-          masterPoint +
+          masterPointKey +
           '.shift( ' +
-          points[masterPoint].angle(point) +
+          masterPoint.angle(point) +
           ', ' +
-          points[masterPoint].dist(point) +
+          masterPoint.dist(point) +
           ' *sizeFactor );'
       )
     } else {
       p.push(
         'points.' +
-          point.name +
+          key +
           ' = points.point0.shift( ' +
           points.point0.angle(point) +
           ', ' +

@@ -20,50 +20,81 @@ function draftPart11({
   const textAttribute = 'text-xs center'
   const sizeFactor = 1
 
-  // points.point0 = new Point( 153.999,380.842 )
-  // points.point0Cp1 = new Point( 111.588,380.119 )
-  // points.point1Cp2 = new Point( 102.796,398.185 )
-  // points.point1 = new Point( -1.72734,425.254 )
-  // points.point1Cp1 = new Point( 50.4992,440.02 )
-  // points.point2Cp2 = new Point( 98.0439,454.206 )
-  // points.point2 = new Point( 153.999,452.847 )
+  // points.point0 = new Point( -51.8735,201.484 )
+  // points.point1 = new Point( -94.7305,197.669 )
+  // points.point1Cp1 = new Point( -95.9315,250.677 )
+  // points.point2Cp2 = new Point( -94.4875,267.925 )
+  // points.point2 = new Point( -91.9525,273.759 )
+  // points.point2Cp1 = new Point( -87.2415,284.598 )
+  // points.point3Cp2 = new Point( -95.0055,300.763 )
+  // points.point3 = new Point( -86.1085,301.82 )
+  // points.point3Cp1 = new Point( -70.4625,303.678 )
+  // points.point4Cp2 = new Point( -58.9235,312.248 )
+  // points.point4 = new Point( -38.3645,317.458 )
+  // points.point4Cp1 = new Point( -32.4955,277.729 )
+  // points.point5Cp2 = new Point( -23.6165,260.602 )
+  // points.point5 = new Point( -56.7515,252.033 )
+  // points.point5Cp1 = new Point( -51.8445,232.433 )
+  // points.point6Cp2 = new Point( -53.3405,218.079 )
+  // points.point6 = new Point( -51.8735,201.484 )
 
   points.point0 = new Point(0, 0)
-  points.point0Cp1 = points.point0.shift(179.02334685861777, 42.41716221059584 * sizeFactor)
-  points.point1 = points.point0.shift(195.9177576536095, 161.93553876093907 * sizeFactor)
-  points.point1Cp1 = points.point1.shift(344.2128205180245, 54.27380801428622 * sizeFactor)
-  points.point1Cp2 = points.point1.shift(14.519227894249555, 107.97156739510454 * sizeFactor)
-  points.point2 = points.point0.shift(270, 72.005 * sizeFactor)
-  points.point2Cp2 = points.point2.shift(181.39128800754833, 55.97160080799905 * sizeFactor)
+  points.point1 = points.point0.shift(174.91311161963839, 43.0264648094635 * sizeFactor)
+  points.point2 = points.point0.shift(240.9901082422603, 82.64382533498798 * sizeFactor)
+  points.point3 = points.point0.shift(251.1601763775522, 106.01579184725264 * sizeFactor)
+  points.point4 = points.point0.shift(276.6440430845334, 116.75813357963548 * sizeFactor)
+  points.point5 = points.point0.shift(264.48800048134507, 50.78381912578058 * sizeFactor)
 
-  paths.firstSeam = new Path()
-    .move(points.point1)
-    .curve(points.point1Cp1, points.point2Cp2, points.point2)
-    .setText('First Seam', textAttribute)
-    .addClass('hidden')
+  points.point0Cp2 = points.point0.shift(264.9481781658739, 16.659715303689914 * sizeFactor)
+  points.point1Cp1 = points.point1.shift(268.7020740231185, 53.02160375733648 * sizeFactor)
 
-  paths.secondSeam = new Path()
-    .move(points.point0)
-    .curve(points.point0Cp1, points.point1Cp2, points.point1)
-    .setText('Second Seam', textAttribute)
-    .addClass('hidden')
+  let mouthTop = store.get('mouthTop')
 
-  store.set('secondSeam', paths.secondSeam.length())
+  let iterations = 0
+  var p
+  do {
+    iterations++
+
+    points.point5Cp1 = points.point5.shift(75.9444990655226, 20.20491645614997 * sizeFactor)
+    points.point5Cp2 = points.point5.shift(345.5004759497096, 34.22507831985195 * sizeFactor)
+    p = new Path().move(points.point5).curve(points.point5Cp1, points.point0Cp2, points.point0)
+
+    points.point5 = points.point5.shift(270, (mouthTop - p.length()) * 0.5)
+
+    console.log({ mouthTop: mouthTop, seriously: p.length() })
+  } while (iterations < 100 && (mouthTop - p.length() > 1 || mouthTop - p.length() < -1))
+  if (iterations >= 100) {
+    log.error('Something is not quite right here!')
+  }
+
+  points.point2 = points.point2.shift(270, (mouthTop - p.length()) * 0.5)
+  points.point3 = points.point3.shift(270, (mouthTop - p.length()) * 0.5)
+  points.point4 = points.point4.shift(270, (mouthTop - p.length()) * 0.5)
+
+  points.point2Cp1 = points.point2.shift(293.4914135377402, 11.81852114268109 * sizeFactor)
+  points.point2Cp2 = points.point2.shift(113.48599545649276, 6.360957553702117 * sizeFactor)
+  points.point3Cp1 = points.point3.shift(353.2277046181922, 15.755934754878876 * sizeFactor)
+  points.point3Cp2 = points.point3.shift(173.22478394781675, 8.959567958333698 * sizeFactor)
+  points.point4Cp1 = points.point4.shift(81.59670910061827, 40.16016187716384 * sizeFactor)
+  points.point4Cp2 = points.point4.shift(165.77964223723035, 21.20887976768222 * sizeFactor)
 
   paths.seam = new Path()
     .move(points.point0)
-    .curve(points.point0Cp1, points.point1Cp2, points.point1)
+    .line(points.point1)
     .curve(points.point1Cp1, points.point2Cp2, points.point2)
+    .curve(points.point2Cp1, points.point3Cp2, points.point3)
+    .curve(points.point3Cp1, points.point4Cp2, points.point4)
+    .curve(points.point4Cp1, points.point5Cp2, points.point5)
+    .curve(points.point5Cp1, points.point0Cp2, points.point0)
     .close()
 
-  console.log({ points: JSON.parse(JSON.stringify(points)) })
-  console.log({ paths: JSON.parse(JSON.stringify(paths)) })
-
-  convertPoints(points)
+  // console.log({ points: JSON.parse(JSON.stringify(points)) })
+  // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
+  // convertPoints(points)
 
   // Complete?
   if (complete) {
-    points.title = points.point1.shiftFractionTowards(points.point2, 0.65)
+    points.title = points.point1.shiftFractionTowards(points.point4, 0.25)
     macro('title', {
       nr: 11,
       at: points.title,

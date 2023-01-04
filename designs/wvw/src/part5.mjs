@@ -20,73 +20,132 @@ function draftPart5({
   const textAttribute = 'text-xs center'
   const sizeFactor = 1
 
-  // points.point0 = new Point( -51.8735,201.484 )
-  // points.point1 = new Point( -94.7305,197.669 )
-  // points.point1Cp1 = new Point( -95.9315,250.677 )
-  // points.point2Cp2 = new Point( -94.4875,267.925 )
-  // points.point2 = new Point( -91.9525,273.759 )
-  // points.point2Cp1 = new Point( -87.2415,284.598 )
-  // points.point3Cp2 = new Point( -95.0055,300.763 )
-  // points.point3 = new Point( -86.1085,301.82 )
-  // points.point3Cp1 = new Point( -70.4625,303.678 )
-  // points.point4Cp2 = new Point( -58.9235,312.248 )
-  // points.point4 = new Point( -38.3645,317.458 )
-  // points.point4Cp1 = new Point( -32.4955,277.729 )
-  // points.point5Cp2 = new Point( -23.6165,260.602 )
-  // points.point5 = new Point( -56.7515,252.033 )
-  // points.point5Cp1 = new Point( -51.8445,232.433 )
-  // points.point6Cp2 = new Point( -53.3405,218.079 )
-  // points.point6 = new Point( -51.8735,201.484 )
+  // points.point0 = new Point(-250.51, 319.591)
+  // points.point0Cp1 = new Point(-251.85, 344.013)
+  // points.point1Cp2 = new Point(-255.46, 351.868)
+  // points.point1 = new Point(-255.684, 376.777)
+  // points.point2 = new Point(-315.42, 371.84)
+  // points.point3 = new Point(-324.302, 379.208)
+  // points.point3Cp1 = new Point(-351.018, 362.566)
+  // points.point4Cp2 = new Point(-373.744, 338.999)
+  // points.point4 = new Point(-381.609, 324.279)
+  // points.point4Cp1 = new Point(-340, 311.983)
+  // points.point5Cp2 = new Point(-305.568, 312.429)
+  // points.point5 = new Point(-288.007, 313.63)
+  // points.point5Cp1 = new Point(-270.675, 314.815)
+  // points.point6Cp2 = new Point(-269.705, 316.541)
+  // points.point6 = new Point(-250.51, 319.591)
+  // points.dartPoint0 = new Point(-315.42, 371.84)
+  // points.dartPoint0Cp1 = new Point(-317.905, 356.364)
+  // points.dartPoint1Cp2 = new Point(-321.312, 340.785)
+  // points.dartPoint1 = new Point(-329.406, 324.686)
+  // points.dartPoint1Cp1 = new Point(-325.884, 343.555)
+  // points.dartPoint2Cp2 = new Point(-330.953, 357.473)
+  // points.dartPoint2 = new Point(-334.51, 372.263)
 
   points.point0 = new Point(0, 0)
-  points.point1 = points.point0.shift(174.91311161963839, 43.0264648094635 * sizeFactor)
-  points.point2 = points.point0.shift(240.9901082422603, 82.64382533498798 * sizeFactor)
-  points.point3 = points.point0.shift(251.1601763775522, 106.01579184725264 * sizeFactor)
-  points.point4 = points.point0.shift(276.6440430845334, 116.75813357963548 * sizeFactor)
-  points.point5 = points.point0.shift(264.48800048134507, 50.78381912578058 * sizeFactor)
+  points.point0Cp1 = points.point0.shift(266.8594121345838, 24.45873430903567 * sizeFactor)
+  points.point1 = points.point0.shift(264.83014371859684, 57.4195861357429 * sizeFactor)
+  points.point1Cp2 = points.point1.shift(89.48476820979678, 24.91000716579583 * sizeFactor)
+  points.point2 = points.point0.shift(218.37, 82.3 * sizeFactor)
+  points.point3 = points.point0.shift(218.93495280472038, 94.86540967602474 * sizeFactor)
+  points.point3Cp1 = points.point3.shift(148.08028890914184, 31.47540023573964 * sizeFactor)
+  points.point4 = points.point0.shift(182.0479806305003, 131.18279286933938 * sizeFactor)
+  points.point4Cp1 = points.point4.shift(16.463094543223505, 43.387792027251145 * sizeFactor)
+  points.point4Cp2 = points.point4.shift(298.1159050601914, 16.689416556608563 * sizeFactor)
+  points.point5 = points.point0.shift(170.9671220145567, 37.967861804426136 * sizeFactor)
+  points.point5Cp1 = points.point5.shift(356.08873754110124, 17.372462375840673 * sizeFactor)
+  points.point5Cp2 = points.point5.shift(176.08762325510824, 17.602020395397776 * sizeFactor)
+  points.point0Cp2 = points.point0.shift(170.9714347113461, 19.435805231582247 * sizeFactor)
+  // points.dartPoint0 = points.point0.shift(218.8321634938166, 83.32626297272667 * sizeFactor)
+  points.dartPoint0 = points.point2.clone()
+  points.dartPoint0Cp1 = points.dartPoint0.shift(99.1221849088359, 15.674240045373804 * sizeFactor)
+  points.dartPoint1 = points.point0.shift(183.6949553576291, 79.06034303618978 * sizeFactor)
+  points.dartPoint1Cp1 = points.dartPoint1.shift(280.5728974416993, 19.194885907449436 * sizeFactor)
+  points.dartPoint1Cp2 = points.dartPoint1.shift(296.6916101983046, 18.019174148667343 * sizeFactor)
+  points.dartPoint2 = points.point0.shift(212.08967047259978, 99.14806898775184 * sizeFactor)
+  points.dartPoint2 = points.dartPoint2.shift(270, 0.2 * sizeFactor)
+  points.dartPoint2 = new Path()
+    .move(points.point3)
+    .curve(points.point3Cp1, points.point4Cp2, points.point4)
+    .shiftAlong(12.256989612591314 * sizeFactor)
+  points.dartPoint2Cp2 = points.dartPoint2.shift(76.4771638420823, 15.211717490145517 * sizeFactor)
 
-  points.point0Cp2 = points.point0.shift(264.9481781658739, 16.659715303689914 * sizeFactor)
-  points.point1Cp1 = points.point1.shift(268.7020740231185, 53.02160375733648 * sizeFactor)
+  console.log(
+    new Path()
+      .move(points.dartPoint0)
+      .curve(points.dartPoint0Cp1, points.dartPoint1Cp2, points.dartPoint1)
+      .length()
+  )
+  console.log(
+    new Path()
+      .move(points.dartPoint1)
+      .curve(points.dartPoint1Cp1, points.dartPoint2Cp2, points.dartPoint2)
+      .length()
+  )
 
-  let mouthTop = store.get('mouthTop')
+  paths.thirdSeam1 = new Path()
+    .move(points.point4)
+    .curve(points.point4Cp2, points.point3Cp1, points.point3)
+    .setText('Third Seam', textAttribute)
+    .addClass('hidden')
+  paths.thirdSeam2 = new Path()
+    .move(points.point2)
+    .line(points.point1)
+    .setText('Third Seam', textAttribute)
+    .addClass('hidden')
 
-  let iterations = 0
-  var p
-  do {
-    iterations++
-
-    points.point5Cp1 = points.point5.shift(75.9444990655226, 20.20491645614997 * sizeFactor)
-    points.point5Cp2 = points.point5.shift(345.5004759497096, 34.22507831985195 * sizeFactor)
-    p = new Path().move(points.point5).curve(points.point5Cp1, points.point0Cp2, points.point0)
-
-    points.point5 = points.point5.shift(270, (mouthTop - p.length()) * 0.5)
-
-    console.log({ mouthTop: mouthTop, seriously: p.length() })
-  } while (iterations < 100 && (mouthTop - p.length() > 1 || mouthTop - p.length() < -1))
-  if (iterations >= 100) {
-    log.error('Something is not quite right here!')
-  }
-
-  points.point2 = points.point2.shift(270, (mouthTop - p.length()) * 0.5)
-  points.point3 = points.point3.shift(270, (mouthTop - p.length()) * 0.5)
-  points.point4 = points.point4.shift(270, (mouthTop - p.length()) * 0.5)
-
-  points.point2Cp1 = points.point2.shift(293.4914135377402, 11.81852114268109 * sizeFactor)
-  points.point2Cp2 = points.point2.shift(113.48599545649276, 6.360957553702117 * sizeFactor)
-  points.point3Cp1 = points.point3.shift(353.2277046181922, 15.755934754878876 * sizeFactor)
-  points.point3Cp2 = points.point3.shift(173.22478394781675, 8.959567958333698 * sizeFactor)
-  points.point4Cp1 = points.point4.shift(81.59670910061827, 40.16016187716384 * sizeFactor)
-  points.point4Cp2 = points.point4.shift(165.77964223723035, 21.20887976768222 * sizeFactor)
+  paths.dart = new Path()
+    .move(points.dartPoint0)
+    .curve(points.dartPoint0Cp1, points.dartPoint1Cp2, points.dartPoint1)
+    .curve(points.dartPoint1Cp1, points.dartPoint2Cp2, points.dartPoint2)
 
   paths.seam = new Path()
     .move(points.point0)
-    .line(points.point1)
-    .curve(points.point1Cp1, points.point2Cp2, points.point2)
-    .curve(points.point2Cp1, points.point3Cp2, points.point3)
+    .curve(points.point0Cp1, points.point1Cp2, points.point1)
+    .line(points.point2)
+    .line(points.point3)
     .curve(points.point3Cp1, points.point4Cp2, points.point4)
     .curve(points.point4Cp1, points.point5Cp2, points.point5)
     .curve(points.point5Cp1, points.point0Cp2, points.point0)
     .close()
+
+  // points.p1 = utils.curvesIntersect(
+  //   points.point3,
+  //   points.point3Cp1,
+  //   points.point4Cp2,
+  //   points.point4,
+  //   points.dartPoint1,
+  //   points.dartPoint1Cp1,
+  //   points.dartPoint2Cp2,
+  //   points.dartPoint2,
+  // )[0]
+  // console.log({ p1: points.p1 })
+  // let s1 = utils.splitCurve(
+  //   points.point3,
+  //   points.point3Cp1,
+  //   points.point4Cp2,
+  //   points.point4,
+  //   points.p1
+  // )
+  // console.log( {s1: s1})
+
+  // paths.p1 = new Path()
+  //   .move(points.point3)
+  //   .curve(points.point3Cp1,points.point4Cp2,points.point4)
+  //   .addClass('hidden')
+
+  // paths.p1a = new Path()
+  // .move(s1[0].start)
+  // .curve(s1[0].cp1,s1[0].cp2,s1[0].end)
+
+  // paths.p1b = new Path()
+  // .move(s1[1].start)
+  // .curve(s1[1].cp1,s1[1].cp2,s1[1].end)
+
+  // console.log( {l1: (paths.p1a).length()})
+  // console.log( {l1: (paths.p1b).length()})
+  // console.log( {l1: (paths.p1).length()})
 
   // console.log({ points: JSON.parse(JSON.stringify(points)) })
   // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
@@ -94,7 +153,7 @@ function draftPart5({
 
   // Complete?
   if (complete) {
-    points.title = points.point1.shiftFractionTowards(points.point4, 0.25)
+    points.title = points.point4.shiftFractionTowards(points.point1, 0.6)
     macro('title', {
       nr: 5,
       at: points.title,
