@@ -106,6 +106,7 @@ function draftPart1({
 
   store.set('noseBridgeWidth', points.point0.dist(points.point9))
   store.set('templeWidth', points.point6.dist(points.point7))
+  store.set('mouthTop', paths.mouthTop.length())
 
   // console.log({ points: JSON.parse(JSON.stringify(points)) })
   // console.log({ paths: JSON.parse(JSON.stringify(paths)) })

@@ -19,10 +19,10 @@ import { part11 } from './part11.mjs'
 // Create new design
 const Wvw = new Design({
   data,
-  // parts: [box, part1, part2, part3, part4, part5, part6, part7, part8, part9, part10, part11],
-  parts: [box, part3],
+  parts: [box, part1, part2, part3, part4, part5, part6, part7, part8, part9, part10, part11],
+  // parts: [box, part11],
 })
 
 // Named exports
-// export { box, part1, part2, part3, part4, part5, part6, part7, part8, part9, part10, part11, Wvw }
-export { box, part3, Wvw }
+export { box, part1, part2, part3, part4, part5, part6, part7, part8, part9, part10, part11, Wvw }
+// export { box, part11, Wvw }
