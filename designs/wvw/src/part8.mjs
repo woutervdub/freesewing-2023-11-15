@@ -69,10 +69,9 @@ function draftPart8({
     .curve(points.point6Cp1, points.point0Cp2, points.point0)
     .close()
 
-  console.log({ points: JSON.parse(JSON.stringify(points)) })
-  console.log({ paths: JSON.parse(JSON.stringify(paths)) })
-
-  convertPoints(points)
+  // console.log({ points: JSON.parse(JSON.stringify(points)) })
+  // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
+  // convertPoints(points)
 
   // Complete?
   if (complete) {

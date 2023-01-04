@@ -11,6 +11,7 @@ function draftPart11({
   snippets,
   complete,
   sa,
+  store,
   paperless,
   macro,
   part,
@@ -34,6 +35,20 @@ function draftPart11({
   points.point1Cp2 = points.point1.shift(14.519227894249555, 107.97156739510454 * sizeFactor)
   points.point2 = points.point0.shift(270, 72.005 * sizeFactor)
   points.point2Cp2 = points.point2.shift(181.39128800754833, 55.97160080799905 * sizeFactor)
+
+  paths.firstSeam = new Path()
+    .move(points.point1)
+    .curve(points.point1Cp1, points.point2Cp2, points.point2)
+    .setText('First Seam', textAttribute)
+    .addClass('hidden')
+
+  paths.secondSeam = new Path()
+    .move(points.point0)
+    .curve(points.point0Cp1, points.point1Cp2, points.point1)
+    .setText('Second Seam', textAttribute)
+    .addClass('hidden')
+
+  store.set('secondSeam', paths.secondSeam.length())
 
   paths.seam = new Path()
     .move(points.point0)

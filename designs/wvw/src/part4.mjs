@@ -84,6 +84,17 @@ function draftPart4({
       .length()
   )
 
+  paths.thirdSeam1 = new Path()
+    .move(points.point4)
+    .curve(points.point4Cp2, points.point3Cp1, points.point3)
+    .setText('Third Seam', textAttribute)
+    .addClass('hidden')
+  paths.thirdSeam2 = new Path()
+    .move(points.point2)
+    .line(points.point1)
+    .setText('Third Seam', textAttribute)
+    .addClass('hidden')
+
   paths.dart = new Path()
     .move(points.dartPoint0)
     .curve(points.dartPoint0Cp1, points.dartPoint1Cp2, points.dartPoint1)
@@ -136,8 +147,8 @@ function draftPart4({
   // console.log( {l1: (paths.p1b).length()})
   // console.log( {l1: (paths.p1).length()})
 
-  console.log({ points: JSON.parse(JSON.stringify(points)) })
-  console.log({ paths: JSON.parse(JSON.stringify(paths)) })
+  // console.log({ points: JSON.parse(JSON.stringify(points)) })
+  // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
   // convertPoints(points)
 
   // Complete?

@@ -1,4 +1,5 @@
 import { pluginBundle } from '@freesewing/plugin-bundle'
+import { part1 } from './part1.mjs'
 import { convertPoints } from './pointsUtil.mjs'
 
 function draftPart10({
@@ -11,6 +12,7 @@ function draftPart10({
   snippets,
   complete,
   sa,
+  store,
   paperless,
   macro,
   part,
@@ -31,25 +33,41 @@ function draftPart10({
   points.point0 = new Point(0, 0)
   points.point1 = points.point0.shift(270, 66.14600000000002 * sizeFactor)
   points.point1Cp1 = points.point1.shift(0, 0 * sizeFactor)
-  points.point2 = points.point0.shift(219.80599709691597, 51.66121657491237 * sizeFactor)
-  points.point2Cp1 = points.point2.shift(90, 33.07300000000001 * sizeFactor)
-  points.point2Cp2 = points.point2.shift(270, 33.07300000000001 * sizeFactor)
   // points.point3 = points.point0.shift( 0, 0 *sizeFactor );
   // points.point3Cp2 = points.point3.shift( 0, 0 *sizeFactor );
   points.point0Cp2 = points.point0.shift(0, 0 * sizeFactor)
+
+  points.point2 = points.point0.shift(219.80599709691597, 51.66121657491237 * sizeFactor)
+
+  let mouthTop = store.get('mouthTop')
+
+  let iterations = 0
+  var p
+  do {
+    iterations++
+
+    points.point2Cp1 = points.point2.shift(90, 33.07300000000001 * sizeFactor)
+    points.point2Cp2 = points.point2.shift(270, 33.07300000000001 * sizeFactor)
+
+    p = new Path().move(points.point2).curve(points.point2Cp1, points.point0Cp2, points.point0)
+
+    points.point2 = points.point2.shift(180, (mouthTop - p.length()) * 0.5)
+  } while (iterations < 100 && (mouthTop - p.length() > 1 || mouthTop - p.length() < -1))
+
+  if (iterations >= 100) {
+    log.error('Something is not quite right here!')
+  }
 
   paths.seam = new Path()
     .move(points.point0)
     .line(points.point1)
     .curve(points.point1Cp1, points.point2Cp2, points.point2)
-    // .curve( points.point2Cp1,points.point3Cp2,points.point3 )
     .curve(points.point2Cp1, points.point0Cp2, points.point0)
     .close()
 
-  console.log({ points: JSON.parse(JSON.stringify(points)) })
-  console.log({ paths: JSON.parse(JSON.stringify(paths)) })
-
-  convertPoints(points)
+  // console.log({ points: JSON.parse(JSON.stringify(points)) })
+  // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
+  // convertPoints(points)
 
   // Complete?
   if (complete) {
@@ -91,6 +109,7 @@ function draftPart10({
 
 export const part10 = {
   name: 'part10',
+  after: part1,
   options: {
     size: { pct: 50, min: 10, max: 100, menu: 'fit' },
   },

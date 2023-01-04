@@ -57,10 +57,9 @@ function draftPart6({
     .line(points.point6)
     .close()
 
-  console.log({ points: JSON.parse(JSON.stringify(points)) })
-  console.log({ paths: JSON.parse(JSON.stringify(paths)) })
-
-  convertPoints(points)
+  // console.log({ points: JSON.parse(JSON.stringify(points)) })
+  // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
+  // convertPoints(points)
 
   // Complete?
   if (complete) {

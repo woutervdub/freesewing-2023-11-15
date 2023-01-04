@@ -11,6 +11,7 @@ function draftPart3({
   snippets,
   complete,
   sa,
+  store,
   paperless,
   macro,
   part,
@@ -75,6 +76,19 @@ function draftPart3({
     .shiftAlong(92.81578231343269 * sizeFactor)
   points.dartPoint2Cp2 = points.dartPoint2.clone()
 
+  paths.secondSeam = new Path()
+    .move(points.point0)
+    .curve(points.point0Cp1, points.point1Cp2, points.point1)
+    .curve(points.point1Cp1, points.point2Cp2, points.point2)
+    .setText('Second Seam', textAttribute)
+    .addClass('hidden')
+  paths.thirdSeam = new Path()
+    .move(points.point3)
+    .curve(points.point3Cp1, points.point4Cp2, points.point4)
+    .setText('Third Seam', textAttribute)
+    .addClass('hidden')
+
+  store.set('thirdSeam', paths.thirdSeam.length())
   paths.dart = new Path()
     .move(points.dartPoint0)
     .curve(points.dartPoint0Cp1, points.dartPoint1Cp2, points.dartPoint1)
@@ -150,8 +164,8 @@ function draftPart3({
   //   .move(s2[0].start)
   //   .curve(s2[0].cp1,s2[0].cp2,s2[0].end)).length()})
 
-  console.log({ points: JSON.parse(JSON.stringify(points)) })
-  console.log({ paths: JSON.parse(JSON.stringify(paths)) })
+  // console.log({ points: JSON.parse(JSON.stringify(points)) })
+  // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
   // convertPoints(points)
 
   // Complete?

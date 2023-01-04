@@ -84,7 +84,15 @@ function draftPart2({
   // console.log( {d1: (new Path().move(points.point2).curve(points.point2Cp1, points.point3Cp2, points.point3)).length()} )
   // console.log( {d2: (new Path().move(points.point3).curve(points.point3Cp1, points.point4Cp2, points.point4)).length()} )
 
-  paths.eyeBottom = new Path()
+  paths.firstSeam = new Path()
+    .move(points.point1)
+    .curve(points.point1Cp2, points.point0Cp1, points.point0)
+    .setText('First Seam', textAttribute)
+    .addClass('hidden')
+
+  store.set('firstSeam', paths.firstSeam.length())
+
+  paths.seam = new Path()
     .move(points.point0)
     .curve(points.point0Cp1, points.point1Cp2, points.point1)
     .line(points.point2)
