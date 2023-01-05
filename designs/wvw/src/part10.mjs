@@ -39,6 +39,14 @@ function draftPart10({
 
   points.point2 = points.point0.shift(219.80599709691597, 51.66121657491237 * sizeFactor)
 
+  points.point0 = new Point(0, 0)
+  points.point0Cp2 = points.point0.shift(0, 0 * sizeFactor)
+  points.point1 = points.point0.shift(270, 66.14600000000002 * sizeFactor)
+  points.point1Cp1 = points.point1.shift(0, 0 * sizeFactor)
+  points.point2 = points.point0.shift(222.41579397130369, 49.03292752740774 * sizeFactor)
+  points.point2Cp1 = points.point2.shift(90.57667188909446, 33.0746752291626 * sizeFactor)
+  points.point2Cp2 = points.point2.shift(269.4233281109055, 33.0746752291626 * sizeFactor)
+
   let mouthTop = store.get('mouthTop')
 
   let iterations = 0
@@ -58,6 +66,8 @@ function draftPart10({
     log.error('Something is not quite right here!')
   }
 
+  console.log({ iterations: iterations })
+
   paths.seam = new Path()
     .move(points.point0)
     .line(points.point1)
@@ -67,7 +77,7 @@ function draftPart10({
 
   // console.log({ points: JSON.parse(JSON.stringify(points)) })
   // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
-  // convertPoints(points)
+  convertPoints(points)
 
   // Complete?
   if (complete) {

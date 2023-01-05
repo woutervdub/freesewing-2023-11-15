@@ -133,7 +133,7 @@ function draftPart2({
 
   // console.log({ points: JSON.parse(JSON.stringify(points)) })
   // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
-  convertPoints(points, 160, false)
+  // convertPoints(points, 160, false)
 
   // Complete?
   if (complete) {

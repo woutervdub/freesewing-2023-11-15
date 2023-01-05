@@ -1,5 +1,6 @@
 import { pluginBundle } from '@freesewing/plugin-bundle'
 import { convertPoints } from './pointsUtil.mjs'
+import { part3 } from './part3.mjs'
 
 function draftPart4({
   options,
@@ -52,6 +53,32 @@ function draftPart4({
   points.point3Cp1 = points.point3.shift(81.44269285511335, 54.758598457228615 * sizeFactor)
   points.point4 = points.point0.shift(340.927384878832, 52.16879559660159 * sizeFactor)
   points.point4Cp2 = points.point4.shift(274.04106104609286, 50.57373626695976 * sizeFactor)
+
+  let secondSeam = store.get('secondSeam')
+
+  let iterations = 0
+  var p
+  do {
+    iterations++
+
+    p = new Path()
+      .move(points.point0)
+      .curve(points.point0Cp1, points.point1Cp2, points.point1)
+      .curve(points.point1Cp1, points.point2Cp2, points.point2)
+
+    if (secondSeam - p.length() > 1 || secondSeam - p.length() < -1) {
+      points.point0 = points.point0.shift(90, secondSeam - p.length())
+      points.point1 = points.point1.shift(90, secondSeam - p.length())
+      points.point0Cp1 = points.point0.shift(269.3443191225503, 29.448928299685203 * sizeFactor)
+      points.point1Cp1 = points.point1.shift(268.2738211037443, 30.242724116719366 * sizeFactor)
+      points.point1Cp2 = points.point1.shift(88.2745252696326, 18.83053830882166 * sizeFactor)
+    }
+  } while (iterations < 100 && (secondSeam - p.length() > 1 || secondSeam - p.length() < -1))
+
+  if (iterations >= 100) {
+    log.error('Something is not quite right here!')
+  }
+  console.log({ iterations: iterations })
 
   // points.dartPoint0 = points.point0.shift(308.7237760289013, 79.45438792162456 * sizeFactor)
   // points.dartPoint0 = points.point0.shift(308.7237760289013, 100.45438792162456 * sizeFactor)
@@ -208,6 +235,7 @@ function draftPart4({
 
 export const part4 = {
   name: 'part4',
+  after: part3,
   options: {
     size: { pct: 50, min: 10, max: 100, menu: 'fit' },
   },

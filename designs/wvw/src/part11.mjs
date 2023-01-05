@@ -78,6 +78,23 @@ function draftPart11({
   points.point4Cp1 = points.point4.shift(81.59670910061827, 40.16016187716384 * sizeFactor)
   points.point4Cp2 = points.point4.shift(165.77964223723035, 21.20887976768222 * sizeFactor)
 
+  points.point0 = new Point(0, 0)
+  points.point0Cp2 = points.point0.shift(354.9481781658739, 16.659715303689914 * sizeFactor)
+  points.point1 = points.point0.shift(264.91311161963836, 43.0264648094635 * sizeFactor)
+  points.point1Cp1 = points.point1.shift(358.7020740231185, 53.02160375733651 * sizeFactor)
+  points.point2 = points.point0.shift(331.14662128979205, 83.05325951149062 * sizeFactor)
+  points.point2Cp1 = points.point2.shift(23.491413537740165, 11.818521142681087 * sizeFactor)
+  points.point2Cp2 = points.point2.shift(203.48599545649284, 6.360957553702122 * sizeFactor)
+  points.point3 = points.point0.shift(341.2414817357221, 106.45865437980989 * sizeFactor)
+  points.point3Cp1 = points.point3.shift(83.22770461819215, 15.755934754878917 * sizeFactor)
+  points.point3Cp2 = points.point3.shift(263.2247839478168, 8.959567958333654 * sizeFactor)
+  points.point4 = points.point0.shift(6.617587088273078, 117.22282297600707 * sizeFactor)
+  points.point4Cp1 = points.point4.shift(171.59670910061834, 40.160161877163844 * sizeFactor)
+  points.point4Cp2 = points.point4.shift(255.77964223723035, 21.208879767682262 * sizeFactor)
+  points.point5 = points.point0.shift(354.81977589032454, 54.026610044075944 * sizeFactor)
+  points.point5Cp1 = points.point5.shift(166.25960112580196, 20.659041530160696 * sizeFactor)
+  points.point5Cp2 = points.point5.shift(76.26126036953632, 34.11095664483535 * sizeFactor)
+
   paths.seam = new Path()
     .move(points.point0)
     .line(points.point1)
@@ -90,7 +107,7 @@ function draftPart11({
 
   // console.log({ points: JSON.parse(JSON.stringify(points)) })
   // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
-  // convertPoints(points)
+  // convertPoints(points,90)
 
   // Complete?
   if (complete) {

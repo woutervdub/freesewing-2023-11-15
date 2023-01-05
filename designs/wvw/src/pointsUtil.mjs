@@ -1,21 +1,15 @@
 function convertPoints(points, rotate = 0, flip = false) {
   var p = []
   Object.keys(points).forEach(function (key, index) {
-    console.log({ key: key })
     var point = points[key].clone()
-    console.log({ point: point })
     if (key != 'point0') {
-      console.log({ point0: points.point0 })
       if (flip) {
         point = points[key].flipX()
       }
       if (rotate != 0) {
         point = points[key].rotate(rotate, points['point0'])
       }
-      console.log({ point: point })
     }
-
-    console.log({ point: point })
 
     if (key == 'point0') {
       p.push('points.point0 = new Point( 0, 0 );')
