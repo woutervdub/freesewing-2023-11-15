@@ -34,27 +34,28 @@ function draftPart6({
   // points.point6 = new Point( 456.782,266.319 )
 
   points.point0 = new Point(0, 0)
-  points.point1 = points.point0.shift(0.11139916029446559, 128.58224303534288 * sizeFactor)
-  points.point1Cp1 = points.point1.shift(269.8182450112891, 5.359026963917993 * sizeFactor)
-  points.point2 = points.point0.shift(328.14341716244707, 120.52788940738986 * sizeFactor)
-  points.point2Cp2 = points.point2.shift(29.114015378370315, 25.571930803128662 * sizeFactor)
-  points.point3 = points.point0.shift(317.9233666855834, 95.68080416154534 * sizeFactor)
-  points.point3Cp1 = points.point3.shift(178.12857030706965, 15.433231709528583 * sizeFactor)
-  points.point4 = points.point0.shift(312.29520434983914, 55.53156468171955 * sizeFactor)
-  points.point4Cp1 = points.point4.shift(81.79181349944132, 6.745097849549684 * sizeFactor)
-  points.point4Cp2 = points.point4.shift(275.4851677982585, 23.140963009347697 * sizeFactor)
-  points.point5 = points.point0.shift(312.62624217423604, 44.01273783803957 * sizeFactor)
-  points.point5Cp2 = points.point5.shift(358.24231642721344, 5.05337768230318 * sizeFactor)
-  points.point6 = points.point0.shift(270.23776222151156, 32.77328218228992 * sizeFactor)
+  points.point6 = points.point0.shift(0.11139916029446559, 128.58224303534288 * sizeFactor)
+  points.point6Cp2 = points.point6.shift(269.8182450112891, 5.359026963917993 * sizeFactor)
+  points.point5 = points.point0.shift(328.14341716244707, 120.52788940738986 * sizeFactor)
+  points.point5Cp1 = points.point5.shift(29.114015378370315, 25.571930803128662 * sizeFactor)
+  points.point4 = points.point0.shift(317.9233666855834, 95.68080416154534 * sizeFactor)
+  points.point4Cp2 = points.point4.shift(178.12857030706965, 15.433231709528583 * sizeFactor)
+  points.point3 = points.point0.shift(312.29520434983914, 55.53156468171955 * sizeFactor)
+  points.point3Cp2 = points.point3.shift(81.79181349944132, 6.745097849549684 * sizeFactor)
+  points.point3Cp1 = points.point3.shift(275.4851677982585, 23.140963009347697 * sizeFactor)
+  points.point2 = points.point0.shift(312.62624217423604, 44.01273783803957 * sizeFactor)
+  points.point2Cp1 = points.point2.shift(358.24231642721344, 5.05337768230318 * sizeFactor)
+  points.point1 = points.point0.shift(270.23776222151156, 32.77328218228992 * sizeFactor)
 
   paths.seam = new Path()
     .move(points.point0)
     .line(points.point1)
-    .curve(points.point1Cp1, points.point2Cp2, points.point2)
-    .line(points.point3)
+    .line(points.point2)
+    .curve(points.point2Cp1, points.point3Cp2, points.point3)
     .curve(points.point3Cp1, points.point4Cp2, points.point4)
-    .curve(points.point4Cp1, points.point5Cp2, points.point5)
-    .line(points.point6)
+    .line(points.point5)
+    .curve(points.point5Cp1, points.point6Cp2, points.point6)
+    .line(points.point0)
     .close()
 
   // console.log({ points: JSON.parse(JSON.stringify(points)) })
@@ -63,7 +64,7 @@ function draftPart6({
 
   // Complete?
   if (complete) {
-    points.title = points.point0.shiftFractionTowards(points.point2, 0.5)
+    points.title = points.point0.shiftFractionTowards(points.point5, 0.5)
     macro('title', {
       nr: 6,
       at: points.title,

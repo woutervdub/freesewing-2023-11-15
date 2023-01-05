@@ -95,6 +95,12 @@ function draftPart11({
   points.point5Cp1 = points.point5.shift(166.25960112580196, 20.659041530160696 * sizeFactor)
   points.point5Cp2 = points.point5.shift(76.26126036953632, 34.11095664483535 * sizeFactor)
 
+  paths.mouthBottom = new Path()
+    .move(points.point5)
+    .curve(points.point5Cp1, points.point0Cp2, points.point0)
+    .setText('Mouth bottom', textAttribute)
+    .addClass('hidden')
+
   paths.seam = new Path()
     .move(points.point0)
     .line(points.point1)

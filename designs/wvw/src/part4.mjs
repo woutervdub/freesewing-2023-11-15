@@ -72,6 +72,7 @@ function draftPart4({
       points.point0Cp1 = points.point0.shift(269.3443191225503, 29.448928299685203 * sizeFactor)
       points.point1Cp1 = points.point1.shift(268.2738211037443, 30.242724116719366 * sizeFactor)
       points.point1Cp2 = points.point1.shift(88.2745252696326, 18.83053830882166 * sizeFactor)
+      points.point0Cp2 = points.point0.shift(0, 15 * sizeFactor)
     }
   } while (iterations < 100 && (secondSeam - p.length() > 1 || secondSeam - p.length() < -1))
 
@@ -128,6 +129,7 @@ function draftPart4({
     .curve(points.point1Cp1, points.point2Cp2, points.point2)
     .line(points.point3)
     .curve(points.point3Cp1, points.point4Cp2, points.point4)
+    .curve(points.point4, points.point0Cp2, points.point0)
     .close()
 
   // points.p1 = utils.curvesIntersect(

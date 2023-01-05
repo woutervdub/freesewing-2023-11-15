@@ -108,6 +108,17 @@ function draftPart1({
   store.set('templeWidth', points.point6.dist(points.point7))
   store.set('mouthTop', paths.mouthTop.length())
 
+  points.pEnd = new Path()
+    .move(points.point6)
+    .curve(points.point6Cp2, points.point5Cp1, points.point5)
+    .shiftAlong(65)
+  console.log({
+    l1: new Path()
+      .move(points.point5)
+      .curve(points.point5Cp1, points.point6Cp2, points.point6)
+      .length(),
+  })
+
   // console.log({ points: JSON.parse(JSON.stringify(points)) })
   // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
   // convertPoints(points)

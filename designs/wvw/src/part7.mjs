@@ -28,18 +28,30 @@ function draftPart7({
   // points.point2 = new Point( 255.746,-28.5702 )
 
   points.point0 = new Point(0, 0)
-  points.point0Cp1 = points.point0.shift(0, 0 * sizeFactor)
+  points.point0Cp1 = points.point0.shift(26.9653561519379, 19.25431213546719 * sizeFactor)
+  points.point0Cp2 = points.point0.shift(0, 0 * sizeFactor)
   points.point1 = points.point0.shift(23.857094414377794, 57.23972922717229 * sizeFactor)
-  points.point1Cp1 = points.point1.shift(180.82587279494425, 29.902106313769938 * sizeFactor)
-  points.point1Cp2 = points.point1.shift(135.7075072577942, 32.47486987518195 * sizeFactor)
-  points.point2 = points.point0.shift(0, 0 * sizeFactor)
-  points.point2Cp2 = points.point2.shift(26.9653561519379, 19.25431213546719 * sizeFactor)
+  points.point1Cp1 = points.point1.shift(135.7075072577942, 32.47486987518195 * sizeFactor)
+  points.point1Cp2 = points.point1.shift(180.82587279494425, 29.902106313769938 * sizeFactor)
 
   paths.seam = new Path()
     .move(points.point0)
     .curve(points.point0Cp1, points.point1Cp2, points.point1)
-    .curve(points.point1Cp1, points.point2Cp2, points.point2)
+    .curve(points.point1Cp1, points.point0Cp2, points.point0)
     .close()
+
+  console.log({
+    l1: new Path()
+      .move(points.point0)
+      .curve(points.point0Cp1, points.point1Cp2, points.point1)
+      .length(),
+  })
+  console.log({
+    l2: new Path()
+      .move(points.point1)
+      .curve(points.point1Cp1, points.point0Cp2, points.point0)
+      .length(),
+  })
 
   // console.log({ points: JSON.parse(JSON.stringify(points)) })
   // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
@@ -47,7 +59,7 @@ function draftPart7({
 
   // Complete?
   if (complete) {
-    points.title = points.point0.shiftFractionTowards(points.point2, 0.5)
+    points.title = points.point0.shiftFractionTowards(points.point1, 0.5)
     macro('title', {
       nr: 7,
       at: points.title,
