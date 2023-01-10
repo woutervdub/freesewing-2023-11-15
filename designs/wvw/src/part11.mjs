@@ -1,4 +1,5 @@
 import { pluginBundle } from '@freesewing/plugin-bundle'
+import { part6 } from './part6.mjs'
 import { convertPoints } from './pointsUtil.mjs'
 
 function draftPart11({
@@ -101,6 +102,16 @@ function draftPart11({
     .setText('Mouth bottom', textAttribute)
     .addClass('hidden')
 
+  paths.lowerJaw = new Path()
+    .move(points.point4)
+    .curve(points.point4Cp1, points.point5Cp2, points.point5)
+    .setText('Lower Jaw', textAttribute)
+    .addClass('hidden')
+
+  points.point4 = points.point4.shift(355, store.get('lowerJaw') - paths.lowerJaw.length())
+  points.point4Cp1 = points.point4.shift(171.59670910061834, 40.160161877163844 * sizeFactor)
+  points.point4Cp2 = points.point4.shift(255.77964223723035, 21.208879767682262 * sizeFactor)
+
   paths.seam = new Path()
     .move(points.point0)
     .line(points.point1)
@@ -110,6 +121,19 @@ function draftPart11({
     .curve(points.point4Cp1, points.point5Cp2, points.point5)
     .curve(points.point5Cp1, points.point0Cp2, points.point0)
     .close()
+
+  paths.bottomJaw = new Path()
+    .move(points.point1)
+    .curve(points.point1Cp1, points.point2Cp2, points.point2)
+    .curve(points.point2Cp1, points.point3Cp2, points.point3)
+    .curve(points.point3Cp1, points.point4Cp2, points.point4)
+    .setText('Bottom Jaw', textAttribute)
+    .addClass('hidden')
+
+  store.set('bottomJaw', paths.bottomJaw.length())
+
+  console.log({ lowerJaw: paths.lowerJaw.length() })
+  console.log({ ljCalc: store.get('lowerJaw') })
 
   // console.log({ points: JSON.parse(JSON.stringify(points)) })
   // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
@@ -155,6 +179,7 @@ function draftPart11({
 
 export const part11 = {
   name: 'part11',
+  after: part6,
   options: {
     size: { pct: 50, min: 10, max: 100, menu: 'fit' },
   },

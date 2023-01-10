@@ -1,5 +1,7 @@
 import { pluginBundle } from '@freesewing/plugin-bundle'
 import { convertPoints } from './pointsUtil.mjs'
+import { part4 } from './part4.mjs'
+import { part8 } from './part8.mjs'
 
 function draftPart5({
   options,
@@ -120,6 +122,25 @@ function draftPart5({
   points.point1Cp2 = points.point1.shift(266.0887375411011, 17.372462375840676 * sizeFactor)
   points.point1Cp1 = points.point1.shift(86.08762325510818, 17.602020395397776 * sizeFactor)
 
+  console.log({
+    l: new Path()
+      .move(points.point5)
+      .curve(points.point5Cp1, points.point0Cp2, points.point0)
+      .length(),
+    bolj: store.get('backOfLowerJaw'),
+    p4: store.get('part4width'),
+  })
+
+  points.point5 = points.point5.shift(
+    0,
+    new Path()
+      .move(points.point5)
+      .curve(points.point5Cp1, points.point0Cp2, points.point0)
+      .length() -
+      (store.get('backOfLowerJaw') - store.get('part4width'))
+  )
+  points.point5Cp1 = points.point5.shift(359.48476820979687, 24.91000716579583 * sizeFactor)
+
   paths.thirdSeam1 = new Path()
     .move(points.point2)
     .curve(points.point2Cp1, points.point3Cp2, points.point3)
@@ -153,7 +174,8 @@ function draftPart5({
     .curve(points.point2Cp1, points.point3Cp2, points.point3)
     .line(points.point4)
     .line(points.point5)
-    .curve(points.point5Cp1, points.point0Cp2, points.point0)
+    // .curve(points.point5Cp1, points.point0Cp2, points.point0)
+    .line(points.point0)
     .close()
 
   // convertPoints(points)
@@ -239,6 +261,7 @@ function draftPart5({
 
 export const part5 = {
   name: 'part5',
+  after: [part4, part8],
   options: {
     size: { pct: 50, min: 10, max: 100, menu: 'fit' },
   },

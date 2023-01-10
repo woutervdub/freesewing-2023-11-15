@@ -70,6 +70,22 @@ function draftPart1({
   points.point9 = points.point0.shift(336.14503661026947, 8.388980629373263 * sizeFactor)
   points.point9Cp2 = points.point9.shift(255.27121271777986, 18.645853640957277 * sizeFactor)
 
+  points.point5a = new Path()
+    .move(points.point6)
+    .curve(points.point6Cp2, points.point5Cp1, points.point5)
+    .shiftAlong(65)
+
+  var sp = new Path()
+    .move(points.point5)
+    .curve(points.point5Cp1, points.point6Cp2, points.point6)
+    .split(points.point5a)
+
+  points.point5aCp1 = sp[1].ops[1].cp1.clone()
+  points.point6Cp2 = sp[1].ops[1].cp2.clone()
+
+  points.point5 = points.point5.rotate(357, points.point0)
+  points.point5Cp2 = points.point5.shift(196.75764739545923, 56.96390931984925 * sizeFactor)
+
   paths.eyeBottom = new Path()
     .move(points.point7)
     .curve(points.point7Cp1, points.point8Cp2, points.point8)
@@ -83,11 +99,23 @@ function draftPart1({
     .setText('Mouth top', textAttribute)
     .addClass('hidden')
 
+  paths.upperJaw = new Path()
+    .move(points.point4)
+    .curve(points.point4Cp1, points.point5Cp2, points.point5)
+    .setText('Upper Jaw', textAttribute)
+    .addClass('hidden')
+
   paths.nose = new Path()
     .move(points.point1)
     .curve(points.point1Cp1, points.point2Cp2, points.point2)
     .setText('Nose', textAttribute)
     .addClass('hidden')
+
+  store.set('templeToJaw', points.point5.dist(points.point5a))
+  store.set('upperJaw', paths.upperJaw.length())
+
+  console.log({ sp: sp })
+  console.log({ points: JSON.parse(JSON.stringify(points)) })
 
   paths.seam = new Path()
     .move(points.point0)
@@ -96,8 +124,9 @@ function draftPart1({
     // .curve( points.point1Cp1,points.point2Cp2,points.point2 )
     .curve(points.point2Cp1, points.point3Cp2, points.point3)
     .join(paths.mouthTop)
-    .curve(points.point4Cp1, points.point5Cp2, points.point5)
-    .curve(points.point5Cp1, points.point6Cp2, points.point6)
+    .join(paths.upperJaw)
+    .line(points.point5a)
+    .curve(points.point5aCp1, points.point6Cp2, points.point6)
     .line(points.point7)
     .join(paths.eyeBottom)
     .line(points.point0)
@@ -108,16 +137,12 @@ function draftPart1({
   store.set('templeWidth', points.point6.dist(points.point7))
   store.set('mouthTop', paths.mouthTop.length())
 
-  points.pEnd = new Path()
-    .move(points.point6)
-    .curve(points.point6Cp2, points.point5Cp1, points.point5)
-    .shiftAlong(65)
-  console.log({
-    l1: new Path()
-      .move(points.point5)
-      .curve(points.point5Cp1, points.point6Cp2, points.point6)
-      .length(),
-  })
+  // console.log({
+  //   l1: new Path()
+  //     .move(points.point5)
+  //     .curve(points.point5Cp1, points.point6Cp2, points.point6)
+  //     .length(),
+  // })
 
   // console.log({ points: JSON.parse(JSON.stringify(points)) })
   // console.log({ paths: JSON.parse(JSON.stringify(paths)) })

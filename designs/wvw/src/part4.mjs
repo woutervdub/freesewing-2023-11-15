@@ -117,6 +117,7 @@ function draftPart4({
     .addClass('hidden')
 
   store.set('thirdSeam', paths.thirdSeam.length())
+  store.set('part4width', points.point2.dist(points.point3))
   paths.dart = new Path()
     .move(points.dartPoint0)
     .curve(points.dartPoint0Cp1, points.dartPoint1Cp2, points.dartPoint1)

@@ -51,6 +51,14 @@ function draftPart3({
     .setText('First Seam', textAttribute)
     .addClass('hidden')
 
+  points.fs1 = paths.firstSeam.shiftAlong(store.get('firstSeam'))
+  points.fs2 = paths.firstSeam.shiftAlong(store.get('firstSeam') + store.get('templeToJaw'))
+
+  store.set(
+    'upperJawToLowerJaw',
+    paths.firstSeam.length() - store.get('firstSeam') - store.get('templeToJaw')
+  )
+
   paths.secondSeam = new Path()
     .move(points.point2)
     .curve(points.point2Cp1, points.point0Cp2, points.point0)
@@ -85,6 +93,8 @@ function draftPart3({
     //   .shift(-90, w / 8)
     //   .attr('data-text', 'hello')
     //   .attr('data-text-class', 'center')
+    snippets.n1 = new Snippet('notch', points.fs1)
+    snippets.n2 = new Snippet('notch', points.fs2)
 
     if (sa) {
       paths.sa = paths.seam.offset(sa).attr('class', 'fabric sa')

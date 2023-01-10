@@ -42,10 +42,11 @@ function draftPart10({
   points.point0 = new Point(0, 0)
   points.point0Cp1 = points.point0.shift(0, 0 * sizeFactor)
   points.point1 = points.point0.shift(222.41579397130369, 49.03292752740774 * sizeFactor)
-  points.point1Cp1 = points.point1.shift(270, 33.0746752291626 * sizeFactor)
-  points.point1Cp2 = points.point1.shift(90, 33.0746752291626 * sizeFactor)
   points.point2 = points.point0.shift(270, 66.14600000000002 * sizeFactor)
   points.point2Cp2 = points.point2.shift(0, 0 * sizeFactor)
+  points.point1.x = points.point0.x - points.point0.dist(points.point2) / 2
+  points.point1Cp1 = points.point1.shift(270, 33.0746752291626 * sizeFactor)
+  points.point1Cp2 = points.point1.shift(90, 33.0746752291626 * sizeFactor)
 
   let mouthTop = store.get('mouthTop')
 
@@ -78,6 +79,14 @@ function draftPart10({
     .curve(points.point1Cp1, points.point2Cp2, points.point2)
     .setText('Mouth top/bottom', textAttribute)
     .addClass('hidden')
+
+  paths.backOfMouth = new Path()
+    .move(points.point2)
+    .line(points.point0)
+    .setText('Back of Mouth', textAttribute)
+    .addClass('hidden')
+
+  store.set('MouthWidth', points.point0.dist(points.point2))
 
   paths.seam = new Path()
     .move(points.point0)
