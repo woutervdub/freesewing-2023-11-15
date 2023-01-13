@@ -156,12 +156,18 @@ function draftPart2({
   // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
   // convertPoints(points, 160, false)
 
+  paths.eyeTop = new Path()
+    .move(points.point2)
+    .curve(points.point2Cp1, points.point3Cp2, points.point3)
+    .curve(points.point3Cp1, points.point4Cp2, points.point4)
+    .setText('Eye top', textAttribute)
+    .addClass('hidden')
+
   paths.seam = new Path()
     .move(points.point0)
     .curve(points.point0Cp1, points.point1Cp2, points.point1)
     .line(points.point2)
-    .curve(points.point2Cp1, points.point3Cp2, points.point3)
-    .curve(points.point3Cp1, points.point4Cp2, points.point4)
+    .join(paths.eyeTop)
     .line(points.point5)
     .curve(points.point5Cp1, points.point6Cp2, points.point6)
     .curve(points.point6Cp1, points.point7Cp2, points.point7)
@@ -169,6 +175,8 @@ function draftPart2({
     .line(points.point9)
     .curve(points.point9Cp1, points.point0Cp2, points.point0)
     .close()
+
+  store.set('eyeTop', paths.eyeTop.length())
 
   // Complete?
   if (complete) {

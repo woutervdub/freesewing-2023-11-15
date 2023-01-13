@@ -1,4 +1,6 @@
 import { pluginBundle } from '@freesewing/plugin-bundle'
+import { part1 } from './part1.mjs'
+import { part3 } from './part3.mjs'
 import { part10 } from './part10.mjs'
 import { convertPoints } from './pointsUtil.mjs'
 
@@ -194,7 +196,7 @@ function draftPart6({
 
 export const part6 = {
   name: 'part6',
-  after: part10,
+  after: [part1, part3, part10],
   options: {
     size: { pct: 50, min: 10, max: 100, menu: 'fit' },
   },

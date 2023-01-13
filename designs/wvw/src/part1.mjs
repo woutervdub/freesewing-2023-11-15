@@ -136,6 +136,9 @@ function draftPart1({
   store.set('noseBridgeWidth', points.point0.dist(points.point9))
   store.set('templeWidth', points.point6.dist(points.point7))
   store.set('mouthTop', paths.mouthTop.length())
+  store.set('eyeBottom', paths.eyeBottom.length())
+  store.set('noseSide', paths.nose.length())
+  store.set('noseHeight', points.point1.dist(points.point2))
 
   // console.log({
   //   l1: new Path()
