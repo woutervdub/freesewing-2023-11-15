@@ -50,11 +50,6 @@ function draftPart13({
   points.point0Cp1 = points.point0.shift(0, (noseDiameter / 2) * c * 1.9)
   points.point2Cp2 = points.point2.shift(305, (noseDiameter / 2) * c * 0.8)
 
-  paths.p = new Path().move(points.point0).curve(points.point0Cp1, points.point2Cp2, points.point2)
-  // let p = new Path().move(points.point0).curve(points.point0Cp1, points.point2Cp2, points.point2)
-
-  console.log({ l1: noseSide, l2: paths.p.length() })
-
   let ci = utils.circlesIntersect(
     points.point0,
     noseDiameter / 2,
@@ -72,6 +67,15 @@ function draftPart13({
 
   points.p0 = utils.linesIntersect(points.point0, points.p0, points.point2, points.p1)
 
+  console.log({
+    nh: noseHeight,
+    p1p0: points.p1.dist(points.p0),
+    p0p2: points.p0.dist(points.point2),
+  })
+
+  points.p0 = points.p1.shiftTowards(points.p0, noseHeight)
+  points.point2 = points.p0.shiftTowards(points.point2, noseHeight)
+
   paths.p0 = new Path().move(points.point0).line(points.p0).addClass('lining')
 
   paths.p1 = new Path().move(points.point0).line(points.p1).addClass('various')
@@ -83,6 +87,11 @@ function draftPart13({
   })
 
   console.log({ points: JSON.parse(JSON.stringify(points)) })
+
+  paths.p = new Path().move(points.point0).curve(points.point0Cp1, points.point2Cp2, points.point2)
+  // let p = new Path().move(points.point0).curve(points.point0Cp1, points.point2Cp2, points.point2)
+
+  console.log({ l1: noseSide, l2: paths.p.length() })
 
   paths.m = new Path()
     .move(points.mPoint0)
