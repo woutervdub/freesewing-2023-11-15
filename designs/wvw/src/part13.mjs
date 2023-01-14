@@ -1,4 +1,6 @@
 import { pluginBundle } from '@freesewing/plugin-bundle'
+import { utils } from 'mocha'
+import path from 'path'
 import { part1 } from './part1.mjs'
 import { part2 } from './part2.mjs'
 import { convertPoints } from './pointsUtil.mjs'
@@ -15,6 +17,7 @@ function draftPart13({
   sa,
   store,
   paperless,
+  utils,
   macro,
   part,
 }) {
@@ -24,14 +27,16 @@ function draftPart13({
 
   var noseSide = store.get('noseSide')
   var noseHeight = store.get('noseHeight')
+  var noseCircumference = noseSide * 2
+  var noseDiameter = (noseCircumference / Math.PI) * 2
 
   const c = 0.55191502449351
   // const c = 0.75
 
-  // points.b0 = new Point(0,0).shift(0,eyeDiameter*1.5).shift(90,eyeDiameter*1.5)
-  // points.b1 = new Point(0,0).shift(180,eyeDiameter*1.5).shift(90,eyeDiameter*1.5)
-  // points.b2 = new Point(0,0).shift(180,eyeDiameter*1.5).shift(270,eyeDiameter*1.5)
-  // points.b3 = new Point(0,0).shift(0,eyeDiameter*1.5).shift(270,eyeDiameter*1.5)
+  // points.b0 = new Point(0,0).shift(0,noseDiameter*1.5).shift(90,noseDiameter*1.5)
+  // points.b1 = new Point(0,0).shift(180,noseDiameter*1.5).shift(90,noseDiameter*1.5)
+  // points.b2 = new Point(0,0).shift(180,noseDiameter*1.5).shift(270,noseDiameter*1.5)
+  // points.b3 = new Point(0,0).shift(0,noseDiameter*1.5).shift(270,noseDiameter*1.5)
 
   // paths.box = new Path()
   //   .move(points.b0)
@@ -41,66 +46,68 @@ function draftPart13({
   //   .close()
 
   points.point0 = new Point(0, 0)
-  points.point2 = points.point0.shift(0, eyeDiameter / 2).shift(90, eyeDiameter / 2)
-  points.point0Cp1 = points.point0.shift(0, (eyeDiameter / 2) * c)
-  points.point2Cp2 = points.point2.shift(270, (eyeDiameter / 2) * c)
+  points.point2 = points.point0.shift(0, noseDiameter / 1.8).shift(90, noseDiameter / 3)
+  points.point0Cp1 = points.point0.shift(0, (noseDiameter / 2) * c * 1.9)
+  points.point2Cp2 = points.point2.shift(305, (noseDiameter / 2) * c * 0.8)
 
-  let p = new Path().move(points.point0).curve(points.point0Cp1, points.point2Cp2, points.point2)
+  paths.p = new Path().move(points.point0).curve(points.point0Cp1, points.point2Cp2, points.point2)
+  // let p = new Path().move(points.point0).curve(points.point0Cp1, points.point2Cp2, points.point2)
 
-  points.point1 = p.shiftAlong(p.length() / 2)
+  console.log({ l1: noseSide, l2: paths.p.length() })
 
-  let sp = p.split(points.point1)
+  let ci = utils.circlesIntersect(
+    points.point0,
+    noseDiameter / 2,
+    points.point2,
+    noseDiameter / 2,
+    'x'
+  )
+  console.log({ ci: ci })
 
-  // paths.p1 = sp[0].clone()
-  // paths.p2 = sp[1].clone()
+  points.p0 = ci[0]
+  points.p1 = points.point0.shiftTowards(
+    points.p0.rotate(points.point0.angle(points.p0), points.point0),
+    noseHeight
+  )
 
-  points.p0 = sp[0].ops[0].to.clone()
-  points.p0Cp1 = sp[0].ops[1].cp1.clone()
-  points.p1Cp2 = sp[0].ops[1].cp2.clone()
-  points.p1 = sp[1].ops[0].to.clone()
-  points.p1Cp1 = sp[1].ops[1].cp1.clone()
-  points.p2Cp2 = sp[1].ops[1].cp2.clone()
-  points.p2 = sp[1].ops[1].to.clone()
+  points.p0 = utils.linesIntersect(points.point0, points.p0, points.point2, points.p1)
 
-  points.p0Cp1 = points.p0.shift(0, (eyeDiameter / 2) * c * 0.4)
-  points.p2Cp2 = points.p2.shift(270, (eyeDiameter / 2) * c * 0.4)
-  points.p1Cp1 = points.p1.shift(45, (eyeDiameter / 2) * c * 0.7)
-  points.p1Cp2 = points.p1.shift(225, (eyeDiameter / 2) * c * 0.7)
+  paths.p0 = new Path().move(points.point0).line(points.p0).addClass('lining')
 
-  points.p0Cp2 = points.p0Cp1.flipX()
-  points.p4 = points.p2.flipX()
-  points.p4Cp1 = points.p2Cp2.flipX()
-  points.p3 = points.p1.flipX()
-  points.p3Cp2 = points.p1Cp1.flipX()
-  points.p3Cp1 = points.p1Cp2.flipX()
+  paths.p1 = new Path().move(points.point0).line(points.p1).addClass('various')
+
+  macro('mirror', {
+    mirror: [points.point0, points.p1],
+    points: [points.point0, points.point0Cp1, points.point2, points.point2Cp2, points.p0],
+    prefix: 'm',
+  })
+
+  console.log({ points: JSON.parse(JSON.stringify(points)) })
+
+  paths.m = new Path()
+    .move(points.mPoint0)
+    .curve(points.mPoint0Cp1, points.mPoint2Cp2, points.mPoint2)
+    .reverse()
 
   paths.seam = new Path()
-    .move(points.p4)
-    .curve(points.p4Cp1, points.p3Cp2, points.p3)
-    .curve(points.p3Cp1, points.p0Cp2, points.p0)
-    .curve(points.p0Cp1, points.p1Cp2, points.p1)
-    .curve(points.p1Cp1, points.p2Cp2, points.p2)
-    .line(points.p4)
+    .move(points.point2)
+    .line(points.p1)
+    .line(points.mPoint2)
+    .join(paths.m)
+    .join(paths.p)
     .close()
-
-  console.log({ sLength: p.length() })
-  console.log({
-    nLength: new Path()
-      .move(points.p4)
-      .curve(points.p4Cp1, points.p3Cp2, points.p3)
-      .curve(points.p3Cp1, points.p0Cp2, points.p0)
-      .length(),
-  })
 
   // Complete?
   if (complete) {
-    points.title = points.p4.shiftFractionTowards(points.p1, 0.5)
-    macro('title', {
-      nr: 13,
-      at: points.title,
-      scale: 0.5,
-      // title: 'pants',
-    })
+    snippets.s1 = new Snippet('notch', points.p0)
+    snippets.s2 = new Snippet('notch', points.mP0)
+    // points.title = points.p4.shiftFractionTowards(points.p1, 0.5)
+    // macro('title', {
+    //   nr: 13,
+    //   at: points.title,
+    //   scale: 0.5,
+    //   // title: 'pants',
+    // })
     // points.logo = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)
     // snippets.logo = new Snippet('logo', points.logo)
     // points.text = points.logo
