@@ -48,15 +48,14 @@ function draftPart13({
   points.point0 = new Point(0, 0)
   points.point2 = points.point0.shift(0, noseDiameter / 1.8).shift(90, noseDiameter / 3)
   points.point0Cp1 = points.point0.shift(0, (noseDiameter / 2) * c * 1.9)
-  points.point2Cp2 = points.point2.shift(305, (noseDiameter / 2) * c * 0.8)
+  points.point2Cp2 = points.point2.shift(325, (noseDiameter / 2) * c * 0.8)
 
-  let ci = utils.circlesIntersect(
-    points.point0,
-    noseDiameter / 2,
-    points.point2,
-    noseDiameter / 2,
-    'x'
-  )
+  points.point0.addCircle(noseHeight, 'note')
+  // points.point2.addCircle(noseDiameter / 2,'mark')
+  points.p2 = points.point2.clone()
+  points.p2.addCircle(noseDiameter / 2, 'mark')
+
+  let ci = utils.circlesIntersect(points.point0, noseHeight, points.point2, noseHeight, 'x')
   console.log({ ci: ci })
 
   points.p0 = ci[0]
@@ -65,7 +64,7 @@ function draftPart13({
     noseHeight
   )
 
-  points.p0 = utils.linesIntersect(points.point0, points.p0, points.point2, points.p1)
+  // points.p0 = utils.linesIntersect(points.point0, points.p0, points.point2, points.p1)
 
   console.log({
     nh: noseHeight,
@@ -73,8 +72,8 @@ function draftPart13({
     p0p2: points.p0.dist(points.point2),
   })
 
-  points.p0 = points.p1.shiftTowards(points.p0, noseHeight)
-  points.point2 = points.p0.shiftTowards(points.point2, noseHeight)
+  // points.p0 = points.p1.shiftTowards(points.p0, noseHeight)
+  // points.point2 = points.p0.shiftTowards(points.point2, noseHeight)
 
   paths.p0 = new Path().move(points.point0).line(points.p0).addClass('lining')
 
@@ -100,7 +99,9 @@ function draftPart13({
 
   paths.seam = new Path()
     .move(points.point2)
+    .line(points.p0)
     .line(points.p1)
+    .line(points.mP0)
     .line(points.mPoint2)
     .join(paths.m)
     .join(paths.p)
