@@ -172,9 +172,6 @@ function draftPart8({
 export const part8 = {
   name: 'part8',
   after: [part1, part11],
-  options: {
-    size: { pct: 50, min: 10, max: 100, menu: 'fit' },
-  },
   plugins: [pluginBundle],
   draft: draftPart8,
 }
