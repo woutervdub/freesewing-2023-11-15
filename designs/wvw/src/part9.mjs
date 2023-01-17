@@ -1,4 +1,5 @@
 import { pluginBundle } from '@freesewing/plugin-bundle'
+import { part1 } from './part1.mjs'
 import { convertPoints } from './pointsUtil.mjs'
 
 function draftPart9({
@@ -11,13 +12,14 @@ function draftPart9({
   snippets,
   complete,
   sa,
+  store,
   paperless,
   macro,
   part,
 }) {
   console.log('part9')
   const textAttribute = 'text-xs center'
-  const sizeFactor = 1
+  const sizeFactor = store.get('sizeFactor')
 
   // points.point0 = new Point( 442.424,368.585 )
   // points.point0Cp1 = new Point( 442.27,332.865 )
@@ -87,6 +89,7 @@ function draftPart9({
 
 export const part9 = {
   name: 'part9',
+  after: part1,
   options: {
     size: { pct: 50, min: 10, max: 100, menu: 'fit' },
   },

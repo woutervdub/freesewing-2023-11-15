@@ -20,7 +20,7 @@ function draftPart12({
 }) {
   console.log('part12')
   const textAttribute = 'text-xs center'
-  const sizeFactor = 1
+  const sizeFactor = store.get('sizeFactor')
 
   var eyeCircumference = store.get('eyeBottom') + store.get('eyeTop')
   var eyeDiameter = (eyeCircumference / Math.PI) * 2

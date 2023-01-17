@@ -23,7 +23,7 @@ function draftPart13({
 }) {
   console.log('part13')
   const textAttribute = 'text-xs center'
-  const sizeFactor = 1
+  const sizeFactor = store.get('sizeFactor')
 
   var noseSide = store.get('noseSide')
   var noseHeight = store.get('noseHeight')

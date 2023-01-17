@@ -19,7 +19,7 @@ function draftPart2({
 }) {
   console.log('part2')
   const textAttribute = 'text-xs center'
-  const sizeFactor = 1
+  const sizeFactor = store.get('sizeFactor')
 
   // points.point0 = new Point(385.139, 100.78)
   // points.point0Cp1 = new Point(346.941, 96.7207)

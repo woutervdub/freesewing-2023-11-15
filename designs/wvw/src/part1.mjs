@@ -10,6 +10,7 @@ function draftPart1({
   Snippet,
   snippets,
   complete,
+  measurements,
   sa,
   store,
   paperless,
@@ -18,7 +19,9 @@ function draftPart1({
 }) {
   console.log('part1')
   const textAttribute = 'text-xs center'
-  const sizeFactor = 1
+
+  let sizeFactor = ((measurements?.head || 596) / 596) * options.size * 2
+  store.set('sizeFactor', sizeFactor)
 
   // points.point0 = new Point(122.046, 133.426)
   // points.point1 = new Point(144.493, 131.548)
@@ -73,7 +76,7 @@ function draftPart1({
   points.point5a = new Path()
     .move(points.point6)
     .curve(points.point6Cp2, points.point5Cp1, points.point5)
-    .shiftAlong(65)
+    .shiftAlong(65 * sizeFactor)
 
   var sp = new Path()
     .move(points.point5)
@@ -192,8 +195,9 @@ function draftPart1({
 export const part1 = {
   name: 'part1',
   options: {
-    size: { pct: 50, min: 10, max: 100, menu: 'fit' },
+    size: { pct: 75, min: 10, max: 300, menu: 'fit' },
   },
+  optionalMeasurements: ['head'],
   plugins: [pluginBundle],
   draft: draftPart1,
 }
