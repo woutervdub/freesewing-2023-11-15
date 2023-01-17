@@ -81,7 +81,7 @@ function draftPart3({
 
   // Complete?
   if (complete) {
-    points.title = points.point2.shiftFractionTowards(points.point1, 0.65)
+    points.title = points.point2.shiftFractionTowards(points.point1, 0.65).shift(0, 10 * sizeFactor)
     macro('title', {
       nr: 3,
       at: points.title,

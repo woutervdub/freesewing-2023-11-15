@@ -50,10 +50,10 @@ function draftPart13({
   points.point0Cp1 = points.point0.shift(0, (noseDiameter / 2) * c * 1.9)
   points.point2Cp2 = points.point2.shift(325, (noseDiameter / 2) * c * 0.8)
 
-  points.point0.addCircle(noseHeight, 'note')
+  // points.point0.addCircle(noseHeight, 'note')
   // points.point2.addCircle(noseDiameter / 2,'mark')
   points.p2 = points.point2.clone()
-  points.p2.addCircle(noseDiameter / 2, 'mark')
+  // points.p2.addCircle(noseDiameter / 2, 'mark')
 
   let ci = utils.circlesIntersect(points.point0, noseHeight, points.point2, noseHeight, 'x')
   console.log({ ci: ci })
@@ -74,10 +74,6 @@ function draftPart13({
 
   // points.p0 = points.p1.shiftTowards(points.p0, noseHeight)
   // points.point2 = points.p0.shiftTowards(points.point2, noseHeight)
-
-  paths.p0 = new Path().move(points.point0).line(points.p0).addClass('lining')
-
-  paths.p1 = new Path().move(points.point0).line(points.p1).addClass('various')
 
   macro('mirror', {
     mirror: [points.point0, points.p1],
@@ -107,17 +103,23 @@ function draftPart13({
     .join(paths.p)
     .close()
 
+  paths.p0 = new Path().move(points.point0).line(points.p0).addClass('dotted')
+  paths.p1 = new Path().move(points.point0).line(points.p1).addClass('dashed')
+  paths.mP0 = new Path().move(points.point0).line(points.mP0).addClass('dotted')
+
   // Complete?
   if (complete) {
     snippets.s1 = new Snippet('notch', points.p0)
     snippets.s2 = new Snippet('notch', points.mP0)
-    // points.title = points.p4.shiftFractionTowards(points.p1, 0.5)
-    // macro('title', {
-    //   nr: 13,
-    //   at: points.title,
-    //   scale: 0.5,
-    //   // title: 'pants',
-    // })
+    points.title = points.p1
+      .shiftFractionTowards(points.point2Cp2, 0.5)
+      .shiftFractionTowards(points.point0, 0.5)
+    macro('title', {
+      nr: 13,
+      at: points.title,
+      scale: 0.25,
+      // title: 'pants',
+    })
     // points.logo = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)
     // snippets.logo = new Snippet('logo', points.logo)
     // points.text = points.logo

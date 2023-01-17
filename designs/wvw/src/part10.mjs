@@ -101,11 +101,14 @@ function draftPart10({
 
   // Complete?
   if (complete) {
-    points.title = points.point0.shiftFractionTowards(points.point2, 0.75)
+    points.title = points.point0
+      .shiftFractionTowards(points.point2, 0.25)
+      .shiftFractionTowards(points.point1, 0.6)
     macro('title', {
       nr: 10,
       at: points.title,
-      scale: 0.5,
+      scale: 0.25,
+      rotation: 90,
       // title: 'pants',
     })
     // points.logo = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)

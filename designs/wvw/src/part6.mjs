@@ -119,46 +119,76 @@ function draftPart6({
     paths.backOfUpperJaw.shiftAlong(store.get('upperJawToLowerJaw') + 1)
   )
 
-  console.log(ljAngle)
-
   points.point2ToLowerJaw = points.point2.shift(0, points.point2.dist(points.lowerJaw) / 2)
   points.lowerJawToPoint2 = points.lowerJaw.shift(
     ljAngle + 90,
     points.point2.dist(points.lowerJaw) / 3
   )
 
+  macro('mirror', {
+    mirror: [points.pointM1, points.point6],
+    points: [
+      points.point0,
+      points.lowerJaw,
+      points.lowerJawToPoint2,
+      points.point2ToLowerJaw,
+      points.pointM1Cp1,
+      points.point1,
+      points.point1Cp2,
+      points.point2,
+      points.point2Cp1,
+      points.point3,
+      points.point3Cp1,
+      points.point3Cp2,
+      points.point4,
+      points.point4Cp2,
+      points.point5,
+      points.point5Cp1,
+      points.point6Cp2,
+    ],
+    prefix: 'm',
+  })
+  console.log({ points: JSON.parse(JSON.stringify(points)) })
+
   paths.seam = new Path()
-    .move(points.point0)
-    // .line(points.point1)
-    .line(points.pointM1)
+    .move(points.pointM1)
     .curve(points.pointM1Cp1, points.point1Cp2, points.point1)
     // .line(points.point1)
     .join(paths.upperJaw)
     .join(paths.backOfUpperJaw)
-    .line(points.point0)
+    .curve(points.mPoint6Cp2, points.mPoint5Cp1, points.mPoint5)
+    .line(points.mPoint4)
+    .curve(points.mPoint4Cp2, points.mPoint3Cp1, points.mPoint3)
+    .curve(points.mPoint3Cp2, points.mPoint2Cp1, points.mPoint2)
+    .line(points.mPoint1)
+    .curve(points.mPoint1Cp2, points.mPointM1Cp1, points.pointM1)
     .close()
 
   paths.backOfMouth = new Path()
-    .move(points.point0)
+    .move(points.mPoint1)
     .line(points.point1)
     .setText('Back of Mouth', textAttribute)
     .setClass('dashed')
 
-  paths.lowerJaw = new Path()
+  paths.lowerJaw1 = new Path()
     .move(points.point2)
     .curve(points.point2ToLowerJaw, points.lowerJawToPoint2, points.lowerJaw)
     .setText('Lower Jaw', textAttribute)
     .setClass('dashed')
+  paths.lowerJaw2 = new Path()
+    .move(points.mPoint2)
+    .curve(points.mPoint2ToLowerJaw, points.mLowerJawToPoint2, points.mLowerJaw)
+    .setText('Lower Jaw', textAttribute)
+    .setClass('dashed')
 
-  store.set('lowerJaw', paths.lowerJaw.length() + points.point1.dist(points.point2))
+  store.set('lowerJaw', paths.lowerJaw1.length() + points.point1.dist(points.point2))
 
-  // console.log({ points: JSON.parse(JSON.stringify(points)) })
   // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
   // convertPoints(points)
 
   // Complete?
   if (complete) {
-    points.title = points.point0.shiftFractionTowards(points.point5, 0.5)
+    points.title = points.pointM1.shiftFractionTowards(points.point6, 0.5)
     macro('title', {
       nr: 6,
       at: points.title,

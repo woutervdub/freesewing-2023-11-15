@@ -170,17 +170,21 @@ function draftPart2({
     .join(paths.eyeTop)
     .line(points.point5)
     .curve(points.point5Cp1, points.point6Cp2, points.point6)
-    .curve(points.point6Cp1, points.point7Cp2, points.point7)
-    .curve(points.point7Cp1, points.point8Cp2, points.point8)
+    .line(points.point8)
     .line(points.point9)
     .curve(points.point9Cp1, points.point0Cp2, points.point0)
     .close()
+
+  paths.dart = new Path()
+    .move(points.point6)
+    .curve(points.point6Cp1, points.point7Cp2, points.point7)
+    .curve(points.point7Cp1, points.point8Cp2, points.point8)
 
   store.set('eyeTop', paths.eyeTop.length())
 
   // Complete?
   if (complete) {
-    points.title = points.point4.shiftFractionTowards(points.point0, 0.5)
+    points.title = points.point3Cp1.shiftFractionTowards(points.point0, 0.3)
     macro('title', {
       nr: 2,
       at: points.title,

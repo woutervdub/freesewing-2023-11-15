@@ -127,7 +127,7 @@ function draftPart11({
     .curve(points.point1Cp1, points.point2Cp2, points.point2)
     .curve(points.point2Cp1, points.point3Cp2, points.point3)
     .curve(points.point3Cp1, points.point4Cp2, points.point4)
-    .setText('Bottom Jaw', textAttribute)
+    .setText('Jaw Bottom', textAttribute)
     .addClass('hidden')
 
   store.set('bottomJaw', paths.bottomJaw.length())
@@ -145,7 +145,7 @@ function draftPart11({
     macro('title', {
       nr: 11,
       at: points.title,
-      scale: 0.5,
+      scale: 0.4,
       // title: 'pants',
     })
     // points.logo = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)

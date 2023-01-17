@@ -64,6 +64,32 @@ function draftPart8({
   points.point5 = points.point5.shift(0, (points.point4.dist(points.point5) / 3) * sizeFactor)
   points.point5Cp2 = points.point5.shift(270, (points.point4.dist(points.point5) / 3) * sizeFactor)
 
+  macro('mirror', {
+    mirror: [points.point5, points.point6],
+    points: [
+      points.point0,
+      points.point0Cp1,
+      points.point0Cp2,
+      points.point1Cp2,
+      points.point1,
+      points.point1Cp1,
+      points.point2Cp2,
+      points.point2,
+      points.point2Cp1,
+      points.point3Cp2,
+      points.point3,
+      points.point3Cp1,
+      points.point4Cp2,
+      points.point4,
+      points.point4,
+      points.point5Cp2,
+      points.point5,
+      points.point6Cp1,
+      points.point6,
+    ],
+    prefix: 'm',
+  })
+
   paths.bottomJaw = new Path()
     .move(points.point6)
     .curve(points.point6Cp1, points.point0Cp2, points.point0)
@@ -71,7 +97,7 @@ function draftPart8({
     .curve(points.point1Cp1, points.point2Cp2, points.point2)
     .curve(points.point2Cp1, points.point3Cp2, points.point3)
     .curve(points.point3Cp1, points.point4Cp2, points.point4)
-    .setText('Bottom Jaw', textAttribute)
+    .setText('Jaw Bottom', textAttribute)
     .addClass('hidden')
 
   points.point4 = points.point4.shift(0, store.get('bottomJaw') - paths.bottomJaw.length())
@@ -82,8 +108,12 @@ function draftPart8({
     .curve(points.point2Cp1, points.point3Cp2, points.point3)
     .curve(points.point3Cp1, points.point4Cp2, points.point4)
     .curve(points.point4, points.point5Cp2, points.point5)
-    .line(points.point6)
-    // .curve( points.point6Cp1,points.point7Cp2,points.point7 )
+    .curve(points.mPoint5Cp2, points.mPoint4, points.mPoint4)
+    .curve(points.mPoint4Cp2, points.mPoint3Cp1, points.mPoint3)
+    .curve(points.mPoint3Cp2, points.mPoint2Cp1, points.mPoint2)
+    .curve(points.mPoint2Cp2, points.mPoint1Cp1, points.mPoint1)
+    .curve(points.mPoint1Cp2, points.mPoint0Cp1, points.mPoint0)
+    .curve(points.mPoint0Cp2, points.mPoint6Cp1, points.point6)
     .curve(points.point6Cp1, points.point0Cp2, points.point0)
     .close()
 
@@ -96,13 +126,13 @@ function draftPart8({
   )
   console.log({ bolj: store.get('backOfLowerJaw') })
 
-  // console.log({ points: JSON.parse(JSON.stringify(points)) })
+  console.log({ points: JSON.parse(JSON.stringify(points)) })
   // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
   // convertPoints(points)
 
   // Complete?
   if (complete) {
-    points.title = points.point6.shiftFractionTowards(points.point2, 0.75)
+    points.title = points.point6.shiftFractionTowards(points.point5, 0.5)
     macro('title', {
       nr: 8,
       at: points.title,
