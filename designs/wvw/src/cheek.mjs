@@ -1,7 +1,7 @@
 import { pluginBundle } from '@freesewing/plugin-bundle'
 import { convertPoints } from './pointsUtil.mjs'
 
-function draftPart1({
+function draftCheek({
   options,
   Point,
   Path,
@@ -17,10 +17,10 @@ function draftPart1({
   macro,
   part,
 }) {
-  console.log('part1')
+  console.log('cheek')
   const textAttribute = 'text-xs center'
 
-  let sizeFactor = ((measurements?.head || 596) / 596) * options.size * 2
+  let sizeFactor = ((measurements?.head || 596) / 929.5) * options.size * 2
   store.set('sizeFactor', sizeFactor)
 
   // points.point0 = new Point(122.046, 133.426)
@@ -93,7 +93,7 @@ function draftPart1({
     .move(points.point7)
     .curve(points.point7Cp1, points.point8Cp2, points.point8)
     .curve(points.point8Cp1, points.point9Cp2, points.point9)
-    .setText('Eye bottom', textAttribute)
+    .setText('Eye bottom (4)', textAttribute)
     .addClass('hidden')
 
   paths.mouthTop = new Path()
@@ -120,22 +120,43 @@ function draftPart1({
   console.log({ sp: sp })
   console.log({ points: JSON.parse(JSON.stringify(points)) })
 
-  paths.seam = new Path()
+  paths.seam1 = new Path()
+    .move(points.point9)
+    .line(points.point0)
+    .setText('1', textAttribute)
+    .addClass('hidden')
+  paths.seam2 = new Path()
+    .move(points.point6)
+    .line(points.point7)
+    .setText('2', textAttribute)
+    .addClass('hidden')
+  paths.seam7 = new Path()
     .move(points.point0)
     .line(points.point1)
-    .join(paths.nose)
-    // .curve( points.point1Cp1,points.point2Cp2,points.point2 )
+    .setText('7', textAttribute)
+    .addClass('hidden')
+  paths.seam8 = new Path()
+    .move(points.point2)
     .curve(points.point2Cp1, points.point3Cp2, points.point3)
+    .setText('8', textAttribute)
+    .addClass('hidden')
+
+  paths.seam = new Path()
+    .move(points.point0)
+    .join(paths.seam7)
+    .join(paths.nose)
+    .join(paths.seam8)
     .join(paths.mouthTop)
     .join(paths.upperJaw)
     .line(points.point5a)
     .curve(points.point5aCp1, points.point6Cp2, points.point6)
-    .line(points.point7)
+    .join(paths.seam2)
     .join(paths.eyeBottom)
-    .line(points.point0)
+    .join(paths.seam1)
     .close()
     .attr('class', 'fabric')
 
+  store.set('templeWidth', points.point6.dist(points.point7))
   store.set('noseBridgeWidth', points.point0.dist(points.point9))
   store.set('templeWidth', points.point6.dist(points.point7))
   store.set('mouthTop', paths.mouthTop.length())
@@ -161,8 +182,13 @@ function draftPart1({
       nr: 1,
       at: points.title,
       scale: 0.5,
-      // title: 'pants',
+      title: 'cheek',
     })
+
+    snippets.n1 = new Snippet('notch', points.point9)
+    snippets.n2 = new Snippet('notch', points.point5)
+    snippets.n3 = new Snippet('notch', points.point5a)
+
     // points.logo = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)
     // snippets.logo = new Snippet('logo', points.logo)
     // points.text = points.logo
@@ -177,27 +203,27 @@ function draftPart1({
 
   // Paperless?
   if (paperless) {
-    macro('hd', {
-      from: points.bottomLeft,
-      to: points.bottomRight,
-      y: points.bottomLeft.y + sa + 15,
-    })
-    macro('vd', {
-      from: points.bottomRight,
-      to: points.topRight,
-      x: points.topRight.x + sa + 15,
-    })
+    // macro('hd', {
+    //   from: points.bottomLeft,
+    //   to: points.bottomRight,
+    //   y: points.bottomLeft.y + sa + 15,
+    // })
+    // macro('vd', {
+    //   from: points.bottomRight,
+    //   to: points.topRight,
+    //   x: points.topRight.x + sa + 15,
+    // })
   }
 
   return part
 }
 
-export const part1 = {
-  name: 'part1',
+export const cheek = {
+  name: 'cheek',
   options: {
     size: { pct: 75, min: 10, max: 300, menu: 'fit' },
   },
   optionalMeasurements: ['head'],
   plugins: [pluginBundle],
-  draft: draftPart1,
+  draft: draftCheek,
 }

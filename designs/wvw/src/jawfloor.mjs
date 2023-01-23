@@ -1,9 +1,9 @@
 import { pluginBundle } from '@freesewing/plugin-bundle'
-import { part1 } from './part1.mjs'
-import { part11 } from './part11.mjs'
+import { cheek } from './cheek.mjs'
+import { lowerjaw } from './lowerjaw.mjs'
 import { convertPoints } from './pointsUtil.mjs'
 
-function draftPart8({
+function draftJawfloor({
   options,
   Point,
   Path,
@@ -18,7 +18,7 @@ function draftPart8({
   macro,
   part,
 }) {
-  console.log('part8')
+  console.log('jawfloor')
   const textAttribute = 'text-xs center'
   const sizeFactor = store.get('sizeFactor')
 
@@ -138,7 +138,7 @@ function draftPart8({
       nr: 8,
       at: points.title,
       scale: 0.5,
-      // title: 'pants',
+      title: 'jawfloor',
     })
     // points.logo = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)
     // snippets.logo = new Snippet('logo', points.logo)
@@ -169,9 +169,9 @@ function draftPart8({
   return part
 }
 
-export const part8 = {
-  name: 'part8',
-  after: [part1, part11],
+export const jawfloor = {
+  name: 'jawfloor',
+  after: [cheek, lowerjaw],
   plugins: [pluginBundle],
-  draft: draftPart8,
+  draft: draftJawfloor,
 }

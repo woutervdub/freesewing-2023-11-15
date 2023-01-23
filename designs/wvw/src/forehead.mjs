@@ -1,8 +1,8 @@
 import { pluginBundle } from '@freesewing/plugin-bundle'
-import { part1 } from './part1.mjs'
+import { cheek } from './cheek.mjs'
 import { convertPoints } from './pointsUtil.mjs'
 
-function draftPart2({
+function draftForehead({
   options,
   Point,
   Path,
@@ -17,7 +17,7 @@ function draftPart2({
   macro,
   part,
 }) {
-  console.log('part2')
+  console.log('forehead')
   const textAttribute = 'text-xs center'
   const sizeFactor = store.get('sizeFactor')
 
@@ -160,12 +160,18 @@ function draftPart2({
     .move(points.point2)
     .curve(points.point2Cp1, points.point3Cp2, points.point3)
     .curve(points.point3Cp1, points.point4Cp2, points.point4)
-    .setText('Eye top', textAttribute)
+    .setText('Eye top (4)', textAttribute)
+    .addClass('hidden')
+
+  paths.seam7 = new Path()
+    .move(points.point0)
+    .curve(points.point0Cp1, points.point1Cp2, points.point1)
+    .setText('7', textAttribute)
     .addClass('hidden')
 
   paths.seam = new Path()
     .move(points.point0)
-    .curve(points.point0Cp1, points.point1Cp2, points.point1)
+    .join(paths.seam7)
     .line(points.point2)
     .join(paths.eyeTop)
     .line(points.point5)
@@ -180,6 +186,17 @@ function draftPart2({
     .curve(points.point6Cp1, points.point7Cp2, points.point7)
     .curve(points.point7Cp1, points.point8Cp2, points.point8)
 
+  paths.seam1 = new Path()
+    .move(points.point1)
+    .line(points.point2)
+    .setText('1', textAttribute)
+    .addClass('hidden')
+  paths.seam2 = new Path()
+    .move(points.point4)
+    .line(points.point5)
+    .setText('2', textAttribute)
+    .addClass('hidden')
+
   store.set('eyeTop', paths.eyeTop.length())
 
   // Complete?
@@ -189,8 +206,11 @@ function draftPart2({
       nr: 2,
       at: points.title,
       scale: 0.5,
-      // title: 'pants',
+      title: 'forehead',
     })
+
+    snippets.n1 = new Snippet('notch', points.point2)
+
     // points.logo = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)
     // snippets.logo = new Snippet('logo', points.logo)
     // points.text = points.logo
@@ -205,24 +225,24 @@ function draftPart2({
 
   // Paperless?
   if (paperless) {
-    macro('hd', {
-      from: points.bottomLeft,
-      to: points.bottomRight,
-      y: points.bottomLeft.y + sa + 15,
-    })
-    macro('vd', {
-      from: points.bottomRight,
-      to: points.topRight,
-      x: points.topRight.x + sa + 15,
-    })
+    // macro('hd', {
+    //   from: points.bottomLeft,
+    //   to: points.bottomRight,
+    //   y: points.bottomLeft.y + sa + 15,
+    // })
+    // macro('vd', {
+    //   from: points.bottomRight,
+    //   to: points.topRight,
+    //   x: points.topRight.x + sa + 15,
+    // })
   }
 
   return part
 }
 
-export const part2 = {
-  name: 'part2',
-  after: part1,
+export const forehead = {
+  name: 'forehead',
+  after: cheek,
   plugins: [pluginBundle],
-  draft: draftPart2,
+  draft: draftForehead,
 }

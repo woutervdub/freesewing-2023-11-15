@@ -1,9 +1,9 @@
 import { pluginBundle } from '@freesewing/plugin-bundle'
 import { convertPoints } from './pointsUtil.mjs'
-import { part1 } from './part1.mjs'
-import { part3 } from './part3.mjs'
+import { cheek } from './cheek.mjs'
+import { head1 } from './head1.mjs'
 
-function draftPart4({
+function draftHead2({
   options,
   Point,
   Path,
@@ -206,7 +206,7 @@ function draftPart4({
       nr: 4,
       at: points.title,
       scale: 0.5,
-      // title: 'pants',
+      title: 'head2',
     })
     // points.logo = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)
     // snippets.logo = new Snippet('logo', points.logo)
@@ -237,9 +237,9 @@ function draftPart4({
   return part
 }
 
-export const part4 = {
-  name: 'part4',
-  after: [part1, part3],
+export const head2 = {
+  name: 'head2',
+  after: [cheek, head1],
   plugins: [pluginBundle],
-  draft: draftPart4,
+  draft: draftHead2,
 }

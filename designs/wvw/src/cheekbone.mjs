@@ -1,8 +1,8 @@
 import { pluginBundle } from '@freesewing/plugin-bundle'
-import { part1 } from './part1.mjs'
+import { cheek } from './cheek.mjs'
 import { convertPoints } from './pointsUtil.mjs'
 
-function draftPart7({
+function draftCheekbone({
   options,
   Point,
   Path,
@@ -17,7 +17,7 @@ function draftPart7({
   macro,
   part,
 }) {
-  console.log('part7')
+  console.log('cheekbone')
   const textAttribute = 'text-xs center'
   const sizeFactor = store.get('sizeFactor')
 
@@ -36,11 +36,18 @@ function draftPart7({
   points.point1Cp1 = points.point1.shift(135.7075072577942, 32.47486987518195 * sizeFactor)
   points.point1Cp2 = points.point1.shift(180.82587279494425, 29.902106313769938 * sizeFactor)
 
-  paths.seam = new Path()
+  paths.seam5 = new Path()
+    .move(points.point1)
+    .curve(points.point1Cp1, points.point0Cp2, points.point0)
+    .setText('5', textAttribute)
+    .addClass('hidden')
+  paths.seam6 = new Path()
     .move(points.point0)
     .curve(points.point0Cp1, points.point1Cp2, points.point1)
-    .curve(points.point1Cp1, points.point0Cp2, points.point0)
-    .close()
+    .setText('6', textAttribute)
+    .addClass('hidden')
+
+  paths.seam = new Path().move(points.point0).join(paths.seam6).join(paths.seam5).close()
 
   console.log({
     l1: new Path()
@@ -62,14 +69,14 @@ function draftPart7({
   // Complete?
   if (complete) {
     points.title = points.point0
-      .shiftFractionTowards(points.point1, 0.5)
+      .shiftFractionTowards(points.point1, 0.65)
       .shiftFractionTowards(points.point1Cp2, 0.4)
     macro('title', {
       nr: 7,
       at: points.title,
       scale: 0.15,
       rotation: 325,
-      // title: 'pants',
+      title: 'cheekbone',
     })
     // points.logo = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)
     // snippets.logo = new Snippet('logo', points.logo)
@@ -100,9 +107,9 @@ function draftPart7({
   return part
 }
 
-export const part7 = {
-  name: 'part7',
-  after: part1,
+export const cheekbone = {
+  name: 'cheekbone',
+  after: cheek,
   plugins: [pluginBundle],
-  draft: draftPart7,
+  draft: draftCheekbone,
 }

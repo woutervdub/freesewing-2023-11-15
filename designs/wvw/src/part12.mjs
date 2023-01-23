@@ -1,6 +1,6 @@
 import { pluginBundle } from '@freesewing/plugin-bundle'
-import { part1 } from './part1.mjs'
-import { part2 } from './part2.mjs'
+import { cheek } from './cheek.mjs'
+import { forehead } from './forehead.mjs'
 import { convertPoints } from './pointsUtil.mjs'
 
 function draftPart12({
@@ -137,7 +137,7 @@ function draftPart12({
 
 export const part12 = {
   name: 'part12',
-  after: [part1, part2],
+  after: [cheek, forehead],
   plugins: [pluginBundle],
   draft: draftPart12,
 }

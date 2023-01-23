@@ -1,9 +1,9 @@
 import { pluginBundle } from '@freesewing/plugin-bundle'
 import { convertPoints } from './pointsUtil.mjs'
-import { part1 } from './part1.mjs'
-import { part2 } from './part2.mjs'
+import { cheek } from './cheek.mjs'
+import { forehead } from './forehead.mjs'
 
-function draftPart3({
+function draftHead1({
   options,
   Point,
   Path,
@@ -19,7 +19,7 @@ function draftPart3({
   part,
   utils,
 }) {
-  console.log('part3')
+  console.log('head1')
   const textAttribute = 'text-xs center'
   const sizeFactor = store.get('sizeFactor')
 
@@ -87,7 +87,7 @@ function draftPart3({
       nr: 3,
       at: points.title,
       scale: 0.5,
-      // title: 'pants',
+      title: 'head1',
     })
     // points.logo = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)
     // snippets.logo = new Snippet('logo', points.logo)
@@ -105,24 +105,24 @@ function draftPart3({
 
   // Paperless?
   if (paperless) {
-    macro('hd', {
-      from: points.bottomLeft,
-      to: points.bottomRight,
-      y: points.bottomLeft.y + sa + 15,
-    })
+    // macro('hd', {
+    //   from: points.bottomLeft,
+    //   to: points.bottomRight,
+    //   y: points.bottomLeft.y + sa + 15,
+    // })
     macro('vd', {
-      from: points.bottomRight,
-      to: points.topRight,
-      x: points.topRight.x + sa + 15,
+      from: points.point0,
+      to: points.point2,
+      x: points.point0.x + sa + 15,
     })
   }
 
   return part
 }
 
-export const part3 = {
-  name: 'part3',
-  after: [part1, part2],
+export const head1 = {
+  name: 'head1',
+  after: [cheek, forehead],
   plugins: [pluginBundle],
-  draft: draftPart3,
+  draft: draftHead1,
 }

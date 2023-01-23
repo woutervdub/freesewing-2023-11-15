@@ -1,8 +1,8 @@
 import { pluginBundle } from '@freesewing/plugin-bundle'
-import { part1 } from './part1.mjs'
+import { cheek } from './cheek.mjs'
 import { convertPoints } from './pointsUtil.mjs'
 
-function draftPart9({
+function draftEye({
   options,
   Point,
   Path,
@@ -17,7 +17,7 @@ function draftPart9({
   macro,
   part,
 }) {
-  console.log('part9')
+  console.log('eye')
   const textAttribute = 'text-xs center'
   const sizeFactor = store.get('sizeFactor')
 
@@ -45,6 +45,18 @@ function draftPart9({
     .curve(points.point1Cp1, points.point0Cp2, points.point0)
     .close()
 
+  paths.seam3 = new Path()
+    .move(points.point1)
+    .curve(points.point1Cp1, points.point0Cp2, points.point0)
+    .setText('3', textAttribute)
+    .addClass('hidden')
+
+  paths.seam4 = new Path()
+    .move(points.point0)
+    .curve(points.point0Cp1, points.point1Cp2, points.point1)
+    .setText('4', textAttribute)
+    .addClass('hidden')
+
   // console.log({ points: JSON.parse(JSON.stringify(points)) })
   // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
   // convertPoints(points)
@@ -56,8 +68,11 @@ function draftPart9({
       nr: 9,
       at: points.title,
       scale: 0.25,
-      // title: 'pants',
+      title: 'eye',
     })
+    snippets.n1 = new Snippet('notch', points.point0)
+    snippets.n2 = new Snippet('notch', points.point1)
+
     // points.logo = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)
     // snippets.logo = new Snippet('logo', points.logo)
     // points.text = points.logo
@@ -87,9 +102,9 @@ function draftPart9({
   return part
 }
 
-export const part9 = {
-  name: 'part9',
-  after: part1,
+export const eye = {
+  name: 'eye',
+  after: cheek,
   plugins: [pluginBundle],
-  draft: draftPart9,
+  draft: draftEye,
 }
