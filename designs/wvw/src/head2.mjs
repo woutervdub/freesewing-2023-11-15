@@ -23,26 +23,6 @@ function draftHead2({
   const textAttribute = 'text-xs center'
   const sizeFactor = store.get('sizeFactor')
 
-  // points.point0 = new Point(-282.159, 130.879)
-  // points.point0Cp1 = new Point(-282.496, 160.326)
-  // points.point1Cp2 = new Point(-295.578, 176.691)
-  // points.point1 = new Point(-296.145, 195.513)
-  // points.point1Cp1 = new Point(-297.056, 225.742)
-  // points.point2Cp2 = new Point(-275.923, 283.958)
-  // points.point2 = new Point(-275.923, 283.958)
-  // points.point3 = new Point(-246.629, 291.142)
-  // points.point3Cp1 = new Point(-238.481, 236.993)
-  // points.point4Cp2 = new Point(-229.29, 198.374)
-  // points.point4 = new Point(-232.854, 147.926)
-
-  // points.dartPoint0 = new Point(-232.455, 192.867)
-  // points.dartPoint0Cp1 = new Point(-232.455, 192.867)
-  // points.dartPoint1Cp2 = new Point(-250.493, 194.668)
-  // points.dartPoint1 = new Point(-264.149, 193.845)
-  // points.dartPoint1Cp1 = new Point(-250.544, 195.097)
-  // points.dartPoint2Cp2 = new Point(-232.966, 199.326)
-  // points.dartPoint2 = new Point(-232.966, 199.326)
-
   points.point0 = new Point(0, 0)
   points.point0Cp1 = points.point0.shift(269.3443191225503, 29.448928299685203 * sizeFactor)
   points.point1 = points.point0.shift(257.7901473243395, 66.12988849226953 * sizeFactor)
@@ -82,8 +62,6 @@ function draftHead2({
   }
   console.log({ iterations: iterations })
 
-  // points.dartPoint0 = points.point0.shift(308.7237760289013, 79.45438792162456 * sizeFactor)
-  // points.dartPoint0 = points.point0.shift(308.7237760289013, 100.45438792162456 * sizeFactor)
   points.dartPoint0 = new Path()
     .move(points.point3)
     .curve(points.point3Cp1, points.point4Cp2, points.point4)
@@ -98,7 +76,6 @@ function draftHead2({
     356.55115250146685,
     13.680777207454268 * sizeFactor
   )
-  // points.dartPoint2 = points.point0.shift(305.70488028612266, 84.39082428117546 * sizeFactor)
   points.dartPoint2 = new Path()
     .move(points.point3)
     .curve(points.point3Cp1, points.point4Cp2, points.point4)
@@ -133,71 +110,6 @@ function draftHead2({
     .curve(points.point3Cp1, points.point4Cp2, points.point4)
     .curve(points.point4, points.point0Cp2, points.point0)
     .close()
-
-  // points.p1 = utils.curvesIntersect(
-  //   points.point3,
-  //   points.point3Cp1,
-  //   points.point4Cp2,
-  //   points.point4,
-  //   points.dartPoint1,
-  //   points.dartPoint1Cp2,
-  //   points.dartPoint0Cp1,
-  //   points.dartPoint0,
-  // )
-  // console.log({ p1: points.p1 })
-  // let s1 = utils.splitCurve(
-  //   points.point3,
-  //   points.point3Cp1,
-  //   points.point4Cp2,
-  //   points.point4,
-  //   points.p1
-  // )
-  // console.log( {s1: s1})
-
-  // paths.p1 = new Path()
-  //   .move(points.point3)
-  //   .curve(points.point3Cp1,points.point4Cp2,points.point4)
-  //   .addClass('hidden')
-
-  // paths.p1a = new Path()
-  // .move(s1[0].start)
-  // .curve(s1[0].cp1,s1[0].cp2,s1[0].end)
-
-  // paths.p1b = new Path()
-  // .move(s1[1].start)
-  // .curve(s1[1].cp1,s1[1].cp2,s1[1].end)
-
-  // console.log( {l1: (paths.p1a).length()})
-  // console.log( {l1: (paths.p1b).length()})
-  // console.log( {l1: (paths.p1).length()})
-
-  // points.p2 = utils.curvesIntersect(
-  //   points.point3,
-  //   points.point3Cp1,
-  //   points.point4Cp2,
-  //   points.point4,
-  //   points.dartPoint1,
-  //   points.dartPoint1Cp1,
-  //   points.dartPoint2Cp2,
-  //   points.dartPoint2
-  // )
-  // console.log({ p2: points.p2 })
-  // let s2 = utils.splitCurve(
-  //   points.point3,
-  //   points.point3Cp1,
-  //   points.point4Cp2,
-  //   points.point4,
-  //   points.p2
-  // )
-  // console.log( {s2: s2})
-
-  // console.log( {l2: (new Path()
-  //   .move(s2[0].start)
-  //   .curve(s2[0].cp1,s2[0].cp2,s2[0].end)).length()})
-
-  // console.log({ points: JSON.parse(JSON.stringify(points)) })
-  // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
-  // convertPoints(points)
 
   // Complete?
   if (complete) {

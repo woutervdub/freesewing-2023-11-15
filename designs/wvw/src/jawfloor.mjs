@@ -22,25 +22,6 @@ function draftJawfloor({
   const textAttribute = 'text-xs center'
   const sizeFactor = store.get('sizeFactor')
 
-  // points.point0 = new Point( 225.57,222.136 )
-  // points.point0Cp1 = new Point( 225.928,235.555 )
-  // points.point1Cp2 = new Point( 264.302,250.708 )
-  // points.point1 = new Point( 274.623,250.688 )
-  // points.point1Cp1 = new Point( 289.574,250.659 )
-  // points.point2Cp2 = new Point( 297.542,248.601 )
-  // points.point2 = new Point( 305.861,248.56 )
-  // points.point2Cp1 = new Point( 314.761,248.518 )
-  // points.point3Cp2 = new Point( 327.104,250.959 )
-  // points.point3 = new Point( 335.043,253.913 )
-  // points.point3Cp1 = new Point( 338.984,255.379 )
-  // points.point4Cp2 = new Point( 348.36,266.659 )
-  // points.point4 = new Point( 356.735,268.669 )
-  // points.point5 = new Point( 360.626,213.732 )
-  // points.point6 = new Point( 225.521,214.039 )
-  // points.point6Cp1 = new Point( 225.521,214.039 )
-  // points.point7Cp2 = new Point( 225.624,217.327 )
-  // points.point7 = new Point( 225.57,222.136 )
-
   points.point0 = new Point(0, 0)
   points.point0Cp1 = points.point0.shift(271.5282081165893, 13.423774618191423 * sizeFactor)
   points.point1 = points.point0.shift(329.79784303240206, 56.7574974166409 * sizeFactor)
@@ -58,8 +39,6 @@ function draftJawfloor({
 
   points.point6 = points.point0.shift(90.34672828513591, 8.097148263432018 * sizeFactor)
   points.point6Cp1 = points.point6.shift(0, 0 * sizeFactor)
-  // points.point7 = points.point0.shift( 0, 0 *sizeFactor );
-  // points.point7Cp2 = points.point7.shift( 89.35665584015415, 4.809303171978241 *sizeFactor );
   points.point0Cp2 = points.point0.shift(89.35665584015415, 4.809303171978241 * sizeFactor)
 
   points.point5 = points.point5.shift(0, (points.point4.dist(points.point5) / 3) * sizeFactor)

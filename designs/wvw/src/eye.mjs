@@ -21,27 +21,16 @@ function draftEye({
   const textAttribute = 'text-xs center'
   const sizeFactor = store.get('sizeFactor')
 
-  // points.point0 = new Point( 442.424,368.585 )
-  // points.point0Cp1 = new Point( 442.27,332.865 )
-  // points.point1Cp2 = new Point( 429.309,335.288 )
-  // points.point1 = new Point( 412.893,348.006 )
-  // points.point1Cp1 = new Point( 412.739,358.383 )
-  // points.point2Cp2 = new Point( 423.342,364.975 )
-  // points.point2 = new Point( 442.424,368.585 )
-
   points.point0 = new Point(0, 0)
   points.point0Cp1 = points.point0.shift(90.24701834761159, 35.72033196934203 * sizeFactor)
   points.point1 = points.point0.shift(145.12886642320197, 35.99409954423086 * sizeFactor)
   points.point1Cp1 = points.point1.shift(269.14976367331803, 10.378142656564334 * sizeFactor)
   points.point1Cp2 = points.point1.shift(37.7660886486214, 20.766140228747393 * sizeFactor)
-  // points.point2 = points.point0.shift( 0, 0 *sizeFactor );
-  // points.point2Cp2 = points.point2.shift( 169.2871903668775, 19.42047435054045 *sizeFactor );
   points.point0Cp2 = points.point0.shift(169.2871903668775, 19.42047435054045 * sizeFactor)
 
   paths.seam = new Path()
     .move(points.point0)
     .curve(points.point0Cp1, points.point1Cp2, points.point1)
-    // .curve( points.point1Cp1,points.point2Cp2,points.point2 )
     .curve(points.point1Cp1, points.point0Cp2, points.point0)
     .close()
 

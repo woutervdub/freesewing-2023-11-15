@@ -23,20 +23,6 @@ function draftLowermouth({
   const textAttribute = 'text-xs center'
   const sizeFactor = store.get('sizeFactor')
 
-  // points.point0 = new Point( 456.646,233.546 )
-  // points.point1 = new Point( 585.228,233.296 )
-  // points.point1Cp1 = new Point( 585.211,238.655 )
-  // points.point2 = new Point( 559.019,297.16 )
-  // points.point2Cp2 = new Point( 581.36,284.718 )
-  // points.point3 = new Point( 527.665,297.664 )
-  // points.point3Cp1 = new Point( 512.24,297.16 )
-  // points.point4Cp2 = new Point( 496.228,297.657 )
-  // points.point4 = new Point( 494.016,274.622 )
-  // points.point4Cp1 = new Point( 494.979,267.946 )
-  // points.point5Cp2 = new Point( 491.503,266.085 )
-  // points.point5 = new Point( 486.452,265.93 )
-  // points.point6 = new Point( 456.782,266.319 )
-
   points.point0 = new Point(0, 0)
   points.point6 = points.point0.shift(0.11139916029446559, 128.58224303534288 * sizeFactor)
   points.point6Cp2 = points.point6.shift(269.8182450112891, 5.359026963917993 * sizeFactor)

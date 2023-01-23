@@ -23,22 +23,6 @@ function draftHead1({
   const textAttribute = 'text-xs center'
   const sizeFactor = store.get('sizeFactor')
 
-  // points.point0 = new Point( 153.999,380.842 )
-  // points.point0Cp1 = new Point( 111.588,380.119 )
-  // points.point1Cp2 = new Point( 102.796,398.185 )
-  // points.point1 = new Point( -1.72734,425.254 )
-  // points.point1Cp1 = new Point( 50.4992,440.02 )
-  // points.point2Cp2 = new Point( 98.0439,454.206 )
-  // points.point2 = new Point( 153.999,452.847 )
-
-  points.point0 = new Point(0, 0)
-  points.point0Cp1 = points.point0.shift(0.9766531413822468, 42.41716221059584 * sizeFactor)
-  points.point1 = points.point0.shift(344.08224234639044, 161.93553876093907 * sizeFactor)
-  points.point1Cp1 = points.point1.shift(195.7871794819755, 54.273808014286224 * sizeFactor)
-  points.point1Cp2 = points.point1.shift(165.48077210575048, 107.97156739510456 * sizeFactor)
-  points.point2 = points.point0.shift(270, 72.005 * sizeFactor)
-  points.point2Cp2 = points.point2.shift(358.6087119924517, 55.97160080799905 * sizeFactor)
-
   points.point0 = new Point(0, 0)
   points.point0Cp2 = points.point0.shift(270.9766531413822, 42.41716221059584 * sizeFactor)
   points.point2 = points.point0.shift(254.08224234639044, 161.93553876093907 * sizeFactor)

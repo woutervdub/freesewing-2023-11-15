@@ -22,24 +22,6 @@ function draftLowerjaw({
   const textAttribute = 'text-xs center'
   const sizeFactor = store.get('sizeFactor')
 
-  // points.point0 = new Point( -51.8735,201.484 )
-  // points.point1 = new Point( -94.7305,197.669 )
-  // points.point1Cp1 = new Point( -95.9315,250.677 )
-  // points.point2Cp2 = new Point( -94.4875,267.925 )
-  // points.point2 = new Point( -91.9525,273.759 )
-  // points.point2Cp1 = new Point( -87.2415,284.598 )
-  // points.point3Cp2 = new Point( -95.0055,300.763 )
-  // points.point3 = new Point( -86.1085,301.82 )
-  // points.point3Cp1 = new Point( -70.4625,303.678 )
-  // points.point4Cp2 = new Point( -58.9235,312.248 )
-  // points.point4 = new Point( -38.3645,317.458 )
-  // points.point4Cp1 = new Point( -32.4955,277.729 )
-  // points.point5Cp2 = new Point( -23.6165,260.602 )
-  // points.point5 = new Point( -56.7515,252.033 )
-  // points.point5Cp1 = new Point( -51.8445,232.433 )
-  // points.point6Cp2 = new Point( -53.3405,218.079 )
-  // points.point6 = new Point( -51.8735,201.484 )
-
   points.point0 = new Point(0, 0)
   points.point1 = points.point0.shift(174.91311161963839, 43.0264648094635 * sizeFactor)
   points.point2 = points.point0.shift(240.9901082422603, 82.64382533498798 * sizeFactor)
@@ -64,7 +46,7 @@ function draftLowerjaw({
     points.point5 = points.point5.shift(270, (mouthTop - p.length()) * 0.5)
 
     console.log({ mouthTop: mouthTop, seriously: p.length() })
-  } while (iterations < 100 && (mouthTop - p.length() > 1 || mouthTop - p.length() < -1))
+  } while (iterations < 100 && (mouthTop - p.length() > 0.1 || mouthTop - p.length() < -0.1))
   if (iterations >= 100) {
     log.error('Something is not quite right here!')
   }
@@ -79,6 +61,7 @@ function draftLowerjaw({
   points.point3Cp2 = points.point3.shift(173.22478394781675, 8.959567958333698 * sizeFactor)
   points.point4Cp1 = points.point4.shift(81.59670910061827, 40.16016187716384 * sizeFactor)
   points.point4Cp2 = points.point4.shift(165.77964223723035, 21.20887976768222 * sizeFactor)
+  convertPoints(points, 90)
 
   points.point0 = new Point(0, 0)
   points.point0Cp2 = points.point0.shift(354.9481781658739, 16.659715303689914 * sizeFactor)
@@ -96,6 +79,32 @@ function draftLowerjaw({
   points.point5 = points.point0.shift(354.81977589032454, 54.026610044075944 * sizeFactor)
   points.point5Cp1 = points.point5.shift(166.25960112580196, 20.659041530160696 * sizeFactor)
   points.point5Cp2 = points.point5.shift(76.26126036953632, 34.11095664483535 * sizeFactor)
+  points.point0 = new Point(0, 0)
+
+  // let iterations = 0
+  // var p
+  do {
+    iterations++
+
+    points.point5Cp1 = points.point5.shift(166.25960112580196, 20.659041530160696 * sizeFactor)
+    points.point5Cp2 = points.point5.shift(76.26126036953632, 34.11095664483535 * sizeFactor)
+    p = new Path().move(points.point5).curve(points.point5Cp1, points.point0Cp2, points.point0)
+
+    points.point5 = points.point5.shift(270, (mouthTop - p.length()) * 0.5)
+
+    console.log({ mouthTop: mouthTop, seriously: p.length() })
+  } while (iterations < 100 && (mouthTop - p.length() > 1 || mouthTop - p.length() < -1))
+  if (iterations >= 100) {
+    log.error('Something is not quite right here!')
+  }
+
+  // let mouthTop = store.get('mouthTop')
+  let mt = new Path()
+    .move(points.point5)
+    .curve(points.point5Cp1, points.point0Cp2, points.point0)
+    .length()
+
+  console.log({ mouthTop: mouthTop, mt: mt })
 
   paths.mouthBottom = new Path()
     .move(points.point5)

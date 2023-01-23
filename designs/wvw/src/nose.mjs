@@ -30,19 +30,6 @@ function draftNose({
   var noseDiameter = (noseCircumference / Math.PI) * 2
 
   const c = 0.55191502449351
-  // const c = 0.75
-
-  // points.b0 = new Point(0,0).shift(0,noseDiameter*1.5).shift(90,noseDiameter*1.5)
-  // points.b1 = new Point(0,0).shift(180,noseDiameter*1.5).shift(90,noseDiameter*1.5)
-  // points.b2 = new Point(0,0).shift(180,noseDiameter*1.5).shift(270,noseDiameter*1.5)
-  // points.b3 = new Point(0,0).shift(0,noseDiameter*1.5).shift(270,noseDiameter*1.5)
-
-  // paths.box = new Path()
-  //   .move(points.b0)
-  //   .line(points.b1)
-  //   .line(points.b2)
-  //   .line(points.b3)
-  //   .close()
 
   points.point0 = new Point(0, 0)
   points.point2 = points.point0.shift(0, noseDiameter / 1.8).shift(90, noseDiameter / 3)
