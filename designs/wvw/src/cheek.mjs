@@ -161,6 +161,7 @@ function draftCheek({
     snippets.n1 = new Snippet('notch', points.point9)
     snippets.n2 = new Snippet('notch', points.point5)
     snippets.n3 = new Snippet('notch', points.point5a)
+    snippets.n2 = new Snippet('bnotch', points.point7)
 
     // points.logo = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)
     // snippets.logo = new Snippet('logo', points.logo)

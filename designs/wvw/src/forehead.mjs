@@ -184,6 +184,7 @@ function draftForehead({
     })
 
     snippets.n1 = new Snippet('notch', points.point2)
+    snippets.n2 = new Snippet('bnotch', points.point4)
 
     // points.logo = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)
     // snippets.logo = new Snippet('logo', points.logo)
