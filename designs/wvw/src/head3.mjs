@@ -14,12 +14,14 @@ function draftHead3({
   snippets,
   complete,
   sa,
+  log,
   store,
   paperless,
   macro,
+  utils,
   part,
 }) {
-  console.log('head2')
+  console.log('head3')
   const textAttribute = 'text-xs center'
   const sizeFactor = store.get('sizeFactor')
 
@@ -74,7 +76,6 @@ function draftHead3({
       .length()
   )
   points.point0 = new Point(0, 0)
-  2
   points.dartPoint0 = points.point0.shift(128.37, 82.29999999999998 * sizeFactor)
   points.dartPoint0Cp1 = points.dartPoint0.shift(9.122184908835848, 15.674240045373793 * sizeFactor)
   points.dartPoint1 = points.point0.shift(93.69495535762911, 79.06034303618978 * sizeFactor)
@@ -101,22 +102,34 @@ function draftHead3({
   points.point1Cp1 = points.point1.shift(86.08762325510818, 17.602020395397776 * sizeFactor)
 
   console.log({
-    l: new Path()
-      .move(points.point5)
-      .curve(points.point5Cp1, points.point0Cp2, points.point0)
-      .length(),
-    bolj: store.get('backOfLowerJaw'),
-    p4: store.get('part4width'),
+    l: new Path().move(points.point5).line(points.point0).length(),
+    hob: store.get('halfOfBack'),
+    head2: store.get('head2width'),
   })
 
-  points.point5 = points.point5.shift(
-    0,
-    new Path()
-      .move(points.point5)
-      .curve(points.point5Cp1, points.point0Cp2, points.point0)
-      .length() -
-      (store.get('backOfLowerJaw') - store.get('part4width'))
-  )
+  let lowerWidth = store.get('halfOfBack') - store.get('head2width')
+  let tsAdjustment =
+    store.get('thirdSeam') -
+    new Path().move(points.point2).curve(points.point2Cp1, points.point3Cp2, points.point3).length()
+
+  let x = utils.circlesIntersect(points.dartPoint0, tsAdjustment, points.point0, lowerWidth)
+
+  console.log(x)
+
+  if (x) {
+    points.point5 = x[0].clone()
+  } else {
+    log.error('Something is not quite right here!')
+  }
+
+  // points.point5 = points.point5.shift(
+  //   0,
+  //   new Path()
+  //     .move(points.point5)
+  //     .curve(points.point5Cp1, points.point0Cp2, points.point0)
+  //     .length() -
+  //     (store.get('backOfLowerJaw') - store.get('head2width'))
+  // )
   points.point5Cp1 = points.point5.shift(359.48476820979687, 24.91000716579583 * sizeFactor)
 
   paths.thirdSeam1 = new Path()
@@ -129,6 +142,13 @@ function draftHead3({
     .line(points.point5)
     .setText('Third Seam', textAttribute)
     .addClass('hidden')
+
+  console.log({
+    ts1: paths.thirdSeam1.length(),
+    ts2: paths.thirdSeam1.length(),
+    ts: paths.thirdSeam1.length() + paths.thirdSeam1.length(),
+    thirdSeam: store.get('thirdSeam'),
+  })
 
   paths.dart = new Path()
     .move(points.dartPoint0)

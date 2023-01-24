@@ -105,6 +105,8 @@ function draftLowermouth({
     paths.backOfUpperJaw.shiftAlong(store.get('upperJawToLowerJaw') + 1)
   )
 
+  store.set('halfOfBack', paths.backOfUpperJaw.length() - store.get('upperJawToLowerJaw'))
+
   points.point2ToLowerJaw = points.point2.shift(0, points.point2.dist(points.lowerJaw) / 2)
   points.lowerJawToPoint2 = points.lowerJaw.shift(
     ljAngle + 90,

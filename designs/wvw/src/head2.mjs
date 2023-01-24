@@ -19,7 +19,7 @@ function draftHead2({
   macro,
   part,
 }) {
-  console.log('part4')
+  console.log('head2')
   const textAttribute = 'text-xs center'
   const sizeFactor = store.get('sizeFactor')
 
@@ -47,7 +47,7 @@ function draftHead2({
       .curve(points.point0Cp1, points.point1Cp2, points.point1)
       .curve(points.point1Cp1, points.point2Cp2, points.point2)
 
-    if (secondSeam - p.length() > 1 || secondSeam - p.length() < -1) {
+    if (secondSeam - p.length() > 0.1 || secondSeam - p.length() < -0.1) {
       points.point0 = points.point0.shift(90, secondSeam - p.length())
       points.point1 = points.point1.shift(90, secondSeam - p.length())
       points.point0Cp1 = points.point0.shift(269.3443191225503, 29.448928299685203 * sizeFactor)
@@ -66,7 +66,7 @@ function draftHead2({
     .move(points.point3)
     .curve(points.point3Cp1, points.point4Cp2, points.point4)
     .shiftAlong(99.23273836900117 * sizeFactor)
-  points.dartPoint0Cp1 = points.dartPoint0.clone()
+  // points.dartPoint0Cp1 = points.dartPoint0.clone()
   points.dartPoint1 = points.point0.shift(285.96197961706986, 65.4910471438654 * sizeFactor)
   points.dartPoint1Cp1 = points.dartPoint1.shift(
     354.74216521134053,
@@ -80,11 +80,11 @@ function draftHead2({
     .move(points.point3)
     .curve(points.point3Cp1, points.point4Cp2, points.point4)
     .shiftAlong(92.81578231343269 * sizeFactor)
-  points.dartPoint2Cp2 = points.dartPoint2.clone()
+  // points.dartPoint2Cp2 = points.dartPoint2.clone()
 
   paths.secondSeam = new Path()
     .move(points.point0)
-    .curve(points.point0Cp1, points.point1Cp2, points.point1)
+    ._curve(points.point1Cp2, points.point1)
     .curve(points.point1Cp1, points.point2Cp2, points.point2)
     .setText('Second Seam', textAttribute)
     .addClass('hidden')
@@ -94,12 +94,13 @@ function draftHead2({
     .setText('Third Seam', textAttribute)
     .addClass('hidden')
 
-  store.set('thirdSeam', paths.thirdSeam.length())
-  store.set('part4width', points.point2.dist(points.point3))
+  console.log({ thirdSeam: paths.thirdSeam.length() - points.dartPoint0.dist(points.dartPoint2) })
+  store.set('thirdSeam', paths.thirdSeam.length() - points.dartPoint0.dist(points.dartPoint2))
+  store.set('head2width', points.point2.dist(points.point3))
   paths.dart = new Path()
     .move(points.dartPoint0)
-    .curve(points.dartPoint0Cp1, points.dartPoint1Cp2, points.dartPoint1)
-    .curve(points.dartPoint1Cp1, points.dartPoint2Cp2, points.dartPoint2)
+    ._curve(points.dartPoint1Cp2, points.dartPoint1)
+    .curve_(points.dartPoint1Cp1, points.dartPoint2)
   // .close()
 
   paths.seam = new Path()

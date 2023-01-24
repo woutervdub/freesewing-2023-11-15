@@ -41,8 +41,10 @@ function draftJawfloor({
   points.point6Cp1 = points.point6.shift(0, 0 * sizeFactor)
   points.point0Cp2 = points.point0.shift(89.35665584015415, 4.809303171978241 * sizeFactor)
 
-  points.point5 = points.point5.shift(0, (points.point4.dist(points.point5) / 3) * sizeFactor)
-  points.point5Cp2 = points.point5.shift(270, (points.point4.dist(points.point5) / 3) * sizeFactor)
+  // points.point5 = points.point5.shift(0, (points.point4.dist(points.point5) / 3) * sizeFactor)
+  points.point5 = points.point5.shift(0, points.point4.dist(points.point5) / 3)
+  // points.point5Cp2 = points.point5.shift(270, (points.point4.dist(points.point5) / 3) * sizeFactor)
+  points.point5Cp2 = points.point5.shift(270, points.point4.dist(points.point5) / 3)
 
   macro('mirror', {
     mirror: [points.point5, points.point6],

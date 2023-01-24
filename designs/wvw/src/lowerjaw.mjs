@@ -61,7 +61,7 @@ function draftLowerjaw({
   points.point3Cp2 = points.point3.shift(173.22478394781675, 8.959567958333698 * sizeFactor)
   points.point4Cp1 = points.point4.shift(81.59670910061827, 40.16016187716384 * sizeFactor)
   points.point4Cp2 = points.point4.shift(165.77964223723035, 21.20887976768222 * sizeFactor)
-  convertPoints(points, 90)
+  // convertPoints(points, 90)
 
   points.point0 = new Point(0, 0)
   points.point0Cp2 = points.point0.shift(354.9481781658739, 16.659715303689914 * sizeFactor)

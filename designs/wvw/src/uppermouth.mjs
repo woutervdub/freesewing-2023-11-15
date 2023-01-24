@@ -97,7 +97,7 @@ function draftUppermouth({
 
   // console.log({ points: JSON.parse(JSON.stringify(points)) })
   // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
-  convertPoints(points)
+  // convertPoints(points)
 
   // Complete?
   if (complete) {
