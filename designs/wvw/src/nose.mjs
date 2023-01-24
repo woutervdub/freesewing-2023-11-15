@@ -101,7 +101,7 @@ function draftNose({
       .shiftFractionTowards(points.point2Cp2, 0.5)
       .shiftFractionTowards(points.point0, 0.5)
     macro('title', {
-      nr: 13,
+      nr: 12,
       at: points.title,
       scale: 0.25,
       title: 'nose',

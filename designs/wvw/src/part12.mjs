@@ -74,12 +74,30 @@ function draftPart12({
   points.p3Cp2 = points.p1Cp1.flipX()
   points.p3Cp1 = points.p1Cp2.flipX()
 
-  paths.seam = new Path()
+  paths.eyeTop = new Path()
+    .move(points.p4)
+    .curve(points.p4Cp1, points.p3Cp2, points.p3)
+    .curve(points.p3Cp1, points.point9Cp2, points.point9)
+    .setText('Eye bottom (4)', textAttribute)
+    .addClass('hidden')
+
+  paths.eye = new Path()
     .move(points.p4)
     .curve(points.p4Cp1, points.p3Cp2, points.p3)
     .curve(points.p3Cp1, points.p0Cp2, points.p0)
     .curve(points.p0Cp1, points.p1Cp2, points.p1)
     .curve(points.p1Cp1, points.p2Cp2, points.p2)
+
+  points.pointNotch = paths.eye.shiftAlong(store.get('eyeTop'))
+
+  let ps = paths.eye.split(points.pointNotch)
+  paths.eyeTop = ps[0].clone().setText('Eye top (4)', textAttribute)
+  paths.eyeBottom = ps[1].clone().setText('Eye bottom (4)', textAttribute)
+
+  paths.seam = new Path()
+    .move(points.p4)
+    .join(paths.eyeTop)
+    .join(paths.eyeBottom)
     .line(points.p4)
     .close()
 
@@ -101,8 +119,12 @@ function draftPart12({
       nr: 12,
       at: points.title,
       scale: 0.3,
-      // title: 'pants',
+      title: 'eye',
     })
+    snippets.n1 = new Snippet('notch', points.p2)
+    snippets.n2 = new Snippet('notch', points.p4)
+    snippets.n3 = new Snippet('bnotch', points.pointNotch)
+
     // points.logo = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)
     // snippets.logo = new Snippet('logo', points.logo)
     // points.text = points.logo
