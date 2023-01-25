@@ -102,7 +102,7 @@ function draftForehead({
   paths.firstSeam = new Path()
     .move(points.point9)
     .curve(points.point9Cp1, points.point0Cp2, points.point0)
-    .setText('First Seam', textAttribute)
+    .setText('firstHeadSeam', textAttribute)
     .addClass('hidden')
 
   store.set('firstSeam', paths.firstSeam.length())
@@ -123,7 +123,7 @@ function draftForehead({
     .move(points.point2)
     .curve(points.point2Cp1, points.point3Cp2, points.point3)
     .curve(points.point3Cp1, points.point4Cp2, points.point4)
-    .setText('Eye top (4)', textAttribute)
+    .setText('eyeTop' + ' (4)', textAttribute)
     .addClass('hidden')
 
   paths.seam1 = new Path()
