@@ -45,7 +45,7 @@ function draftNose({
 
   points.pRotate = points.point0.shift(30, noseHeight)
 
-  paths.p0p1 = new Path().move(points.point0).line(points.point2)
+  paths.p0p1 = new Path().move(points.point0).line(points.point2).setClass('dashed mark')
 
   points.point1 = points.pRotate.shiftTowards(points.point2, noseHeight * -1)
 
@@ -62,18 +62,23 @@ function draftNose({
     paths.p1 = new Path()
       .move(points.point0)
       .curve(points.point0Cp1, points.point1Cp2, points.point1)
+      .setText('nose' + ' (10)', textAttribute)
 
     pl = paths.p1.length()
     console.log({ i: iteration, pl: pl, noseSide: noseSide })
   } while (iteration < 100 && pl - noseSide > 1)
 
-  points.pMiddle = points.point2.shiftFractionTowards(points.point1, 0.5)
+  points.pMiddle1 = points.point2.shiftFractionTowards(points.point1, 0.5)
 
   points.point3 = points.point1.flipX()
   points.point3Cp1 = points.point1Cp2.flipX()
   points.point0Cp2 = points.point0Cp1.flipX()
+  points.pMiddle2 = points.pMiddle1.flipX()
 
-  paths.p2 = new Path().move(points.point3).curve(points.point3Cp1, points.point0Cp2, points.point0)
+  paths.p2 = new Path()
+    .move(points.point3)
+    .curve(points.point3Cp1, points.point0Cp2, points.point0)
+    .setText('nose' + ' (10)', textAttribute)
 
   paths.seam = new Path()
     .move(points.point0)
@@ -150,6 +155,11 @@ function draftNose({
   }
   // Complete?
   if (complete) {
+    snippets.n1 = new Snippet('bnotch', points.point0)
+    snippets.n2 = new Snippet('notch', points.point1)
+    snippets.n3 = new Snippet('notch', points.point2)
+    snippets.n4 = new Snippet('notch', points.point3)
+
     // snippets.s1 = new Snippet('notch', points.p0)
     // snippets.s2 = new Snippet('notch', points.mP0)
     // points.title = points.p1

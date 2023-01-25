@@ -150,14 +150,18 @@ function draftEye({
       .move(points.ps3.shiftFractionTowards(points.p4, 0.1))
       .line(points.p4)
       .setText('3', textAttribute)
-    paths.ps3cross = new Path().move(points.ps3cross1).line(points.ps3cross2).addClass('dotted')
+    paths.ps3cross = new Path()
+      .move(points.ps3cross1)
+      .line(points.ps3cross2)
+      .addClass('dotted mark')
     // const props = pattern.draft().getRenderProps()1
     // props.svg.defs += marker
 
     paths.s3arrow = new Path()
-      .move(points.ps3a)
-      .curve(points.ps3aCp1, points.ps3bCp1, points.ps3b)
-      .addClass('dotted')
+      .move(points.ps3b)
+      .curve(points.ps3bCp1, points.ps3aCp1, points.ps3a)
+      .setText('sewTogether', textAttribute)
+      .addClass('dotted mark')
     // .attr('marker-end','url(#pointer)')
     // .attr('marker-start','url(#cutonfoldFrom)')
 
