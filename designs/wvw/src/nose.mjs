@@ -1,6 +1,6 @@
 import { pluginBundle } from '@freesewing/plugin-bundle'
-import { utils } from 'mocha'
 import { cheek } from './cheek.mjs'
+import { eye } from './eye.mjs'
 import { forehead } from './forehead.mjs'
 import { convertPoints } from './pointsUtil.mjs'
 
@@ -160,6 +160,19 @@ function draftNose({
     snippets.n3 = new Snippet('notch', points.point2)
     snippets.n4 = new Snippet('notch', points.point3)
 
+    macro('sewTogether', {
+      from: points.point1.shiftFractionTowards(points.point2, 0.25),
+      to: points.point1.shiftFractionTowards(points.point2, 0.75),
+      hinge: true,
+      prefix: 'st1',
+    })
+    macro('sewTogether', {
+      from: points.point2.shiftFractionTowards(points.point3, 0.25),
+      to: points.point2.shiftFractionTowards(points.point3, 0.75),
+      hinge: true,
+      prefix: 'st2',
+    })
+
     // snippets.s1 = new Snippet('notch', points.p0)
     // snippets.s2 = new Snippet('notch', points.mP0)
     // points.title = points.p1
@@ -205,7 +218,7 @@ function draftNose({
 
 export const nose = {
   name: 'nose',
-  after: [cheek, forehead],
+  after: [cheek, forehead, eye],
   plugins: [pluginBundle],
   draft: draftNose,
 }
