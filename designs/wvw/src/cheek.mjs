@@ -134,7 +134,7 @@ function draftCheek({
     .join(paths.eyeBottom)
     .join(paths.seam1)
     .close()
-    .attr('class', 'fabric')
+  // .attr('class', 'fabric')
 
   store.set('templeWidth', points.point6.dist(points.point7))
   store.set('noseBridgeWidth', points.point0.dist(points.point9))

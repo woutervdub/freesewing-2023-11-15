@@ -93,7 +93,7 @@ function draftLowermouth({
     .curve(points.point2Cp1, points.point3Cp2, points.point3)
     .curve(points.point3Cp1, points.point4Cp2, points.point4)
     .line(points.point5)
-    .setText('Upper Jaw', textAttribute)
+    .setText('upperJaw', textAttribute)
     .addClass('hidden')
 
   paths.backOfUpperJaw = new Path()
@@ -155,18 +155,18 @@ function draftLowermouth({
   paths.backOfMouth = new Path()
     .move(points.mPoint1)
     .line(points.point1)
-    .setText('Back of Mouth', textAttribute)
+    .setText('backOfMouth' + ' (11)', textAttribute)
     .setClass('dashed')
 
   paths.lowerJaw1 = new Path()
     .move(points.point2)
     .curve(points.point2ToLowerJaw, points.lowerJawToPoint2, points.lowerJaw)
-    .setText('Lower Jaw', textAttribute)
+    .setText('lowerJaw' + ' (14)', textAttribute)
     .setClass('dashed')
   paths.lowerJaw2 = new Path()
     .move(points.mPoint2)
     .curve(points.mPoint2ToLowerJaw, points.mLowerJawToPoint2, points.mLowerJaw)
-    .setText('Lower Jaw', textAttribute)
+    .setText('lowerJaw' + ' (14)', textAttribute)
     .setClass('dashed')
 
   store.set('lowerJaw', paths.lowerJaw1.length() + points.point1.dist(points.point2))
@@ -181,7 +181,7 @@ function draftLowermouth({
       nr: 6,
       at: points.title,
       scale: 0.5,
-      title: 'lowermouth',
+      title: 'lowerMouth',
     })
     // points.logo = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)
     // snippets.logo = new Snippet('logo', points.logo)
