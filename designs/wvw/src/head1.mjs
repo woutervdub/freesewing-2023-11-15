@@ -31,6 +31,9 @@ function draftHead1({
   points.point1 = points.point0.shift(180, 72.005 * sizeFactor)
   points.point1Cp1 = points.point1.shift(268.60871199245156, 55.97160080799901 * sizeFactor)
 
+  points.point0 = points.point0.shift(270, 5)
+  points.point0Cp2 = points.point0.shift(270.9766531413822, 42.41716221059584 * sizeFactor)
+
   paths.firstSeam = new Path()
     .move(points.point1)
     .curve(points.point1Cp1, points.point2Cp2, points.point2)
