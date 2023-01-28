@@ -251,6 +251,50 @@ function draftEye({
       hinge: true,
     })
 
+    // points.t1 = new Point( 100,100)
+    // points.t2 = new Point( 200,100)
+    // points.t1Cp = points.t1.shift(270,75)
+    // points.t2Cp = points.t2.shift(270,75)
+
+    // paths.t1 = new Path()
+    //   .move(points.t1)
+    //   .curve(points.t1Cp,points.t2Cp,points.t2)
+    //   .line(points.t1)
+    //   .close()
+
+    // macro('sewTogether', {
+    //   from: points.t1.shiftFractionTowards(points.t2,.75),
+    //   to: points.t1.shiftFractionTowards(points.t2,.25),
+    //   hinge: true,
+    //   prefix: 't1'
+    // })
+
+    // points.t3 = new Point( -10,100)
+    // points.t3a = new Point( 35,80)
+    // points.t4 = new Point( 80,100)
+    // points.t3Cp = points.t3.shift(270,50)
+    // points.t4Cp = points.t4.shift(270,50)
+
+    // paths.t2 = new Path()
+    //   .move(points.t3)
+    //   .curve(points.t3Cp,points.t4Cp,points.t4)
+    //   .line(points.t3a)
+    //   .line(points.t3)
+    //   .close()
+
+    // macro('sewTogether', {
+    //   from: points.t3a.shiftFractionTowards(points.t4,.5),
+    //   to: points.t3.shiftFractionTowards(points.t3a,.5),
+    //   middle: points.t3a,
+    //   hinge: true,
+    //   prefix: 't2'
+    // })
+
+    // if (sa) {
+    //   paths.sa1 = paths.t1.offset(sa).attr('class', 'fabric sa')
+    //   paths.sa2 = paths.t2.offset(sa).attr('class', 'fabric sa')
+    // }
+
     snippets.n1 = new Snippet('notch', points.p2)
     snippets.n2 = new Snippet('notch', points.p4)
     snippets.n3 = new Snippet('bnotch', points.pointNotch)

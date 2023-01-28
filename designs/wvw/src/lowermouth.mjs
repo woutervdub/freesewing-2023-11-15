@@ -85,16 +85,6 @@ function draftLowermouth({
 
   points.pointM1 = points.point0.shift(180, store.get('MouthWidth') / 2)
   points.pointM1Cp1 = points.pointM1.shift(270, 33.0746752291626 * sizeFactor)
-  points.point1Cp2 = points.point1.clone()
-
-  paths.upperJaw = new Path()
-    .move(points.point1)
-    .line(points.point2)
-    .curve(points.point2Cp1, points.point3Cp2, points.point3)
-    .curve(points.point3Cp1, points.point4Cp2, points.point4)
-    .line(points.point5)
-    .setText('upperJaw', textAttribute)
-    .addClass('hidden')
 
   paths.backOfUpperJaw = new Path()
     .move(points.point5)
@@ -122,7 +112,6 @@ function draftLowermouth({
       points.point2ToLowerJaw,
       points.pointM1Cp1,
       points.point1,
-      points.point1Cp2,
       points.point2,
       points.point2Cp1,
       points.point3,
@@ -138,18 +127,44 @@ function draftLowermouth({
   })
   console.log({ points: JSON.parse(JSON.stringify(points)) })
 
-  paths.seam = new Path()
-    .move(points.pointM1)
-    .curve(points.pointM1Cp1, points.point1Cp2, points.point1)
-    // .line(points.point1)
-    .join(paths.upperJaw)
-    .join(paths.backOfUpperJaw)
-    .curve(points.mPoint6Cp2, points.mPoint5Cp1, points.mPoint5)
+  paths.upperJaw1 = new Path()
+    .move(points.point1)
+    .line(points.point2)
+    .curve(points.point2Cp1, points.point3Cp2, points.point3)
+    .curve(points.point3Cp1, points.point4Cp2, points.point4)
+    .line(points.point5)
+    .setText('upperJaw' + ' (16)', textAttribute)
+    .addClass('hidden')
+
+  paths.upperJaw2 = new Path()
+    .move(points.mPoint5)
     .line(points.mPoint4)
     .curve(points.mPoint4Cp2, points.mPoint3Cp1, points.mPoint3)
     .curve(points.mPoint3Cp2, points.mPoint2Cp1, points.mPoint2)
     .line(points.mPoint1)
-    .curve(points.mPoint1Cp2, points.mPointM1Cp1, points.pointM1)
+    .setText('upperJaw' + ' (16)', textAttribute)
+    .addClass('hidden')
+
+  paths.front1 = new Path()
+    .move(points.mPoint1)
+    .curve_(points.mPointM1Cp1, points.pointM1)
+    .setText('(16)', textAttribute)
+    .addClass('hidden')
+
+  paths.front2 = new Path()
+    .move(points.pointM1)
+    .curve_(points.pointM1Cp1, points.point1)
+    .setText('(16)', textAttribute)
+    .addClass('hidden')
+
+  paths.seam = new Path()
+    .move(points.point1)
+    .join(paths.upperJaw1)
+    .join(paths.backOfUpperJaw)
+    .curve(points.mPoint6Cp2, points.mPoint5Cp1, points.mPoint5)
+    .join(paths.upperJaw2)
+    .join(paths.front1)
+    .join(paths.front2)
     .close()
 
   paths.backOfMouth = new Path()

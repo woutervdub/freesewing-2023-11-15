@@ -74,13 +74,13 @@ function draftCheek({
   paths.mouthTop = new Path()
     .move(points.point3)
     .curve(points.point3Cp1, points.point4Cp2, points.point4)
-    .setText('mouthTop', textAttribute)
+    .setText('mouthTop' + ' (16)', textAttribute)
     .addClass('hidden')
 
   paths.upperJaw = new Path()
     .move(points.point4)
     .curve(points.point4Cp1, points.point5Cp2, points.point5)
-    .setText('upperJaw', textAttribute)
+    .setText('upperJaw' + ' (16)', textAttribute)
     .addClass('hidden')
 
   paths.nose = new Path()
