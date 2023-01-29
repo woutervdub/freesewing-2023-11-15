@@ -34,7 +34,6 @@ function draftHead3({
   points.point4 = points.point0.shift(128.37, 82.29999999999998 * sizeFactor)
   points.point4Cp1 = points.point4.shift(280, 20 * sizeFactor)
   points.point3 = points.point0.shift(122.10525602099625, 99.24923435875874 * sizeFactor)
-  // points.point3Cp2 = points.point3.shift(54.484617512340854, 27.201796658909853 * sizeFactor)
   points.point3Cp2 = points.point3.shift(75, 20 * sizeFactor)
   points.point2 = points.point0.shift(92.0479806305003, 131.18279286933938 * sizeFactor)
   points.point2Cp2 = points.point2.shift(286.4630945432234, 43.38779202725112 * sizeFactor)
@@ -44,7 +43,6 @@ function draftHead3({
   points.point1Cp1 = points.point1.shift(86.08762325510818, 17.602020395397776 * sizeFactor)
 
   points.dartPoint0 = points.point4.clone()
-  // points.dartPoint0Cp1 = points.dartPoint0.shift(9.122184908835848, 15.674240045373793 * sizeFactor)
   points.dartPoint0Cp1 = points.dartPoint0.shift(10, 15.674240045373793 * sizeFactor)
   points.dartPoint1 = points.point0.shift(93.69495535762911, 79.06034303618978 * sizeFactor)
   points.dartPoint1Cp1 = points.dartPoint1.shift(190.57289744169927, 19.19488590744941 * sizeFactor)
@@ -55,35 +53,18 @@ function draftHead3({
   points.dartPoint2 = points.point3.clone()
   points.dartPoint2Cp2 = points.dartPoint2.shift(345, 15.211717490145492 * sizeFactor)
 
-  console.log({
-    l: new Path().move(points.point5).line(points.point0).length(),
-    hob: store.get('halfOfBack'),
-    head2: store.get('head2width'),
-  })
-
   let lowerWidth = store.get('halfOfBack') - store.get('head2width')
   let tsAdjustment =
     store.get('thirdSeam') -
     new Path().move(points.point2).curve(points.point2Cp1, points.point3Cp2, points.point3).length()
 
   let x = utils.circlesIntersect(points.dartPoint0, tsAdjustment, points.point0, lowerWidth)
-
-  console.log(x)
-
   if (x) {
     points.point5 = x[0].clone()
   } else {
     log.error('Something is not quite right here!')
   }
 
-  // points.point5 = points.point5.shift(
-  //   0,
-  //   new Path()
-  //     .move(points.point5)
-  //     .curve(points.point5Cp1, points.point0Cp2, points.point0)
-  //     .length() -
-  //     (store.get('backOfLowerJaw') - store.get('head2width'))
-  // )
   points.point5Cp1 = points.point5.shift(359.48476820979687, 24.91000716579583 * sizeFactor)
 
   paths.thirdSeam1 = new Path()
@@ -91,6 +72,7 @@ function draftHead3({
     .curve(points.point2Cp1, points.point3Cp2, points.point3)
     .setText('18', textAttribute)
     .addClass('hidden')
+
   paths.thirdSeam2 = new Path()
     .move(points.point4)
     .line(points.point5)
@@ -110,24 +92,6 @@ function draftHead3({
     .setText('21', textAttribute)
     .addClass('hidden')
 
-  console.log({
-    ts1: paths.thirdSeam1.length(),
-    ts2: paths.thirdSeam1.length(),
-    ts: paths.thirdSeam1.length() + paths.thirdSeam1.length(),
-    thirdSeam: store.get('thirdSeam'),
-  })
-
-  console.log({
-    l1: new Path()
-      .move(points.dartPoint0)
-      .curve(points.dartPoint0Cp1, points.dartPoint1Cp2, points.dartPoint1)
-      .length(),
-    l2: new Path()
-      .move(points.dartPoint1)
-      .curve(points.dartPoint1Cp1, points.dartPoint2Cp2, points.dartPoint2)
-      .length(),
-  })
-
   paths.dart = new Path()
     .move(points.dartPoint0)
     .curve(points.dartPoint0Cp1, points.dartPoint1Cp2, points.dartPoint1)
@@ -142,10 +106,6 @@ function draftHead3({
     .join(paths.bottom)
     .close()
 
-  // console.log({ points: JSON.parse(JSON.stringify(points)) })
-  // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
-  // convertPoints(points)
-
   // Complete?
   if (complete) {
     points.title = points.point4
@@ -155,7 +115,7 @@ function draftHead3({
       nr: 5,
       at: points.title,
       scale: 0.5,
-      title: 'head3',
+      title: 'head' + '3',
     })
     // points.logo = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)
     // snippets.logo = new Snippet('logo', points.logo)

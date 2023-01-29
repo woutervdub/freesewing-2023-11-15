@@ -73,23 +73,27 @@ function draftForehead({
     .line(points.point2)
     .setText('1', textAttribute)
     .addClass('hidden')
+
   paths.seam2 = new Path()
     .move(points.point4)
     .line(points.point5)
     .setText('2', textAttribute)
     .addClass('hidden')
+
   paths.seam6a = new Path()
     .move(points.point5)
     .curve(points.point5Cp1, points.point6Cp2, points.point6)
     .setText('6', textAttribute)
     .attr('data-text-text-decoration', 'underline')
     .addClass('hidden')
+
   paths.seam6b = new Path()
     .move(points.point8)
     .line(points.point9)
     .setText('6', textAttribute)
     .attr('data-text-text-decoration', 'underline')
     .addClass('hidden')
+
   paths.seam7 = new Path()
     .move(points.point0)
     .curve(points.point0Cp1, points.point1Cp2, points.point1)

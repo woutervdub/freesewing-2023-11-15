@@ -38,12 +38,9 @@ function draftJawfloor({
   points.point5 = points.point0.shift(3.560698409188234, 135.3172211952344 * sizeFactor)
 
   points.point6 = points.point0.shift(90.34672828513591, 8.097148263432018 * sizeFactor)
-  points.point6Cp1 = points.point6.shift(0, 0 * sizeFactor)
   points.point0Cp2 = points.point0.shift(89.35665584015415, 4.809303171978241 * sizeFactor)
 
-  // points.point5 = points.point5.shift(0, (points.point4.dist(points.point5) / 3) * sizeFactor)
   points.point5 = points.point5.shift(0, points.point4.dist(points.point5) / 3)
-  // points.point5Cp2 = points.point5.shift(270, (points.point4.dist(points.point5) / 3) * sizeFactor)
   points.point5Cp2 = points.point5.shift(270, points.point4.dist(points.point5) / 3)
 
   macro('mirror', {
@@ -66,7 +63,6 @@ function draftJawfloor({
       points.point4,
       points.point5Cp2,
       points.point5,
-      points.point6Cp1,
       points.point6,
     ],
     prefix: 'm',
@@ -74,7 +70,7 @@ function draftJawfloor({
 
   paths.bottomJaw1 = new Path()
     .move(points.point6)
-    .curve(points.point6Cp1, points.point0Cp2, points.point0)
+    ._curve(points.point0Cp2, points.point0)
     .curve(points.point0Cp1, points.point1Cp2, points.point1)
     .curve(points.point1Cp1, points.point2Cp2, points.point2)
     .curve(points.point2Cp1, points.point3Cp2, points.point3)
@@ -88,12 +84,9 @@ function draftJawfloor({
     .curve(points.mPoint3Cp2, points.mPoint2Cp1, points.mPoint2)
     .curve(points.mPoint2Cp2, points.mPoint1Cp1, points.mPoint1)
     .curve(points.mPoint1Cp2, points.mPoint0Cp1, points.mPoint0)
-    .curve(points.mPoint0Cp2, points.mPoint6Cp1, points.point6)
-    // .curve(points.point6Cp1, points.point0Cp2, points.point0)
+    .curve_(points.mPoint0Cp2, points.point6)
     .setText('jawBottom' + ' (15)', textAttribute)
     .addClass('hidden')
-
-  // points.point4 = points.point4.shift(0, store.get('bottomJaw') - paths.bottomJaw1.length())
 
   paths.seam = new Path()
     .move(points.point6)
@@ -103,18 +96,10 @@ function draftJawfloor({
     .join(paths.bottomJaw2)
     .close()
 
-  console.log({ bjCalc: paths.bottomJaw1.length() })
-  console.log({ bottomJaw: store.get('bottomJaw') })
-
   store.set(
     'backOfLowerJaw',
     new Path().move(points.point4).curve(points.point4, points.point5Cp2, points.point5).length()
   )
-  console.log({ bolj: store.get('backOfLowerJaw') })
-
-  console.log({ points: JSON.parse(JSON.stringify(points)) })
-  // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
-  // convertPoints(points)
 
   // Complete?
   if (complete) {

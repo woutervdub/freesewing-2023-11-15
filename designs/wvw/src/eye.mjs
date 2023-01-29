@@ -117,20 +117,6 @@ function draftEye({
   var eyeDiameter = (eyeCircumference / Math.PI) * 2
 
   const c = 0.55191502449351
-  // const c = 0.75
-
-  // points.b0 = new Point(0,0).shift(0,eyeDiameter*1.5).shift(90,eyeDiameter*1.5)
-  // points.b1 = new Point(0,0).shift(180,eyeDiameter*1.5).shift(90,eyeDiameter*1.5)
-  // points.b2 = new Point(0,0).shift(180,eyeDiameter*1.5).shift(270,eyeDiameter*1.5)
-  // points.b3 = new Point(0,0).shift(0,eyeDiameter*1.5).shift(270,eyeDiameter*1.5)
-
-  // paths.box = new Path()
-  //   .move(points.b0)
-  //   .line(points.b1)
-  //   .line(points.b2)
-  //   .line(points.b3)
-  //   .close()
-
   points.point0 = new Point(0, 0)
   points.point2 = points.point0.shift(0, eyeDiameter / 2).shift(90, eyeDiameter / 2)
   points.point0Cp1 = points.point0.shift(0, (eyeDiameter / 2) * c)
@@ -141,9 +127,6 @@ function draftEye({
   points.point1 = p.shiftAlong(p.length() / 2)
 
   let sp = p.split(points.point1)
-
-  // paths.p1 = sp[0].clone()
-  // paths.p2 = sp[1].clone()
 
   points.p0 = sp[0].ops[0].to.clone()
   points.p0Cp1 = sp[0].ops[1].cp1.clone()
@@ -165,13 +148,6 @@ function draftEye({
   points.p3Cp2 = points.p1Cp1.flipX()
   points.p3Cp1 = points.p1Cp2.flipX()
 
-  // paths.eyeTop = new Path()
-  //   .move(points.p4)
-  //   .curve(points.p4Cp1, points.p3Cp2, points.p3)
-  //   .curve(points.p3Cp1, points.point9Cp2, points.point9)
-  //   .setText('eyeBottom'+' (4)', textAttribute)
-  //   .addClass('hidden')
-
   paths.eye = new Path()
     .move(points.p4)
     .curve(points.p4Cp1, points.p3Cp2, points.p3)
@@ -192,20 +168,12 @@ function draftEye({
     .line(points.p4)
     .close()
 
-  console.log({ sLength: p.length() })
-  console.log({
-    nLength: new Path()
-      .move(points.p4)
-      .curve(points.p4Cp1, points.p3Cp2, points.p3)
-      .curve(points.p3Cp1, points.p0Cp2, points.p0)
-      .length(),
-  })
-
   // Complete?
   if (complete) {
     points.title = points.p4
       .shiftFractionTowards(points.p1, 0.45)
       .shiftFractionTowards(points.p0, 0.6)
+
     macro('title', {
       nr: 9,
       at: points.title,
@@ -221,79 +189,11 @@ function draftEye({
     points.ps3b = points.p2.shiftFractionTowards(points.p4, 0.75)
     points.ps3bCp1 = points.ps3b.shift(270, points.p4.dist(points.p2) / 6)
 
-    // paths.ps3a = new Path()
-    //   .move(points.p2)
-    //   .line(points.ps3.shiftFractionTowards(points.p2, 0.1))
-    //   .setText('3', textAttribute)
-    // paths.ps3b = new Path()
-    //   .move(points.ps3.shiftFractionTowards(points.p4, 0.1))
-    //   .line(points.p4)
-    //   .setText('3', textAttribute)
-    // paths.ps3cross = new Path()
-    //   .move(points.ps3cross1)
-    //   .line(points.ps3cross2)
-    //   .addClass('dotted mark')
-    // const props = pattern.draft().getRenderProps()1
-    // props.svg.defs += marker
-
-    // paths.s3arrow = new Path()
-    //   .move(points.ps3b)
-    //   .curve(points.ps3bCp1, points.ps3aCp1, points.ps3a)
-    //   .setText('sewTogether', textAttribute)
-    //   .addClass('dotted mark')
-    //   .attr('marker-start','url(#pointerStart)')
-    //   .attr('marker-end','url(#pointerEnd)')
-    // .attr('marker-start','url(#cutonfoldFrom)')
-
     macro('sewTogether', {
       from: points.ps3a,
       to: points.ps3b,
       hinge: true,
     })
-
-    // points.t1 = new Point( 100,100)
-    // points.t2 = new Point( 200,100)
-    // points.t1Cp = points.t1.shift(270,75)
-    // points.t2Cp = points.t2.shift(270,75)
-
-    // paths.t1 = new Path()
-    //   .move(points.t1)
-    //   .curve(points.t1Cp,points.t2Cp,points.t2)
-    //   .line(points.t1)
-    //   .close()
-
-    // macro('sewTogether', {
-    //   from: points.t1.shiftFractionTowards(points.t2,.75),
-    //   to: points.t1.shiftFractionTowards(points.t2,.25),
-    //   hinge: true,
-    //   prefix: 't1'
-    // })
-
-    // points.t3 = new Point( -10,100)
-    // points.t3a = new Point( 35,80)
-    // points.t4 = new Point( 80,100)
-    // points.t3Cp = points.t3.shift(270,50)
-    // points.t4Cp = points.t4.shift(270,50)
-
-    // paths.t2 = new Path()
-    //   .move(points.t3)
-    //   .curve(points.t3Cp,points.t4Cp,points.t4)
-    //   .line(points.t3a)
-    //   .line(points.t3)
-    //   .close()
-
-    // macro('sewTogether', {
-    //   from: points.t3a.shiftFractionTowards(points.t4,.5),
-    //   to: points.t3.shiftFractionTowards(points.t3a,.5),
-    //   middle: points.t3a,
-    //   hinge: true,
-    //   prefix: 't2'
-    // })
-
-    // if (sa) {
-    //   paths.sa1 = paths.t1.offset(sa).attr('class', 'fabric sa')
-    //   paths.sa2 = paths.t2.offset(sa).attr('class', 'fabric sa')
-    // }
 
     snippets.n1 = new Snippet('notch', points.p2)
     snippets.n2 = new Snippet('notch', points.p4)

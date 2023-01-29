@@ -39,34 +39,24 @@ function draftLowermouth({
 
   points.point1 = points.point1.shift(
     90,
-    points.point0.dist(points.point1) - store.get('MouthWidth') / 2
+    points.point0.dist(points.point1) - store.get('mouthWidth') / 2
   )
   points.point2 = points.point2.shift(
     90,
-    points.point0.dist(points.point1) - store.get('MouthWidth') / 2
+    points.point0.dist(points.point1) - store.get('mouthWidth') / 2
   )
   points.point2Cp1 = points.point2.shift(358.24231642721344, 5.05337768230318 * sizeFactor)
   points.point3 = points.point3.shift(
     90,
-    points.point0.dist(points.point1) - store.get('MouthWidth') / 2
+    points.point0.dist(points.point1) - store.get('mouthWidth') / 2
   )
   points.point3Cp1 = points.point3.shift(270, 23.140963009347697 * sizeFactor)
   points.point3Cp2 = points.point3.shift(90, 6.745097849549684 * sizeFactor)
   points.point4 = points.point4.shift(
     90,
-    points.point0.dist(points.point1) - store.get('MouthWidth') / 2
+    points.point0.dist(points.point1) - store.get('mouthWidth') / 2
   )
   points.point4Cp2 = points.point4.shift(178.12857030706965, 15.433231709528583 * sizeFactor)
-
-  console.log({ upperJaw: store.get('upperJaw') })
-  console.log({
-    upperJaw: new Path()
-      .move(points.point1)
-      .line(points.point2)
-      .curve(points.point2Cp1, points.point3Cp2, points.point3)
-      .curve(points.point3Cp1, points.point4Cp2, points.point4)
-      .length(),
-  })
 
   points.point5 = points.point4.shift(
     0,
@@ -83,7 +73,7 @@ function draftLowermouth({
   points.point6 = new Point(points.point5.x, points.point0.y).shift(0, points.point5.x * 0.2)
   points.point6Cp2 = points.point6.shift(270, 5 * sizeFactor)
 
-  points.pointM1 = points.point0.shift(180, store.get('MouthWidth') / 2)
+  points.pointM1 = points.point0.shift(180, store.get('mouthWidth') / 2)
   points.pointM1Cp1 = points.pointM1.shift(270, 33.0746752291626 * sizeFactor)
 
   paths.backOfUpperJaw = new Path()
@@ -189,14 +179,11 @@ function draftLowermouth({
 
   store.set('lowerJaw', paths.lowerJaw1.length() + points.point1.dist(points.point2))
 
-  // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
-  // convertPoints(points)
-
   // Complete?
   if (complete) {
     points.title = points.pointM1.shiftFractionTowards(points.point6, 0.5)
     macro('title', {
-      nr: 6,
+      nr: 7,
       at: points.title,
       scale: 0.5,
       title: 'lowerMouth',

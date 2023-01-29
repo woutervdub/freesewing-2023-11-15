@@ -34,35 +34,6 @@ function draftLowerjaw({
 
   let mouthTop = store.get('mouthTop')
 
-  let iterations = 0
-  var p
-  do {
-    iterations++
-
-    points.point5Cp1 = points.point5.shift(75.9444990655226, 20.20491645614997 * sizeFactor)
-    points.point5Cp2 = points.point5.shift(345.5004759497096, 34.22507831985195 * sizeFactor)
-    p = new Path().move(points.point5).curve(points.point5Cp1, points.point0Cp2, points.point0)
-
-    points.point5 = points.point5.shift(270, (mouthTop - p.length()) * 0.5)
-
-    console.log({ mouthTop: mouthTop, seriously: p.length() })
-  } while (iterations < 100 && (mouthTop - p.length() > 0.1 || mouthTop - p.length() < -0.1))
-  if (iterations >= 100) {
-    log.error('Something is not quite right here!')
-  }
-
-  points.point2 = points.point2.shift(270, (mouthTop - p.length()) * 0.5)
-  points.point3 = points.point3.shift(270, (mouthTop - p.length()) * 0.5)
-  points.point4 = points.point4.shift(270, (mouthTop - p.length()) * 0.5)
-
-  points.point2Cp1 = points.point2.shift(293.4914135377402, 11.81852114268109 * sizeFactor)
-  points.point2Cp2 = points.point2.shift(113.48599545649276, 6.360957553702117 * sizeFactor)
-  points.point3Cp1 = points.point3.shift(353.2277046181922, 15.755934754878876 * sizeFactor)
-  points.point3Cp2 = points.point3.shift(173.22478394781675, 8.959567958333698 * sizeFactor)
-  points.point4Cp1 = points.point4.shift(81.59670910061827, 40.16016187716384 * sizeFactor)
-  points.point4Cp2 = points.point4.shift(165.77964223723035, 21.20887976768222 * sizeFactor)
-  // convertPoints(points, 90)
-
   points.point0 = new Point(0, 0)
   points.point0Cp2 = points.point0.shift(354.9481781658739, 16.659715303689914 * sizeFactor)
   points.point1 = points.point0.shift(264.91311161963836, 43.0264648094635 * sizeFactor)
@@ -81,8 +52,8 @@ function draftLowerjaw({
   points.point5Cp2 = points.point5.shift(76.26126036953632, 34.11095664483535 * sizeFactor)
   points.point0 = new Point(0, 0)
 
-  // let iterations = 0
-  // var p
+  let iterations = 0
+  var p
   do {
     iterations++
 
@@ -103,8 +74,6 @@ function draftLowerjaw({
     .move(points.point5)
     .curve(points.point5Cp1, points.point0Cp2, points.point0)
     .length()
-
-  console.log({ mouthTop: mouthTop, mt: mt })
 
   points.point4 = points.point4.shift(
     355,
@@ -142,21 +111,12 @@ function draftLowerjaw({
   paths.seam = new Path()
     .move(points.point0)
     .join(paths.front)
-    .curve(points.point1Cp1, points.point2Cp2, points.point2)
-    .curve(points.point2Cp1, points.point3Cp2, points.point3)
-    .curve(points.point3Cp1, points.point4Cp2, points.point4)
+    .join(paths.bottomJaw)
     .join(paths.lowerJaw)
     .join(paths.mouthBottom)
     .close()
 
   store.set('bottomJaw', paths.bottomJaw.length())
-
-  console.log({ lowerJaw: paths.lowerJaw.length() })
-  console.log({ ljCalc: store.get('lowerJaw') })
-
-  // console.log({ points: JSON.parse(JSON.stringify(points)) })
-  // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
-  // convertPoints(points,90)
 
   // Complete?
   if (complete) {

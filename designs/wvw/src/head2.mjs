@@ -86,6 +86,7 @@ function draftHead2({
     .curve_(points.point1Cp1, points.point2)
     .setText('17', textAttribute)
     .addClass('hidden')
+
   paths.thirdSeam = new Path()
     .move(points.point3)
     .curve(points.point3Cp1, points.point4Cp2, points.point4)
@@ -104,14 +105,12 @@ function draftHead2({
     .setText('21', textAttribute)
     .addClass('hidden')
 
-  console.log({ thirdSeam: paths.thirdSeam.length() - points.dartPoint0.dist(points.dartPoint2) })
   store.set('thirdSeam', paths.thirdSeam.length() - points.dartPoint0.dist(points.dartPoint2))
   store.set('head2width', points.point2.dist(points.point3))
   paths.dart = new Path()
     .move(points.dartPoint0)
     ._curve(points.dartPoint1Cp2, points.dartPoint1)
     .curve_(points.dartPoint1Cp1, points.dartPoint2)
-  // .close()
 
   paths.seam = new Path()
     .move(points.point0)
@@ -128,7 +127,7 @@ function draftHead2({
       nr: 4,
       at: points.title,
       scale: 0.5,
-      title: 'head2',
+      title: 'head' + '2',
     })
     // points.logo = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)
     // snippets.logo = new Snippet('logo', points.logo)
