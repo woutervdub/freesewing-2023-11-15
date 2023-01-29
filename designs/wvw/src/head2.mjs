@@ -29,7 +29,6 @@ function draftHead2({
   points.point1Cp1 = points.point1.shift(268.2738211037443, 30.242724116719366 * sizeFactor)
   points.point1Cp2 = points.point1.shift(88.2745252696326, 18.83053830882166 * sizeFactor)
   points.point2 = points.point0.shift(272.3327760921532, 153.20596573567235 * sizeFactor)
-  points.point2Cp2 = points.point2.shift(0, 0 * sizeFactor)
   points.point3 = points.point0.shift(282.5001868336755, 164.15422647315543 * sizeFactor)
   points.point3Cp1 = points.point3.shift(81.44269285511335, 54.758598457228615 * sizeFactor)
   points.point4 = points.point0.shift(340.927384878832, 52.16879559660159 * sizeFactor)
@@ -45,7 +44,7 @@ function draftHead2({
     p = new Path()
       .move(points.point0)
       .curve(points.point0Cp1, points.point1Cp2, points.point1)
-      .curve(points.point1Cp1, points.point2Cp2, points.point2)
+      .curve_(points.point1Cp1, points.point2)
 
     if (secondSeam - p.length() > 0.1 || secondSeam - p.length() < -0.1) {
       points.point0 = points.point0.shift(90, secondSeam - p.length())
@@ -80,18 +79,29 @@ function draftHead2({
     .move(points.point3)
     .curve(points.point3Cp1, points.point4Cp2, points.point4)
     .shiftAlong(92.81578231343269 * sizeFactor)
-  // points.dartPoint2Cp2 = points.dartPoint2.clone()
 
   paths.secondSeam = new Path()
     .move(points.point0)
     ._curve(points.point1Cp2, points.point1)
-    .curve(points.point1Cp1, points.point2Cp2, points.point2)
-    .setText('Second Seam', textAttribute)
+    .curve_(points.point1Cp1, points.point2)
+    .setText('17', textAttribute)
     .addClass('hidden')
   paths.thirdSeam = new Path()
     .move(points.point3)
     .curve(points.point3Cp1, points.point4Cp2, points.point4)
-    .setText('Third Seam', textAttribute)
+    .setText('18', textAttribute)
+    .addClass('hidden')
+
+  paths.top = new Path()
+    .move(points.point4)
+    .curve(points.point4, points.point0Cp2, points.point0)
+    .setText('19', textAttribute)
+    .addClass('hidden')
+
+  paths.bottom = new Path()
+    .move(points.point2)
+    .line(points.point3)
+    .setText('21', textAttribute)
     .addClass('hidden')
 
   console.log({ thirdSeam: paths.thirdSeam.length() - points.dartPoint0.dist(points.dartPoint2) })
@@ -105,11 +115,10 @@ function draftHead2({
 
   paths.seam = new Path()
     .move(points.point0)
-    .curve(points.point0Cp1, points.point1Cp2, points.point1)
-    .curve(points.point1Cp1, points.point2Cp2, points.point2)
-    .line(points.point3)
-    .curve(points.point3Cp1, points.point4Cp2, points.point4)
-    .curve(points.point4, points.point0Cp2, points.point0)
+    .join(paths.secondSeam)
+    .join(paths.bottom)
+    .join(paths.thirdSeam)
+    .join(paths.top)
     .close()
 
   // Complete?

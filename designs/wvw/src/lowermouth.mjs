@@ -89,6 +89,8 @@ function draftLowermouth({
   paths.backOfUpperJaw = new Path()
     .move(points.point5)
     .curve(points.point5Cp1, points.point6Cp2, points.point6)
+    .setText('21', textAttribute)
+    .addClass('hidden')
 
   points.lowerJaw = paths.backOfUpperJaw.shiftAlong(store.get('upperJawToLowerJaw'))
   var ljAngle = points.lowerJaw.angle(
@@ -157,11 +159,12 @@ function draftLowermouth({
     .setText('(16)', textAttribute)
     .addClass('hidden')
 
+  paths.backOfUpperJaw.curve(points.mPoint6Cp2, points.mPoint5Cp1, points.mPoint5)
+
   paths.seam = new Path()
     .move(points.point1)
     .join(paths.upperJaw1)
     .join(paths.backOfUpperJaw)
-    .curve(points.mPoint6Cp2, points.mPoint5Cp1, points.mPoint5)
     .join(paths.upperJaw2)
     .join(paths.front1)
     .join(paths.front2)

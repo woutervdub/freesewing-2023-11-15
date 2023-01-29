@@ -37,7 +37,7 @@ function draftHead1({
   paths.firstSeam = new Path()
     .move(points.point1)
     .curve(points.point1Cp1, points.point2Cp2, points.point2)
-    .setText('First Seam', textAttribute)
+    .setText('20', textAttribute)
     .addClass('hidden')
 
   points.fs1 = paths.firstSeam.shiftAlong(store.get('firstSeam'))
@@ -51,21 +51,23 @@ function draftHead1({
   paths.secondSeam = new Path()
     .move(points.point2)
     .curve(points.point2Cp1, points.point0Cp2, points.point0)
-    .setText('Second Seam', textAttribute)
+    .setText('17', textAttribute)
+    .addClass('hidden')
+
+  paths.top = new Path()
+    .move(points.point0)
+    .line(points.point1)
+    .setText('19', textAttribute)
     .addClass('hidden')
 
   store.set('secondSeam', paths.secondSeam.length())
 
   paths.seam = new Path()
     .move(points.point0)
-    .line(points.point1)
-    .curve(points.point1Cp1, points.point2Cp2, points.point2)
-    .curve(points.point2Cp1, points.point0Cp2, points.point0)
+    .join(paths.top)
+    .join(paths.firstSeam)
+    .join(paths.secondSeam)
     .close()
-
-  // console.log({ points: JSON.parse(JSON.stringify(points)) })
-  // console.log({ paths: JSON.parse(JSON.stringify(paths)) })
-  // convertPoints(points,270)
 
   // Complete?
   if (complete) {
