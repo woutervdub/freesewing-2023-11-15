@@ -93,13 +93,13 @@ function draftNose({
     snippets.n3 = new Snippet('notch', points.point2)
     snippets.n4 = new Snippet('notch', points.point3)
 
-    macro('sewTogether', {
+    macro('sewtogether', {
       from: points.point1.shiftFractionTowards(points.point2, 0.25),
       to: points.point1.shiftFractionTowards(points.point2, 0.75),
       hinge: true,
       prefix: 'st1',
     })
-    macro('sewTogether', {
+    macro('sewtogether', {
       from: points.point2.shiftFractionTowards(points.point3, 0.25),
       to: points.point2.shiftFractionTowards(points.point3, 0.75),
       hinge: true,

@@ -117,6 +117,7 @@ plugin-bundle:
     '@freesewing/plugin-banner': *freesewing
     '@freesewing/plugin-buttons': *freesewing
     '@freesewing/plugin-cutonfold': *freesewing
+    '@freesewing/plugin-sewtogether': *freesewing
     '@freesewing/plugin-dimension': *freesewing
     '@freesewing/plugin-grainline': *freesewing
     '@freesewing/plugin-logo': *freesewing
@@ -143,6 +144,7 @@ plugintest:
     '@freesewing/plugin-notches': *freesewing
     '@freesewing/plugin-round': *freesewing
     '@freesewing/plugin-scalebox': *freesewing
+    '@freesewing/plugin-sewtogether': *freesewing
     '@freesewing/plugin-sprinkle': *freesewing
     '@freesewing/plugin-svgattr': *freesewing
     '@freesewing/plugin-theme': *freesewing

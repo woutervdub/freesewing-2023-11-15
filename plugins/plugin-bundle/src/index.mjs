@@ -10,6 +10,7 @@ import { mirrorPlugin } from '../../plugin-mirror/src/index.mjs'
 import { notchesPlugin } from '../../plugin-notches/src/index.mjs'
 import { roundPlugin } from '../../plugin-round/src/index.mjs'
 import { scaleboxPlugin } from '../../plugin-scalebox/src/index.mjs'
+import { sewtogetherPlugin } from '../../plugin-sewtogether/src/index.mjs'
 import { sprinklePlugin } from '../../plugin-sprinkle/src/index.mjs'
 import { titlePlugin } from '../../plugin-title/src/index.mjs'
 import { name, version } from '../data.mjs'
@@ -27,6 +28,7 @@ const bundledPlugins = [
   notchesPlugin,
   roundPlugin,
   scaleboxPlugin,
+  sewtogetherPlugin,
   sprinklePlugin,
   titlePlugin,
 ]

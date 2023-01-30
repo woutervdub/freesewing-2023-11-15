@@ -56,6 +56,7 @@
     "@freesewing/plugin-banner": "3.0.0-alpha.4",
     "@freesewing/plugin-buttons": "3.0.0-alpha.4",
     "@freesewing/plugin-cutonfold": "3.0.0-alpha.4",
+    "@freesewing/plugin-sewtogether": "3.0.0-alpha.4",
     "@freesewing/plugin-dimension": "3.0.0-alpha.4",
     "@freesewing/plugin-grainline": "3.0.0-alpha.4",
     "@freesewing/plugin-logo": "3.0.0-alpha.4",

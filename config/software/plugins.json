@@ -17,6 +17,7 @@
   "plugin-notches": "A FreeSewing plugin that provides front and back notch snippets",
   "plugin-round": "A FreeSewing plugin to round corners",
   "plugin-scalebox": "A FreeSewing plugin to add a scalebox to your pattern",
+  "plugin-sewtogether": "A FreeSewing plugin to add sew-together indicators on your patterns",
   "plugin-sprinkle": "A FreeSewing plugin to bulk-add snippets to your pattern",
   "plugin-svgattr": "A FreeSewing plugin to set SVG attributes",
   "plugin-theme": "A FreeSewing plugin that provides a default theme",
