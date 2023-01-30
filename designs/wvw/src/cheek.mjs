@@ -165,12 +165,10 @@ function draftCheek({
     snippets.n5 = new Snippet('bnotch', points.point7)
     snippets.n6 = new Snippet('bnotch', points.point2)
 
-    // points.logo = points.topLeft.shiftFractionTowards(points.bottomRight, 0.5)
-    // snippets.logo = new Snippet('logo', points.logo)
-    // points.text = points.logo
-    //   .shift(-90, w / 8)
-    //   .attr('data-text', 'hello')
-    //   .attr('data-text-class', 'center')
+    points.logo = points.point7
+      .shiftFractionTowards(points.point5, 0.5)
+      .shiftFractionTowards(points.point4, 0.25)
+    snippets.logo = new Snippet('logo', points.logo).attr('data-scale', 0.3)
 
     if (sa) {
       paths.sa = paths.seam.offset(sa).attr('class', 'fabric sa')
