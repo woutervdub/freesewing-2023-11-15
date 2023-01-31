@@ -332,6 +332,13 @@
       "design": "Biou",
       "difficulty": 3,
       "tags": ["tops"]
+    },
+    "zoot": {
+      "description": "A FreeSewing pattern that needs a description",
+      "code": "Coder name",
+      "design": "Designer name",
+      "difficulty": 1,
+      "tags": ["tagname"]
     }
   },
   "utilities": {
