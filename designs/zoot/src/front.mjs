@@ -21,6 +21,7 @@ function draftZootFront({
   log,
   part,
 }) {
+  const pleatRatios = [[0], [1], [0.6, 0.4], [0.5, 0.25, 0.25], [0.4, 0.2, 0.2, 0.2]]
   const rotatePoints = (angle, center, pointList) => {
     console.log({ angle: angle, center: center, pointList: pointList })
     pointList.forEach((pointName) => {
@@ -32,35 +33,139 @@ function draftZootFront({
     })
   }
 
+  const addPleat = (pleats, pleatNr, pointTop, pointBottom) => {
+    const pleatSize = ((measurements.waist * options.pleatSize) / 4) * pleatRatios[pleats][pleatNr]
+
+    var iteration = 0,
+      diff = pleatSize
+    points['pleatIn' + pleatNr] = pointTop.clone()
+    points['pleatMid' + pleatNr] = pointTop.clone()
+    points['pleatOut' + pleatNr] = pointTop.clone()
+    points['pleatBot' + pleatNr] = pointBottom.clone()
+    do {
+      iteration++
+      if ('foldInwards' != options.pleatStyle) {
+        points['pleatOut' + pleatNr] = points['pleatOut' + pleatNr].rotate(
+          360 + diff / 50,
+          pointBottom
+        )
+      }
+      if ('foldOutwards' != options.pleatStyle) {
+        points['pleatIn' + pleatNr] = points['pleatIn' + pleatNr].rotate(
+          360 - diff / 50,
+          pointBottom
+        )
+      }
+      diff = pleatSize - points['pleatOut' + pleatNr].dist(points['pleatIn' + pleatNr])
+      console.log({ i: iteration, p: pleatSize, diff: diff })
+    } while (iteration < 100 && (diff > 1 || diff < -1))
+
+    let angleIn =
+      pointBottom.angle(pointTop) - points.grainlineBottom.angle(points['pleatIn' + pleatNr])
+    let angleOut =
+      pointBottom.angle(pointTop) - points.grainlineBottom.angle(points['pleatOut' + pleatNr])
+    console.log({ angleIn: angleIn })
+
+    if (0 == pleatNr) {
+      rotatePoints(angleIn * -1, pointBottom, [
+        'flyTop',
+        'styleWaistIn',
+        'anchor',
+        'cfSeat',
+        'fork',
+        'forkCp1',
+        'crotchSeamCurveStart',
+        'crotchSeamCurveCp1',
+        'crotchSeamCurveCp2',
+        'crotchSeamCurveBend',
+        'crotchSeamCurveMax',
+        'flyCurveBottom',
+        'flyCurveStart',
+        'flyCurveCp1',
+        'flyCurveCp2',
+        'flyBottom',
+        'flyCorner',
+        'flyExtensionBottom',
+      ])
+    }
+    rotatePoints((angleOut + (0 == pleatNr ? 0 : angleIn)) * -1, pointBottom, [
+      'slantTop',
+      'slantBottom',
+      'slantCurveStart',
+      'slantCurveEnd',
+      'slantCurveCp1',
+      'slantCurveCp2',
+      'slantLowest',
+      'pocketbagBottom',
+      'pocketbagBottomCp1',
+      'pocketbagBottomCp2',
+      'pocketbagBottomRight',
+      'pocketbagTopRight',
+      'pocketFacingBottom',
+      'pocketFacingTop',
+      'styleWaistOut',
+      'styleSeatOut',
+      'styleSeatOutCp1',
+      'styleSeatOutCp2',
+      'kneeOut',
+      'kneeOutCp1',
+      'seatOut',
+      'seatOutCp1',
+      'seatOutCp2',
+      'seatY',
+      'waistOut',
+    ])
+    paths['pleatA' + pleatNr] = new Path()
+      .move(points['pleatMid' + pleatNr])
+      .line(points['pleatBot' + pleatNr])
+      .setClass('note')
+      .addText(pleatNr, 'center')
+    paths['pleatB' + pleatNr] = new Path()
+      .move(points['pleatIn' + pleatNr])
+      .line(points['pleatBot' + pleatNr])
+      .setClass('note dashed')
+      .addText(pleatNr, 'center')
+    paths['pleatC' + pleatNr] = new Path()
+      .move(points['pleatOut' + pleatNr])
+      .line(points['pleatBot' + pleatNr])
+      .setClass('note dashed')
+      .addText(pleatNr, 'center')
+  }
   // Helper method to draw the outseam path
-  const drawOutseam = () =>
-    new Path()
-      .move(points.slantTop)
-      .line(points.slantCurveStart)
-      .curve(points.slantCurveCp1, points.slantCurveCp2, points.slantCurveEnd)
-      .join(sideSeam.split(points.slantCurveEnd).pop())
+  // const drawOutseam = () =>
+  //   new Path()
+  //     .move(points.slantTop)
+  //     .line(points.slantCurveStart)
+  //     .curve(points.slantCurveCp1, points.slantCurveCp2, points.slantCurveEnd)
+  //     .join(sideSeam.split(points.slantCurveEnd).pop())
 
   // Helper method to draw the outline path
   const drawPath = () => {
-    let outseam = drawOutseam()
-    return (
-      new Path()
-        .move(points.floorIn)
-        .curve(points.kneeInCp2, points.forkCp1, points.fork)
-        .curve(points.crotchSeamCurveCp1, points.crotchSeamCurveCp2, points.crotchSeamCurveStart)
-        .line(points.styleWaistIn)
-        //   .line(points.slantTop)
-        //   .join(outseam)
-        .line(points.pleat)
-        .line(points.topPleat)
-        .line(points.styleWaistOut)
-        .join(sideSeam)
-    )
+    // let outseam = drawOutseam()
+    return new Path()
+      .move(points.floorIn)
+      .curve(points.kneeInCp2, points.forkCp1, points.fork)
+      .curve(points.crotchSeamCurveCp1, points.crotchSeamCurveCp2, points.crotchSeamCurveStart)
+      .line(points.styleWaistIn)
+      .join(pleatSeam())
+      .join(sideSeam())
   }
 
-  // Helper object holding the Titan side seam path
-  const sideSeam =
-    points.waistOut.x < points.seatOut.x
+  // Helper method to draw the pleat(s) path
+  const pleatSeam = () => {
+    let pleatSeam = new Path().move(points.styleWaistIn)
+    for (var i = 0; i < options.pleatNumber; i++) {
+      pleatSeam.line(points['pleatIn' + i])
+      pleatSeam.line(points['pleatMid' + i])
+      pleatSeam.line(points['pleatOut' + i])
+    }
+    pleatSeam.line(points.styleWaistOut)
+    return pleatSeam
+  }
+
+  // Helper method to draw the Titan side seam path
+  const sideSeam = () => {
+    return points.waistOut.x < points.seatOut.x
       ? new Path()
           .move(points.styleWaistOut)
           .curve(points.seatOut, points.kneeOutCp1, points.floorOut)
@@ -68,6 +173,7 @@ function draftZootFront({
           .move(points.styleWaistOut)
           ._curve(points.seatOutCp1, points.seatOut)
           .curve(points.seatOutCp2, points.kneeOutCp1, points.floorOut)
+  }
 
   // Draw fly J-seam
   const flyBottom = utils.curveIntersectsY(
@@ -77,109 +183,6 @@ function draftZootFront({
     points.fork,
     points.cfSeat.shiftFractionTowards(points.crotchSeamCurveCp2, options.flyLength).y
   )
-  /*  
-  if (flyBottom) points.flyBottom = flyBottom
-  else log.error('Unable to locate the fly bottom. This draft will fail.')
-
-  points.flyBottom = utils.curveIntersectsY(
-    points.crotchSeamCurveStart,
-    points.crotchSeamCurveCp2,
-    points.crotchSeamCurveCp1,
-    points.fork,
-    points.cfSeat.shiftFractionTowards(points.crotchSeamCurveCp2, options.flyLength).y
-  )
-  points.flyExtensionBottom = utils.curveIntersectsY(
-    points.crotchSeamCurveStart,
-    points.crotchSeamCurveCp2,
-    points.crotchSeamCurveCp1,
-    points.fork,
-    points.cfSeat.shiftFractionTowards(points.crotchSeamCurveCp2, options.flyLength * 1.25).y
-  )
-  points.flyTop = points.styleWaistOut.shiftFractionTowards(
-    points.styleWaistIn,
-    1 - options.flyWidth
-  )
-
-  points.flyCorner = points.flyTop.shift(
-    points.styleWaistIn.angle(points.crotchSeamCurveStart),
-    points.styleWaistIn.dist(points.flyBottom)
-  )
-  points.flyCurveStart = points.flyCorner.shiftTowards(
-    points.flyTop,
-    points.flyBottom.dist(points.flyCorner)
-  )
-  points.flyCurveCp1 = points.flyBottom.shiftFractionTowards(points.flyCorner, options.flyCurve)
-  points.flyCurveCp2 = points.flyCurveStart.shiftFractionTowards(points.flyCorner, options.flyCurve)
-
-  // Construct pocket slant
-  points.slantTop = points.styleWaistIn.shiftFractionTowards(
-    points.styleWaistOut,
-    1 - options.frontPocketSlantWidth
-  )
-  points.slantLowest = sideSeam.intersectsY(points.fork.y).pop()
-  store.set('slantWidth', points.styleWaistOut.dist(points.slantTop))
-  store.set(
-    'slantLength',
-    sideSeam.split(points.slantLowest).shift().length() * options.frontPocketSlantDepth
-  )
-  points.slantBottom = sideSeam.shiftAlong(store.get('slantLength'))
-  points.slantCurveStart = points.slantBottom.shiftFractionTowards(
-    points.slantTop,
-    options.frontPocketSlantRound
-  )
-  points.slantCurveEnd = sideSeam.shiftAlong(
-    points.slantBottom.dist(points.slantCurveStart) + store.get('slantLength')
-  )
-  points.slantCurveCp1 = points.slantBottom.shiftFractionTowards(
-    points.slantCurveStart,
-    options.frontPocketSlantBend
-  )
-  points.slantCurveCp2 = sideSeam.shiftAlong(
-    points.slantBottom.dist(points.slantCurveCp1) + store.get('slantLength')
-  )
-
-  // Construct pocket bag
-  points.pocketbagTopRight = points.slantTop.shiftFractionTowards(
-    points.styleWaistIn,
-    options.frontPocketWidth
-  )
-  points.pocketbagBottomRight = points.pocketbagTopRight.shift(
-    points.slantTop.angle(points.pocketbagTopRight) - 90,
-    points.styleWaistIn.dy(points.fork) * options.frontPocketDepth * 1.5
-  )
-  points.pocketbagBottomCp2 = sideSeam.intersectsY(points.pocketbagBottomRight.y).pop()
-  points.pocketbagBottom = points.pocketbagBottomRight.shiftFractionTowards(
-    points.pocketbagBottomCp2,
-    0.5
-  )
-  points.pocketbagBottomCp1 = points.slantCurveCp2.rotate(180, points.slantCurveEnd)
-
-  // Construct facing boundary
-  points.pocketFacingTop = points.slantTop.shiftFractionTowards(
-    points.pocketbagTopRight,
-    options.frontPocketFacing
-  )
-  points.facingDirection = points.slantCurveStart.shift(
-    0,
-    points.slantTop.dist(points.pocketFacingTop)
-  )
-  // YOLO
-  points.pocketFacingBottom = new Path()
-    .move(points.pocketFacingTop)
-    .line(points.pocketFacingTop.shiftFractionTowards(points.facingDirection, 4))
-    .intersects(
-      new Path()
-        .move(points.slantCurveStart)
-        .curve(points.slantCurveCp1, points.slantCurveCp2, points.slantCurveEnd)
-        .curve(points.pocketbagBottomCp1, points.pocketbagBottomCp2, points.pocketbagBottom)
-        .line(points.pocketbagBottomRight)
-    )
-    .pop()
-
-  // Anchor for sampling/grid
-  points.anchor = points.fork.clone()
-*/
-
   points.topPleat = utils.beamsIntersect(
     points.styleWaistIn,
     points.styleWaistOut,
@@ -187,44 +190,28 @@ function draftZootFront({
     points.grainlineBottom
   )
 
-  let pleatSize = (measurements.waist * options.pleatSize) / 4
-  var iteration = 0,
-    diff = pleatSize
-  points.pleat = points.topPleat.clone()
-  do {
-    iteration++
-    points.pleat = points.pleat.rotate(360 - diff / 50, points.grainlineBottom)
-    diff = pleatSize - points.topPleat.dist(points.pleat)
-    console.log({ i: iteration, p: pleatSize, diff: diff })
-  } while (iteration < 100 && (diff > 1 || diff < -1))
+  for (var i = 0; i < options.pleatNumber; i++) {
+    let top = points.topPleat
+    let bottom = points.grainlineBottom
+    if (i > 0) {
+      if (4 != options.pleatNumber || 2 != i) {
+        bottom = points.knee.shiftFractionTowards(points.kneeOut, 0.5)
+      }
+      top = points['pleatOut' + (i - 1)].shiftFractionTowards(
+        points.slantTop,
+        1 / options.pleatNumber
+      )
+    }
 
-  let angle =
-    points.grainlineBottom.angle(points.topPleat) - points.grainlineBottom.angle(points.pleat)
-  console.log({ angle: angle })
+    addPleat(options.pleatNumber, i, top, bottom)
+  }
 
-  rotatePoints(angle * -1, points.grainlineBottom, [
-    'flyTop',
-    'styleWaistIn',
-    'anchor',
-    'cfSeat',
-    'fork',
-    'forkCp1',
-    'crotchSeamCurveStart',
-    'crotchSeamCurveCp1',
-    'crotchSeamCurveCp2',
-    'crotchSeamCurveBend',
-    'crotchSeamCurveMax',
-    'flyCurveBottom',
-    'flyCurveStart',
-    'flyCurveCp1',
-    'flyCurveCp2',
-    'flyBottom',
-    'flyCorner',
-    'flyExtensionBottom',
-  ])
+  console.log({ points: JSON.parse(JSON.stringify(points)) })
 
   // Draw path
   paths.seam = drawPath().close().attr('class', 'fabric')
+
+  console.log({ paths: JSON.parse(JSON.stringify(paths)) })
 
   // Store waistband length
   store.set('waistbandFront', points.styleWaistIn.dist(points.slantTop))
@@ -498,6 +485,7 @@ export const front = {
     },
 
     pleatSize: { pct: 15, min: 0, max: 45, menu: 'style' },
+    pleatNumber: { count: 2, min: 0, max: 4, menu: 'style' },
   },
   draft: draftZootFront,
 }
