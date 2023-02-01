@@ -8,6 +8,7 @@ import { logoPlugin } from '../../plugin-logo/src/index.mjs'
 import { measurementsPlugin } from '../../plugin-measurements/src/index.mjs'
 import { mirrorPlugin } from '../../plugin-mirror/src/index.mjs'
 import { notchesPlugin } from '../../plugin-notches/src/index.mjs'
+import { pleatPlugin } from '../../plugin-pleat/src/index.mjs'
 import { roundPlugin } from '../../plugin-round/src/index.mjs'
 import { scaleboxPlugin } from '../../plugin-scalebox/src/index.mjs'
 import { sewtogetherPlugin } from '../../plugin-sewtogether/src/index.mjs'
@@ -26,6 +27,7 @@ const bundledPlugins = [
   measurementsPlugin,
   mirrorPlugin,
   notchesPlugin,
+  pleatPlugin,
   roundPlugin,
   scaleboxPlugin,
   sewtogetherPlugin,

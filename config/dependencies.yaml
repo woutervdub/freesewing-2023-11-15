@@ -118,6 +118,7 @@ plugin-bundle:
     '@freesewing/plugin-buttons': *freesewing
     '@freesewing/plugin-cutonfold': *freesewing
     '@freesewing/plugin-sewtogether': *freesewing
+    '@freesewing/plugin-pleat': *freesewing
     '@freesewing/plugin-dimension': *freesewing
     '@freesewing/plugin-grainline': *freesewing
     '@freesewing/plugin-logo': *freesewing
@@ -142,6 +143,7 @@ plugintest:
     '@freesewing/plugin-measurements': *freesewing
     '@freesewing/plugin-mirror': *freesewing
     '@freesewing/plugin-notches': *freesewing
+    '@freesewing/plugin-pleat': *freesewing
     '@freesewing/plugin-round': *freesewing
     '@freesewing/plugin-scalebox': *freesewing
     '@freesewing/plugin-sewtogether': *freesewing

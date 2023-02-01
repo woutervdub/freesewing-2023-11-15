@@ -15,6 +15,7 @@
   "plugin-measurements": "A FreeSewing plugin that adds additional measurements that can be calculated from existing ones",
   "plugin-mirror": "A FreeSewing plugin to mirror points or paths",
   "plugin-notches": "A FreeSewing plugin that provides front and back notch snippets",
+  "plugin-pleat": "A FreeSewing plugin to add pleat indicators on your patterns",
   "plugin-round": "A FreeSewing plugin to round corners",
   "plugin-scalebox": "A FreeSewing plugin to add a scalebox to your pattern",
   "plugin-sewtogether": "A FreeSewing plugin to add sew-together indicators on your patterns",
