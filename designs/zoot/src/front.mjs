@@ -26,9 +26,8 @@ function draftZootFront({
     console.log({ angle: angle, center: center, pointList: pointList })
     pointList.forEach((pointName) => {
       if (points[pointName] != undefined) {
-        console.log({ point: points[pointName] })
+        points[pointName + angle] = points[pointName].clone()
         points[pointName] = points[pointName].rotate(angle, center)
-        console.log({ point: points[pointName] })
       }
     })
   }
@@ -44,27 +43,32 @@ function draftZootFront({
     points['pleatBot' + pleatNr] = pointBottom.clone()
     do {
       iteration++
-      if ('foldInwards' != options.pleatStyle) {
+      if (pleatNr == 0) {
+        if ('foldInwards' != options.pleatStyle) {
+          points['pleatOut' + pleatNr] = points['pleatOut' + pleatNr].rotate(
+            360 + diff / 50,
+            pointBottom
+          )
+        }
+        if ('foldOutwards' != options.pleatStyle) {
+          points['pleatIn' + pleatNr] = points['pleatIn' + pleatNr].rotate(
+            360 - diff / 50,
+            pointBottom
+          )
+        }
+      } else {
         points['pleatOut' + pleatNr] = points['pleatOut' + pleatNr].rotate(
           360 + diff / 50,
           pointBottom
         )
       }
-      if ('foldOutwards' != options.pleatStyle) {
-        points['pleatIn' + pleatNr] = points['pleatIn' + pleatNr].rotate(
-          360 - diff / 50,
-          pointBottom
-        )
-      }
       diff = pleatSize - points['pleatOut' + pleatNr].dist(points['pleatIn' + pleatNr])
-      console.log({ i: iteration, p: pleatSize, diff: diff })
+      // console.log({ i: iteration, p: pleatSize, diff: diff })
     } while (iteration < 100 && (diff > 1 || diff < -1))
 
-    let angleIn =
-      pointBottom.angle(pointTop) - points.grainlineBottom.angle(points['pleatIn' + pleatNr])
-    let angleOut =
-      pointBottom.angle(pointTop) - points.grainlineBottom.angle(points['pleatOut' + pleatNr])
-    console.log({ angleIn: angleIn })
+    let angleIn = pointBottom.angle(pointTop) - pointBottom.angle(points['pleatIn' + pleatNr])
+    let angleOut = pointBottom.angle(pointTop) - pointBottom.angle(points['pleatOut' + pleatNr])
+    console.log({ angleIn: angleIn, angleOut: angleOut })
 
     if (0 == pleatNr) {
       rotatePoints(angleIn * -1, pointBottom, [
@@ -89,6 +93,7 @@ function draftZootFront({
       ])
     }
     rotatePoints((angleOut + (0 == pleatNr ? 0 : angleIn)) * -1, pointBottom, [
+      // rotatePoints(angleOut * -1, pointBottom, [
       'slantTop',
       'slantBottom',
       'slantCurveStart',
@@ -190,20 +195,23 @@ function draftZootFront({
     points.grainlineBottom
   )
 
-  for (var i = 0; i < options.pleatNumber; i++) {
+  if (options.pleatNumber > 0) {
+    var pleatDistance = points.topPleat.dist(points.slantTop) / options.pleatNumber
+
     let top = points.topPleat
     let bottom = points.grainlineBottom
-    if (i > 0) {
+
+    addPleat(options.pleatNumber, 0, top, bottom)
+
+    for (var i = 1; i < options.pleatNumber; i++) {
+      top = points['pleatOut' + (i - 1)].shiftTowards(points.slantTop, pleatDistance)
+
       if (4 != options.pleatNumber || 2 != i) {
         bottom = points.knee.shiftFractionTowards(points.kneeOut, 0.5)
       }
-      top = points['pleatOut' + (i - 1)].shiftFractionTowards(
-        points.slantTop,
-        1 / options.pleatNumber
-      )
-    }
 
-    addPleat(options.pleatNumber, i, top, bottom)
+      addPleat(options.pleatNumber, i, top, bottom)
+    }
   }
 
   console.log({ points: JSON.parse(JSON.stringify(points)) })
