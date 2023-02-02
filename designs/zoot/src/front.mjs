@@ -212,8 +212,9 @@ function draftZootFront({
     for (var i = 1; i < options.pleatNumber; i++) {
       top = points['pleatOut' + (i - 1)].shiftTowards(points.slantTop, pleatDistance)
 
-      if (4 != options.pleatNumber || 2 != i) {
-        bottom = points.knee.shiftFractionTowards(points.kneeOut, 0.5)
+      bottom = points.knee.shiftFractionTowards(points.kneeOut, (1 / options.pleatNumber) * i)
+      if (4 == options.pleatNumber && 2 == i) {
+        bottom = points.grainlineBottom
       }
 
       addPleat(options.pleatNumber, i, top, bottom)
