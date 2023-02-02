@@ -66,6 +66,12 @@ function draftZootFront({
       // console.log({ i: iteration, p: pleatSize, diff: diff })
     } while (iteration < 100 && (diff > 1 || diff < -1))
 
+    if ('box' == options.pleatStyle) {
+      points['pleatMid' + pleatNr] = points['pleatOut' + pleatNr].shiftFractionTowards(
+        points['pleatIn' + pleatNr],
+        0.5
+      )
+    }
     let angleIn = pointBottom.angle(pointTop) - pointBottom.angle(points['pleatIn' + pleatNr])
     let angleOut = pointBottom.angle(pointTop) - pointBottom.angle(points['pleatOut' + pleatNr])
     console.log({ angleIn: angleIn, angleOut: angleOut })
@@ -227,6 +233,32 @@ function draftZootFront({
   store.set('legWidthFront', points.floorIn.dist(points.floorOut))
 
   if (complete) {
+    if ('box' != options.pleatStyle) {
+      for (var i = 0; i < options.pleatNumber; i++) {
+        macro('pleat', {
+          from: points['pleatIn' + i],
+          to: points['pleatOut' + i],
+          reverse: 'foldOutwards' != options.pleatStyle,
+          prefix: 'pleat' + i,
+        })
+      }
+    } else {
+      for (var i = 0; i < options.pleatNumber; i++) {
+        macro('pleat', {
+          from: points['pleatIn' + i],
+          to: points['pleatMid' + i],
+          reverse: false,
+          prefix: 'pleatA' + i,
+        })
+        macro('pleat', {
+          from: points['pleatMid' + i],
+          to: points['pleatOut' + i],
+          reverse: true,
+          prefix: 'pleatB' + i,
+        })
+      }
+    }
+
     points.titleAnchor = new Point(points.knee.x, points.fork.y)
     macro('title', {
       at: points.titleAnchor,
