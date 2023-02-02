@@ -84,6 +84,8 @@ function draftZootFront({
         'cfSeat',
         'fork',
         'forkCp1',
+        'kneeIn',
+        'kneeInCp2',
         'crotchSeamCurveStart',
         'crotchSeamCurveCp1',
         'crotchSeamCurveCp2',
