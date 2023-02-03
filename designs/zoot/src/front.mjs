@@ -26,7 +26,7 @@ function draftZootFront({
     console.log({ angle: angle, center: center, pointList: pointList })
     pointList.forEach((pointName) => {
       if (points[pointName] != undefined) {
-        points[pointName + angle] = points[pointName].clone()
+        // points[pointName + angle] = points[pointName].clone()
         points[pointName] = points[pointName].rotate(angle, center)
       }
     })
@@ -128,40 +128,42 @@ function draftZootFront({
       'seatY',
       'waistOut',
     ])
-    paths['pleatA' + pleatNr] = new Path()
-      .move(points['pleatMid' + pleatNr])
-      .line(points['pleatBot' + pleatNr])
-      .setClass('note')
-      .addText(pleatNr, 'center')
-    paths['pleatB' + pleatNr] = new Path()
-      .move(points['pleatIn' + pleatNr])
-      .line(points['pleatBot' + pleatNr])
-      .setClass('note dashed')
-      .addText(pleatNr, 'center')
-    paths['pleatC' + pleatNr] = new Path()
-      .move(points['pleatOut' + pleatNr])
-      .line(points['pleatBot' + pleatNr])
-      .setClass('note dashed')
-      .addText(pleatNr, 'center')
+    // paths['pleatA' + pleatNr] = new Path()
+    //   .move(points['pleatMid' + pleatNr])
+    //   .line(points['pleatBot' + pleatNr])
+    //   .setClass('note')
+    //   .addText(pleatNr, 'center')
+    // paths['pleatB' + pleatNr] = new Path()
+    //   .move(points['pleatIn' + pleatNr])
+    //   .line(points['pleatBot' + pleatNr])
+    //   .setClass('note dashed')
+    //   .addText(pleatNr, 'center')
+    // paths['pleatC' + pleatNr] = new Path()
+    //   .move(points['pleatOut' + pleatNr])
+    //   .line(points['pleatBot' + pleatNr])
+    //   .setClass('note dashed')
+    //   .addText(pleatNr, 'center')
   }
   // Helper method to draw the outseam path
-  // const drawOutseam = () =>
-  //   new Path()
-  //     .move(points.slantTop)
-  //     .line(points.slantCurveStart)
-  //     .curve(points.slantCurveCp1, points.slantCurveCp2, points.slantCurveEnd)
-  //     .join(sideSeam.split(points.slantCurveEnd).pop())
+  const drawOutseam = () =>
+    new Path()
+      .move(points.slantTop)
+      .line(points.slantCurveStart)
+      .curve(points.slantCurveCp1, points.slantCurveCp2, points.slantCurveEnd)
+      .join(sideSeam().split(points.slantCurveEnd).pop())
 
   // Helper method to draw the outline path
   const drawPath = () => {
-    // let outseam = drawOutseam()
+    // Construct pocket slant
+    let outseam = drawOutseam()
     return new Path()
       .move(points.floorIn)
       .curve(points.kneeInCp2, points.forkCp1, points.fork)
       .curve(points.crotchSeamCurveCp1, points.crotchSeamCurveCp2, points.crotchSeamCurveStart)
       .line(points.styleWaistIn)
       .join(pleatSeam())
-      .join(sideSeam())
+      .join(outseam)
+    // .join(sideSeam())
   }
 
   // Helper method to draw the pleat(s) path
@@ -172,7 +174,8 @@ function draftZootFront({
       pleatSeam.line(points['pleatMid' + i])
       pleatSeam.line(points['pleatOut' + i])
     }
-    pleatSeam.line(points.styleWaistOut)
+    pleatSeam.line(points.slantTop)
+    // pleatSeam.line(points.styleWaistOut)
     return pleatSeam
   }
 
@@ -181,12 +184,23 @@ function draftZootFront({
     return points.waistOut.x < points.seatOut.x
       ? new Path()
           .move(points.styleWaistOut)
+          // .move(points.slantCurveEnd)
           .curve(points.seatOut, points.kneeOutCp1, points.floorOut)
       : new Path()
           .move(points.styleWaistOut)
+          // .move(points.slantCurveEnd)
           ._curve(points.seatOutCp1, points.seatOut)
           .curve(points.seatOutCp2, points.kneeOutCp1, points.floorOut)
   }
+  // const sideSeam =
+  //   points.waistOut.x < points.seatOut.x
+  //     ? new Path()
+  //         .move(points.styleWaistOut)
+  //         .curve(points.seatOut, points.kneeOutCp1, points.floorOut)
+  //     : new Path()
+  //         .move(points.styleWaistOut)
+  //         ._curve(points.seatOutCp1, points.seatOut)
+  //         .curve(points.seatOutCp2, points.kneeOutCp1, points.floorOut)
 
   // Draw fly J-seam
   const flyBottom = utils.curveIntersectsY(
@@ -223,6 +237,47 @@ function draftZootFront({
     }
   }
 
+  // Construct pocket slant
+  // points.slantTop = points.styleWaistIn.shiftFractionTowards(
+  //   points.styleWaistOut,
+  //   1 - options.frontPocketSlantWidth
+  // )
+  points.slantLowest = sideSeam().intersectsY(points.fork.y).pop()
+  store.set('slantWidth', points.styleWaistOut.dist(points.slantTop))
+  store.set(
+    'slantLength',
+    sideSeam().split(points.slantLowest).shift().length() * options.frontPocketSlantDepth
+  )
+  points.slantBottom = sideSeam().shiftAlong(store.get('slantLength'))
+  points.slantCurveStart = points.slantBottom.shiftFractionTowards(
+    points.slantTop,
+    options.frontPocketSlantRound
+  )
+  points.slantCurveEnd = sideSeam().shiftAlong(
+    points.slantBottom.dist(points.slantCurveStart) + store.get('slantLength')
+  )
+  points.slantCurveCp1 = points.slantBottom.shiftFractionTowards(
+    points.slantCurveStart,
+    options.frontPocketSlantBend
+  )
+  points.slantCurveCp2 = sideSeam().shiftAlong(
+    points.slantBottom.dist(points.slantCurveCp1) + store.get('slantLength')
+  )
+  points.pocketbagTopRight = pleatSeam().intersects(
+    new Path().move(points.pocketbagTopRight).line(points.pocketbagBottomRight)
+  )[0]
+  points.pocketFacingTop = pleatSeam().intersects(
+    new Path().move(points.pocketFacingTop).line(points.pocketFacingBottom)
+  )[0]
+  points.pocketFacingBottom = new Path()
+    .move(points.slantCurveEnd)
+    .curve(points.pocketbagBottomCp1, points.pocketbagBottomCp2, points.pocketbagBottom)
+    .intersects(
+      new Path()
+        .move(points.pocketFacingTop)
+        .line(points.pocketFacingBottom.shiftFractionTowards(points.pocketFacingTop, -1))
+    )[0]
+
   console.log({ points: JSON.parse(JSON.stringify(points)) })
 
   // Draw path
@@ -234,6 +289,8 @@ function draftZootFront({
   store.set('waistbandFront', points.styleWaistIn.dist(points.slantTop))
   store.set('waistbandFly', points.styleWaistIn.dist(points.flyTop))
   store.set('legWidthFront', points.floorIn.dist(points.floorOut))
+
+  console.log({ flyAngle: points.styleWaistIn.angle(points.cfSeat) })
 
   if (complete) {
     if ('box' != options.pleatStyle) {
