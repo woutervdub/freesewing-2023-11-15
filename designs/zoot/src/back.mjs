@@ -16,6 +16,7 @@ function draftZootBack({
   sa,
   log,
   units,
+  utils,
   part,
 }) {
   // Helper method to draw the outseam path
@@ -47,6 +48,37 @@ function draftZootBack({
       .line(points.crossSeamCurveStart)
       .curve(points.crossSeamCurveCp1, points.crossSeamCurveCp2, points.fork)
       .curve(points.forkCp2, points.kneeInCp1, points.floorIn)
+  }
+
+  // Cuff
+  let cuffWidth = store.get('legWidthFront')
+
+  points.floorIn = points.floor.shift(180, cuffWidth / 2)
+  points.floorOut = points.floor.shift(0, cuffWidth / 2)
+
+  while (
+    utils.lineIntersectsCurve(
+      points.knee,
+      points.kneeOut,
+      points.styleWaistOut,
+      points.seatOut,
+      points.kneeOutCp2,
+      points.floorOut
+    )
+  ) {
+    points.kneeOutCp2 = points.kneeOutCp2.shiftFractionTowards(points.kneeInCp1, -0.01)
+  }
+  while (
+    utils.lineIntersectsCurve(
+      points.knee,
+      points.kneeIn,
+      points.fork,
+      points.forkCp2,
+      points.kneeInCp1,
+      points.floorIn
+    )
+  ) {
+    points.kneeInCp1 = points.kneeInCp1.shiftFractionTowards(points.kneeOutCp2, -0.01)
   }
 
   // Mark back pocket
