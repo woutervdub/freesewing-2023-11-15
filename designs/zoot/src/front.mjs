@@ -33,8 +33,22 @@ function draftZootFront({
   }
 
   const addPleat = (pleats, pleatNr, pointTop, pointBottom) => {
-    const pleatSize = ((measurements.waist * options.pleatSize) / 4) * pleatRatios[pleats][pleatNr]
+    var pleatSize = ((measurements.waist * options.pleatSize) / 4) * pleatRatios[pleats][pleatNr]
 
+    if (0 == pleatNr) {
+      if ('foldInwards' == options.pleatStyle) {
+        pleatSize = Math.min(pleatSize, points.slantTop.dist(pointTop) * 0.95)
+      }
+      if ('foldOutwards' == options.pleatStyle) {
+        pleatSize = Math.min(pleatSize, points.styleWaistIn.dist(pointTop) * 0.95)
+      }
+      if ('box' == options.pleatStyle) {
+        pleatSize = Math.min(
+          pleatSize,
+          Math.min(points.styleWaistIn.dist(pointTop) * 1.9, points.slantTop.dist(pointTop) * 1.9)
+        )
+      }
+    }
     var iteration = 0,
       diff = pleatSize
     points['pleatIn' + pleatNr] = pointTop.clone()
@@ -103,12 +117,15 @@ function draftZootFront({
     rotatePoints((angleOut + (0 == pleatNr ? 0 : angleIn)) * -1, pointBottom, [
       // rotatePoints(angleOut * -1, pointBottom, [
       'slantTop',
+      'slantTopNotch',
       'slantBottom',
+      'slantBottomNotch',
       'slantCurveStart',
       'slantCurveEnd',
       'slantCurveCp1',
       'slantCurveCp2',
       'slantLowest',
+      'facingDirection',
       'pocketbagBottom',
       'pocketbagBottomCp1',
       'pocketbagBottomCp2',
@@ -242,6 +259,21 @@ function draftZootFront({
   //   points.styleWaistOut,
   //   1 - options.frontPocketSlantWidth
   // )
+
+  var pm = new Point(-92.10906230474863, 174.53808218006913)
+  var cp1 = new Point(-80.84807510689261, 265.47383107372866)
+  var cp2 = new Point(5.409734835681483, 500.84874303772654)
+  var to = new Point(46.56999999999999, 1110.693810434287)
+
+  console.log({ i: new Path().move(pm).curve(cp1, cp2, to).intersectsY(314.78116152356415) })
+
+  console.log({
+    ss: sideSeam(),
+    pf: points.fork.y,
+    si: sideSeam().intersectsY(points.fork.y),
+    sip: sideSeam().intersectsY(points.fork.y).pop(),
+  })
+
   points.slantLowest = sideSeam().intersectsY(points.fork.y).pop()
   store.set('slantWidth', points.styleWaistOut.dist(points.slantTop))
   store.set(
@@ -332,16 +364,17 @@ function draftZootFront({
     //   points.knee,
     //   points.grainlineBottom
     // )
-    points.slantBottomNotch = new Path()
-      .move(points.slantCurveStart)
-      .curve(points.slantCurveCp1, points.slantCurveCp2, points.slantCurveEnd)
-      .intersectsY(points.slantBottom.y)
-      .pop()
-    points.slantTopNotch = points.slantTop.shiftFractionTowards(points.slantCurveStart, 0.1)
-    store.set('slantTopNotchDistance', points.slantTop.dist(points.slantTopNotch))
+    // points.slantBottomNotch = new Path()
+    //   .move(points.slantCurveStart)
+    //   .curve(points.slantCurveCp1, points.slantCurveCp2, points.slantCurveEnd)
+    //   .intersectsY(points.slantBottom.y)
+    //   .pop()
+    // points.slantTopNotch = points.slantTop.shiftFractionTowards(points.slantCurveStart, 0.1)
+    // store.set('slantTopNotchDistance', points.slantTop.dist(points.slantTopNotch))
     macro('sprinkle', {
       snippet: 'notch',
       on: [
+        'slantTop',
         'slantBottomNotch',
         'slantTopNotch',
         'topPleat',
