@@ -260,32 +260,24 @@ function draftZootFront({
   points.floorIn = points.floor.shift(0, cuffWidth / 2)
   points.floorOut = points.floor.shift(180, cuffWidth / 2)
 
+  let pFrom = points.seatOut
+  let pFromCp1 = points.seatOutCp2
+
   if (points.waistOut.x < points.seatOut.x) {
-    while (
-      utils.lineIntersectsCurve(
-        points.knee,
-        points.kneeOut,
-        points.styleWaistOut,
-        points.seatOut,
-        points.kneeOutCp1,
-        points.floorOut
-      )
-    ) {
-      points.kneeOutCp1 = points.kneeOutCp1.shiftFractionTowards(points.kneeInCp2, -0.01)
-    }
-  } else {
-    while (
-      utils.lineIntersectsCurve(
-        points.knee,
-        points.kneeOut,
-        points.seatOut,
-        points.seatOutCp2,
-        points.kneeOutCp1,
-        points.floorOut
-      )
-    ) {
-      points.kneeOutCp1 = points.kneeOutCp1.shiftFractionTowards(points.kneeInCp2, -0.01)
-    }
+    pFrom = points.styleWaistOut
+    pFromCp1 = points.seatOut
+  }
+  while (
+    utils.lineIntersectsCurve(
+      points.knee,
+      points.kneeOut,
+      pFrom,
+      pFromCp1,
+      points.kneeOutCp1,
+      points.floorOut
+    )
+  ) {
+    points.kneeOutCp1 = points.kneeOutCp1.shiftFractionTowards(points.kneeInCp2, -0.01)
   }
   while (
     utils.lineIntersectsCurve(
@@ -350,213 +342,227 @@ function draftZootFront({
 
   console.log({ flyAngle: points.styleWaistIn.angle(points.cfSeat) })
 
-  // if (complete) {
-  //   if ('box' != options.pleatStyle) {
-  //     for (var i = 0; i < options.pleatNumber; i++) {
-  //       macro('pleat', {
-  //         from: points['pleatIn' + i],
-  //         to: points['pleatOut' + i],
-  //         reverse: 'foldOutwards' != options.pleatStyle,
-  //         prefix: 'pleat' + i,
-  //       })
-  //     }
-  //   } else {
-  //     for (var i = 0; i < options.pleatNumber; i++) {
-  //       macro('pleat', {
-  //         from: points['pleatIn' + i],
-  //         to: points['pleatMid' + i],
-  //         reverse: false,
-  //         prefix: 'pleatA' + i,
-  //       })
-  //       macro('pleat', {
-  //         from: points['pleatMid' + i],
-  //         to: points['pleatOut' + i],
-  //         reverse: true,
-  //         prefix: 'pleatB' + i,
-  //       })
-  //     }
-  //   }
+  console.log({
+    inSeam: new Path()
+      .move(points.floorIn)
+      .curve(points.kneeInCp2, points.forkCp1, points.fork)
+      .length(),
+  })
+  console.log({ sideSeam: sideSeam().length() })
 
-  //   points.titleAnchor = new Point(points.knee.x, points.fork.y)
-  //   macro('title', {
-  //     at: points.titleAnchor,
-  //     nr: 2,
-  //     title: 'front',
-  //   })
-  //   snippets.logo = new Snippet('logo', points.titleAnchor.shiftFractionTowards(points.knee, 0.666))
-  //   // points.topPleat = utils.beamsIntersect(
-  //   //   points.styleWaistIn,
-  //   //   points.styleWaistOut,
-  //   //   points.knee,
-  //   //   points.grainlineBottom
-  //   // )
-  //   // points.slantBottomNotch = new Path()
-  //   //   .move(points.slantCurveStart)
-  //   //   .curve(points.slantCurveCp1, points.slantCurveCp2, points.slantCurveEnd)
-  //   //   .intersectsY(points.slantBottom.y)
-  //   //   .pop()
-  //   // points.slantTopNotch = points.slantTop.shiftFractionTowards(points.slantCurveStart, 0.1)
-  //   // store.set('slantTopNotchDistance', points.slantTop.dist(points.slantTopNotch))
-  //   macro('sprinkle', {
-  //     snippet: 'notch',
-  //     on: [
-  //       'slantTop',
-  //       'slantBottomNotch',
-  //       'slantTopNotch',
-  //       'topPleat',
-  //       'grainlineBottom',
-  //       'flyBottom',
-  //       'flyExtensionBottom',
-  //     ],
-  //   })
-  //   let Jseam = new Path()
-  //     .move(points.flyCurveStart)
-  //     .curve(points.flyCurveCp2, points.flyCurveCp1, points.flyBottom)
-  //   paths.Jseam = new Path()
-  //     .move(points.flyTop)
-  //     .join(Jseam)
-  //     .attr('class', 'dashed')
-  //     .attr('data-text', 'Left panel only')
-  //     .attr('data-text-class', 'center')
-  //   paths.pocketBag = new Path()
-  //     .move(points.slantTop)
-  //     .line(points.slantCurveStart)
-  //     .curve(points.slantCurveCp1, points.slantCurveCp2, points.slantCurveEnd)
-  //     .curve(points.pocketbagBottomCp1, points.pocketbagBottomCp2, points.pocketbagBottom)
-  //     .line(points.pocketbagBottomRight)
-  //     .line(points.pocketbagTopRight)
-  //     .move(points.pocketFacingTop)
-  //     .line(points.pocketFacingBottom)
-  //     .attr('class', 'lining dashed')
+  store.set(
+    'frontInSeam',
+    new Path().move(points.floorIn).curve(points.kneeInCp2, points.forkCp1, points.fork).length()
+  )
+  store.set('frontSideSeam', sideSeam().length())
 
-  //   // Bartack
-  //   macro('bartack', {
-  //     anchor: points.slantTopNotch,
-  //     angle: points.slantTopNotch.angle(points.slantCurveStart) + 90,
-  //     length: sa ? sa / 1.5 : 7.5,
-  //     suffix: 'slantTop',
-  //   })
-  //   macro('bartack', {
-  //     anchor: points.slantBottomNotch,
-  //     length: sa ? sa / 2 : 5,
-  //     suffix: 'slantBottom',
-  //   })
-  //   // This is too small to do on doll-sized patterns
-  //   if (measurements.waist > 200) {
-  //     macro('bartackFractionAlong', {
-  //       path: Jseam.reverse(),
-  //       start: 0,
-  //       end: 0.1,
-  //       suffix: 'stom',
-  //     })
-  //   }
+  if (complete) {
+    if ('box' != options.pleatStyle) {
+      for (var i = 0; i < options.pleatNumber; i++) {
+        macro('pleat', {
+          from: points['pleatIn' + i],
+          to: points['pleatOut' + i],
+          reverse: 'foldOutwards' != options.pleatStyle,
+          prefix: 'pleat' + i,
+        })
+      }
+    } else {
+      for (var i = 0; i < options.pleatNumber; i++) {
+        macro('pleat', {
+          from: points['pleatIn' + i],
+          to: points['pleatMid' + i],
+          reverse: false,
+          prefix: 'pleatA' + i,
+        })
+        macro('pleat', {
+          from: points['pleatMid' + i],
+          to: points['pleatOut' + i],
+          reverse: true,
+          prefix: 'pleatB' + i,
+        })
+      }
+    }
 
-  //   if (sa) {
-  //     paths.sa = drawPath()
-  //       .offset(sa)
-  //       .join(
-  //         new Path()
-  //           .move(points.floorOut)
-  //           .line(points.floorIn)
-  //           .offset(sa * 6)
-  //       )
-  //       .close()
-  //       .trim()
-  //       .attr('class', 'fabric sa')
-  //   }
+    points.titleAnchor = new Point(points.knee.x, points.fork.y)
+    macro('title', {
+      at: points.titleAnchor,
+      nr: 2,
+      title: 'front',
+    })
+    snippets.logo = new Snippet('logo', points.titleAnchor.shiftFractionTowards(points.knee, 0.666))
+    // points.topPleat = utils.beamsIntersect(
+    //   points.styleWaistIn,
+    //   points.styleWaistOut,
+    //   points.knee,
+    //   points.grainlineBottom
+    // )
+    // points.slantBottomNotch = new Path()
+    //   .move(points.slantCurveStart)
+    //   .curve(points.slantCurveCp1, points.slantCurveCp2, points.slantCurveEnd)
+    //   .intersectsY(points.slantBottom.y)
+    //   .pop()
+    // points.slantTopNotch = points.slantTop.shiftFractionTowards(points.slantCurveStart, 0.1)
+    // store.set('slantTopNotchDistance', points.slantTop.dist(points.slantTopNotch))
+    macro('sprinkle', {
+      snippet: 'notch',
+      on: [
+        'slantTop',
+        'slantBottomNotch',
+        'slantTopNotch',
+        'topPleat',
+        'grainlineBottom',
+        'flyBottom',
+        'flyExtensionBottom',
+      ],
+    })
+    let Jseam = new Path()
+      .move(points.flyCurveStart)
+      .curve(points.flyCurveCp2, points.flyCurveCp1, points.flyBottom)
+    paths.Jseam = new Path()
+      .move(points.flyTop)
+      .join(Jseam)
+      .attr('class', 'dashed')
+      .attr('data-text', 'Left panel only')
+      .attr('data-text-class', 'center')
+    paths.pocketBag = new Path()
+      .move(points.slantTop)
+      .line(points.slantCurveStart)
+      .curve(points.slantCurveCp1, points.slantCurveCp2, points.slantCurveEnd)
+      .curve(points.pocketbagBottomCp1, points.pocketbagBottomCp2, points.pocketbagBottom)
+      .line(points.pocketbagBottomRight)
+      .line(points.pocketbagTopRight)
+      .move(points.pocketFacingTop)
+      .line(points.pocketFacingBottom)
+      .attr('class', 'lining dashed')
 
-  //   if (paperless) {
-  //     // Clean up paperless dimensions
-  //     macro('rmad')
-  //     delete paths.hint
+    // Bartack
+    macro('bartack', {
+      anchor: points.slantTopNotch,
+      angle: points.slantTopNotch.angle(points.slantCurveStart) + 90,
+      length: sa ? sa / 1.5 : 7.5,
+      suffix: 'slantTop',
+    })
+    macro('bartack', {
+      anchor: points.slantBottomNotch,
+      length: sa ? sa / 2 : 5,
+      suffix: 'slantBottom',
+    })
+    // This is too small to do on doll-sized patterns
+    if (measurements.waist > 200) {
+      macro('bartackFractionAlong', {
+        path: Jseam.reverse(),
+        start: 0,
+        end: 0.1,
+        suffix: 'stom',
+      })
+    }
 
-  //     macro('hd', {
-  //       from: points.grainlineBottom,
-  //       to: points.floorIn,
-  //       y: points.floorIn.y - 15,
-  //     })
-  //     macro('hd', {
-  //       from: points.floorOut,
-  //       to: points.grainlineBottom,
-  //       y: points.floorIn.y - 15,
-  //     })
-  //     macro('hd', {
-  //       from: points.floorOut,
-  //       to: points.floorIn,
-  //       y: points.floorIn.y - 30,
-  //     })
+    if (sa) {
+      paths.sa = drawPath()
+        .offset(sa)
+        .join(
+          new Path()
+            .move(points.floorOut)
+            .line(points.floorIn)
+            .offset(sa * 6)
+        )
+        .close()
+        .trim()
+        .attr('class', 'fabric sa')
+    }
 
-  //     let y = points.styleWaistIn.y - sa
-  //     macro('hd', {
-  //       from: points.grainlineFrom,
-  //       to: points.flyTop,
-  //       y: y - 15,
-  //     })
-  //     macro('hd', {
-  //       from: points.grainlineFrom,
-  //       to: points.styleWaistIn,
-  //       y: y - 30,
-  //     })
-  //     macro('hd', {
-  //       from: points.grainlineFrom,
-  //       to: points.flyBottom,
-  //       y: y - 45,
-  //     })
-  //     macro('hd', {
-  //       from: points.grainlineFrom,
-  //       to: points.flyExtensionBottom,
-  //       y: y - 60,
-  //     })
-  //     macro('hd', {
-  //       from: points.grainlineFrom,
-  //       to: points.fork,
-  //       y: y - 75,
-  //     })
+    if (paperless) {
+      // Clean up paperless dimensions
+      macro('rmad')
+      delete paths.hint
 
-  //     macro('hd', {
-  //       from: points.pocketFacingTop,
-  //       to: points.grainlineFrom,
-  //       y: y - 15,
-  //     })
-  //     macro('hd', {
-  //       from: points.slantTop,
-  //       to: points.grainlineFrom,
-  //       y: y - 30,
-  //     })
-  //     macro('hd', {
-  //       from: points.slantBottomNotch,
-  //       to: points.grainlineFrom,
-  //       y: y - 45,
-  //     })
+      macro('hd', {
+        from: points.grainlineBottom,
+        to: points.floorIn,
+        y: points.floorIn.y - 15,
+      })
+      macro('hd', {
+        from: points.floorOut,
+        to: points.grainlineBottom,
+        y: points.floorIn.y - 15,
+      })
+      macro('hd', {
+        from: points.floorOut,
+        to: points.floorIn,
+        y: points.floorIn.y - 30,
+      })
 
-  //     let x = points.fork.x + sa
-  //     macro('vd', {
-  //       from: points.floorIn,
-  //       to: points.fork,
-  //       x: x + 15,
-  //     })
-  //     macro('vd', {
-  //       from: points.fork,
-  //       to: points.flyExtensionBottom,
-  //       x: x + 15,
-  //     })
-  //     macro('vd', {
-  //       from: points.fork,
-  //       to: points.flyBottom,
-  //       x: x + 30,
-  //     })
-  //     macro('vd', {
-  //       from: points.fork,
-  //       to: points.slantTop,
-  //       x: x + 45,
-  //     })
-  //     macro('vd', {
-  //       from: points.fork,
-  //       to: points.styleWaistIn,
-  //       x: x + 60,
-  //     })
-  //   }
-  // }
+      let y = points.styleWaistIn.y - sa
+      macro('hd', {
+        from: points.grainlineFrom,
+        to: points.flyTop,
+        y: y - 15,
+      })
+      macro('hd', {
+        from: points.grainlineFrom,
+        to: points.styleWaistIn,
+        y: y - 30,
+      })
+      macro('hd', {
+        from: points.grainlineFrom,
+        to: points.flyBottom,
+        y: y - 45,
+      })
+      macro('hd', {
+        from: points.grainlineFrom,
+        to: points.flyExtensionBottom,
+        y: y - 60,
+      })
+      macro('hd', {
+        from: points.grainlineFrom,
+        to: points.fork,
+        y: y - 75,
+      })
+
+      macro('hd', {
+        from: points.pocketFacingTop,
+        to: points.grainlineFrom,
+        y: y - 15,
+      })
+      macro('hd', {
+        from: points.slantTop,
+        to: points.grainlineFrom,
+        y: y - 30,
+      })
+      macro('hd', {
+        from: points.slantBottomNotch,
+        to: points.grainlineFrom,
+        y: y - 45,
+      })
+
+      let x = points.fork.x + sa
+      macro('vd', {
+        from: points.floorIn,
+        to: points.fork,
+        x: x + 15,
+      })
+      macro('vd', {
+        from: points.fork,
+        to: points.flyExtensionBottom,
+        x: x + 15,
+      })
+      macro('vd', {
+        from: points.fork,
+        to: points.flyBottom,
+        x: x + 30,
+      })
+      macro('vd', {
+        from: points.fork,
+        to: points.slantTop,
+        x: x + 45,
+      })
+      macro('vd', {
+        from: points.fork,
+        to: points.styleWaistIn,
+        x: x + 60,
+      })
+    }
+  }
 
   return part
 }

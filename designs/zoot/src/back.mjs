@@ -167,12 +167,53 @@ function draftZootBack({
   // This breaks the samples for reason not clear. See #
   // points.anchor = points.fork.clone()
 
+  // adjusting seams to match front
+  const inseam = store.get('frontInSeam')
+  const sideseam = store.get('frontSideSeam')
+
+  var diff = 0,
+    iter = 0
+  do {
+    iter++
+    points.floorIn = points.floorIn.shift(90, diff)
+    diff =
+      new Path()
+        .move(points.floorIn)
+        .curve(points.kneeInCp1, points.forkCp2, points.fork)
+        .length() - inseam
+  } while (iter < 100 && (diff > 1 || diff < -1))
+  ;(diff = 0), (iter = 0)
+  do {
+    iter++
+    points.floorOut = points.floorOut.shift(90, diff)
+    diff =
+      new Path()
+        .move(points.styleWaistOut)
+        .curve(points.seatOut, points.kneeOutCp2, points.floorOut)
+        .length() - sideseam
+  } while (iter < 100 && (diff > 1 || diff < -1))
+
+  points.grainlineBottom = points.floor = points.floorIn.shiftFractionTowards(points.floorOut, 0.5)
+
   paths.saBase = drawPath()
   paths.seam = paths.saBase
     .insop('dart', new Path().line(points.pocketCenter))
     .close()
     .attr('class', 'fabric')
   paths.saBase.hide()
+
+  console.log({
+    inSeamBack: new Path()
+      .move(points.floorIn)
+      .curve(points.kneeInCp1, points.forkCp2, points.fork)
+      .length(),
+  })
+  console.log({
+    sideSeamBack: new Path()
+      .move(points.styleWaistOut)
+      .curve(points.seatOut, points.kneeOutCp2, points.floorOut)
+      .length(),
+  })
 
   if (complete) {
     paths.pocketLine = new Path()
