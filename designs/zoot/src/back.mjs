@@ -1,4 +1,5 @@
 import { back as charlieBack } from '@freesewing/charlie'
+import path from 'path'
 import { front } from './front.mjs'
 
 function draftZootBack({
@@ -236,23 +237,42 @@ function draftZootBack({
       points.slantCurveStart,
       store.get('slantTopNotchDistance')
     )
+
+    for (let i in snippets) {
+      if ('bnotch' == i.def) delete snippets[i]
+    }
     macro('sprinkle', {
       snippet: 'bnotch',
-      on: ['grainlineBottom', 'slantBottomNotch', 'slantTopNotch'],
+      on: ['grainlineBottom'],
     })
 
-    macro('bartack', {
-      anchor: points.slantTopNotch,
-      angle: points.slantTopNotch.angle(points.slantBottomNotch) - 90,
-      length: sa ? sa / 2 : 5,
-      suffix: 'slantTop',
-    })
-    macro('bartack', {
-      anchor: points.slantBottomNotch,
-      length: sa ? sa / 2 : 5,
-      angle: 180,
-      suffix: 'slantBottom',
-    })
+    console.log({ snippets: JSON.parse(JSON.stringify(snippets)) })
+    console.log({ grainlineBottombnotch: snippets['grainlineBottom-bnotch'] })
+
+    // snippets.forEach((s) => {console.log(s.name)})
+
+    // snippets = snippets.filter(function(value, index, arr){
+    //     return value.name != 'grainlineBottom-bnotch';
+    // })
+
+    paths['bartackslantBottom'].setHidden(true)
+    paths['bartackslantTop'].setHidden(true)
+    // paths.bartackslantTop = new Path().noop()
+    // macro('bartack', {
+    //   anchor: points.slantTopNotch,
+    //   angle: points.slantTopNotch.angle(points.slantBottomNotch) - 90,
+    //   length: sa ? sa / 2 : 5,
+    //   suffix: 'slantTop',
+    // })
+    // macro('bartack', {
+    //   anchor: points.slantBottomNotch,
+    //   length: sa ? sa / 2 : 5,
+    //   angle: 180,
+    //   suffix: 'slantBottom',
+    // })
+
+    console.log({ points: JSON.parse(JSON.stringify(points)) })
+    console.log({ paths: JSON.parse(JSON.stringify(paths)) })
 
     if (sa) {
       paths.sa = paths.saBase
