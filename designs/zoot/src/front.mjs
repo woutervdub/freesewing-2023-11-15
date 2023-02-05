@@ -168,13 +168,18 @@ function draftZootFront({
       .line(points.slantCurveStart)
       .curve(points.slantCurveCp1, points.slantCurveCp2, points.slantCurveEnd)
       .join(sideSeam().split(points.slantCurveEnd).pop())
+      .line(points.hemOut)
+      .line(points.cuffOneOut)
+      .line(points.cuffTwoOut)
 
   // Helper method to draw the outline path
   const drawPath = () => {
     // Construct pocket slant
     let outseam = drawOutseam()
     return new Path()
-      .move(points.floorIn)
+      .move(points.cuffTwoIn)
+      .line(points.cuffOneIn)
+      .line(points.hemIn)
       .curve(points.kneeInCp2, points.forkCp1, points.fork)
       .curve(points.crotchSeamCurveCp1, points.crotchSeamCurveCp2, points.crotchSeamCurveStart)
       .line(points.styleWaistIn)
@@ -255,10 +260,10 @@ function draftZootFront({
   }
 
   // Cuff
-  let cuffWidth = (measurements.ankle * (1 + options.cuffEase)) / 2
+  let ankleWidth = (measurements.ankle * (1 + options.ankleEase)) / 2
 
-  points.floorIn = points.floor.shift(0, cuffWidth / 2)
-  points.floorOut = points.floor.shift(180, cuffWidth / 2)
+  points.floorIn = points.floor.shift(0, ankleWidth / 2)
+  points.floorOut = points.floor.shift(180, ankleWidth / 2)
 
   let pFrom = points.seatOut
   let pFromCp1 = points.seatOutCp2
@@ -328,6 +333,43 @@ function draftZootFront({
         .line(points.pocketFacingBottom.shiftFractionTowards(points.pocketFacingTop, -1))
     )[0]
 
+  store.set('cuffSize', measurements.waistToFloor * options.cuffSize)
+  points.hemIn = points.floorIn.copy()
+  points.hemOut = points.floorOut.copy()
+  let pCuffHelperIn = points.floorIn.copy()
+  let pCuffHelperOut = points.floorOut.copy()
+  if (options.cuff) {
+    pCuffHelperIn = new Path()
+      .move(points.floorIn)
+      .curve(points.kneeInCp2, points.forkCp1, points.fork)
+      .shiftAlong(store.get('cuffSize'))
+    pCuffHelperOut = sideSeam().reverse().shiftAlong(store.get('cuffSize'))
+  } else {
+    points.cuffSaIn = new Path()
+      .move(points.floorIn)
+      .curve(points.kneeInCp2, points.forkCp1, points.fork)
+      .shiftAlong(sa * 2)
+      .flipY(points.floorIn)
+    points.cuffSaOut = sideSeam()
+      .reverse()
+      .shiftAlong(sa * 2)
+      .flipY(points.floorOut)
+  }
+
+  points.cuffOneIn = pCuffHelperIn.flipY(points.floorIn)
+  points.cuffOneOut = pCuffHelperOut.flipY(points.floorOut)
+  points.cuffTwoIn = points.floorIn.flipY(points.cuffOneIn)
+  points.cuffTwoOut = points.floorOut.flipY(points.cuffOneOut)
+
+  if (options.cuff) {
+    points.cuffSaIn = points.cuffOneIn.flipY(points.cuffTwoIn)
+    points.cuffSaOut = points.cuffOneOut.flipY(points.cuffTwoOut)
+    paths.hem = new Path().move(points.hemIn).line(points.hemOut).addClass('note dashed')
+    paths.cuffFold = new Path()
+      .move(points.cuffOneIn)
+      .line(points.cuffOneOut)
+      .addClass('note dashed')
+  }
   console.log({ points: JSON.parse(JSON.stringify(points)) })
 
   // Draw path
@@ -462,12 +504,20 @@ function draftZootFront({
         .offset(sa)
         .join(
           new Path()
-            .move(points.floorOut)
-            .line(points.floorIn)
-            .offset(sa * 6)
+            .move(points.cuffSaIn.shiftOutwards(points.cuffSaOut, sa))
+            .line(points.cuffSaOut.shiftOutwards(points.cuffSaIn, sa))
         )
+        // .join(options.cuff ?
+        //     new Path()
+        //     .move(points.cuffSaIn.shiftOutwards(points.cuffSaOut,sa))
+        //     .line(points.cuffSaOut.shiftOutwards(points.cuffSaIn,sa))
+        //     :           new Path()
+        //     .move(points.floorOut)
+        //     .line(points.floorIn)
+        //     .offset(sa * 6)
+        //   )
         .close()
-        .trim()
+        // .trim()
         .attr('class', 'fabric sa')
     }
 
@@ -645,7 +695,9 @@ export const front = {
     flyWidth: { pct: 15, min: 10, max: 20, menu: 'advanced.fly' },
 
     // Cuff
-    cuffEase: { pct: 55, min: 10, max: 300, menu: 'fit' },
+    ankleEase: { pct: 55, min: 10, max: 300, menu: 'fit' },
+    cuff: { bool: false, menu: 'style' },
+    cuffSize: { pct: 2.5, min: 0.5, max: 5, menu: 'style' },
 
     // Pleats
     pleatStyle: {

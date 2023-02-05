@@ -24,7 +24,10 @@ function draftZootBack({
   const drawOutseam = () => {
     let outseam = new Path()
       .move(points.styleWaistOut)
-      .curve(points.seatOut, points.kneeOutCp2, points.floorOut)
+      // .curve(points.seatOut, points.kneeOutCp2, points.floorOut)
+      .curve(points.seatOut, points.kneeOutCp2, points.hemOut)
+      .line(points.cuffOneOut)
+      .line(points.cuffTwoOut)
     return (
       new Path()
         //   .move(points.slantOut)
@@ -48,14 +51,16 @@ function draftZootBack({
       .curve(points.backDartLeftCp, points.cbCp, waistIn)
       .line(points.crossSeamCurveStart)
       .curve(points.crossSeamCurveCp1, points.crossSeamCurveCp2, points.fork)
-      .curve(points.forkCp2, points.kneeInCp1, points.floorIn)
+      .curve(points.forkCp2, points.kneeInCp1, points.hemIn)
+      .line(points.cuffOneIn)
+      .line(points.cuffTwoIn)
   }
 
   // Cuff
-  let cuffWidth = store.get('legWidthFront')
+  let ankleWidth = store.get('legWidthFront')
 
-  points.floorIn = points.floor.shift(180, cuffWidth / 2)
-  points.floorOut = points.floor.shift(0, cuffWidth / 2)
+  points.floorIn = points.floor.shift(180, ankleWidth / 2)
+  points.floorOut = points.floor.shift(0, ankleWidth / 2)
 
   while (
     utils.lineIntersectsCurve(
@@ -196,6 +201,47 @@ function draftZootBack({
 
   points.grainlineBottom = points.floor = points.floorIn.shiftFractionTowards(points.floorOut, 0.5)
 
+  points.hemIn = points.floorIn.copy()
+  points.hemOut = points.floorOut.copy()
+  let pCuffHelperIn = points.floorIn.copy()
+  let pCuffHelperOut = points.floorOut.copy()
+  if (options.cuff) {
+    pCuffHelperIn = new Path()
+      .move(points.floorIn)
+      .curve(points.kneeInCp1, points.forkCp2, points.fork)
+      .shiftAlong(store.get('cuffSize'))
+    pCuffHelperOut = new Path()
+      .move(points.floorOut)
+      .curve(points.kneeOutCp2, points.seatOut, points.styleWaistOut)
+      .shiftAlong(store.get('cuffSize'))
+  } else {
+    points.cuffSaIn = new Path()
+      .move(points.floorIn)
+      .curve(points.kneeInCp1, points.forkCp2, points.fork)
+      .shiftAlong(sa * 2)
+      .flipY(points.floorIn)
+    points.cuffSaOut = new Path()
+      .move(points.floorOut)
+      .curve(points.kneeOutCp2, points.seatOut, points.styleWaistOut)
+      .shiftAlong(sa * 2)
+      .flipY(points.floorOut)
+  }
+
+  points.cuffOneIn = pCuffHelperIn.flipY(points.floorIn)
+  points.cuffOneOut = pCuffHelperOut.flipY(points.floorOut)
+  points.cuffTwoIn = points.floorIn.flipY(points.cuffOneIn)
+  points.cuffTwoOut = points.floorOut.flipY(points.cuffOneOut)
+
+  if (options.cuff) {
+    points.cuffSaIn = points.cuffOneIn.flipY(points.cuffTwoIn)
+    points.cuffSaOut = points.cuffOneOut.flipY(points.cuffTwoOut)
+    paths.hem = new Path().move(points.hemIn).line(points.hemOut).addClass('note dashed')
+    paths.cuffFold = new Path()
+      .move(points.cuffOneIn)
+      .line(points.cuffOneOut)
+      .addClass('note dashed')
+  }
+
   paths.saBase = drawPath()
   paths.seam = paths.saBase
     .insop('dart', new Path().line(points.pocketCenter))
@@ -279,10 +325,18 @@ function draftZootBack({
         .offset(sa)
         .join(
           new Path()
-            .move(points.floorIn)
-            .line(points.floorOut)
-            .offset(sa * 6)
+            .move(points.cuffSaOut.shiftOutwards(points.cuffSaIn, sa))
+            .line(points.cuffSaIn.shiftOutwards(points.cuffSaOut, sa))
         )
+        // .join( options.cuff ?
+        //   new Path()
+        //   .move(points.cuffSaOut.shiftOutwards(points.cuffSaIn,sa))
+        //   .line(points.cuffSaIn.shiftOutwards(points.cuffSaOut,sa))
+        //   :           new Path()
+        //   .move(points.floorIn)
+        //   .line(points.floorOut)
+        //   .offset(sa * 6)
+        // )
         .close()
         .attr('class', 'fabric sa')
     }
