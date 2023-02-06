@@ -284,8 +284,8 @@ function draftZootBack({
       store.get('slantTopNotchDistance')
     )
 
-    for (let i in snippets) {
-      if ('bnotch' == i.def) delete snippets[i]
+    for (const i in snippets) {
+      if ('bnotch' == snippets[i].def) delete snippets[i]
     }
     macro('sprinkle', {
       snippet: 'bnotch',

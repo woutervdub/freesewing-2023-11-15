@@ -39,7 +39,7 @@ function draftZootFrontPocketFacingBack({
     points.titleAnchor = points.slantBottomNotch.shift(0, 10)
     macro('title', {
       at: points.titleAnchor,
-      nr: 8,
+      nr: 12,
       title: 'frontPocketBagFacing',
     })
     macro('grainline', {

@@ -382,6 +382,7 @@ function draftZootFront({
   store.set('waistbandFly', points.styleWaistIn.dist(points.flyTop))
   store.set('legWidthFront', points.floorIn.dist(points.floorOut))
 
+  console.log({ knee: points.kneeIn.dist(points.kneeOut), floor: store.get('legWidthFront') })
   console.log({ flyAngle: points.styleWaistIn.angle(points.cfSeat) })
 
   console.log({
@@ -695,7 +696,7 @@ export const front = {
     flyWidth: { pct: 15, min: 10, max: 20, menu: 'advanced.fly' },
 
     // Cuff
-    ankleEase: { pct: 55, min: 10, max: 300, menu: 'fit' },
+    ankleEase: { pct: 90, min: 10, max: 300, menu: 'fit' },
     cuff: { bool: false, menu: 'style' },
     cuffSize: { pct: 2.5, min: 0.5, max: 5, menu: 'style' },
 
