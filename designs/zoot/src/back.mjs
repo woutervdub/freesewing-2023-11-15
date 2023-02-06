@@ -1,5 +1,4 @@
 import { back as charlieBack } from '@freesewing/charlie'
-import path from 'path'
 import { front } from './front.mjs'
 
 function draftZootBack({
