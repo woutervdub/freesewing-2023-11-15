@@ -48,7 +48,7 @@ function draftZootFrontPocketFacingBack({
     })
     macro('sprinkle', {
       snippet: 'notch',
-      on: ['facingDirection', 'slantTop', 'slantTopNotch', 'slantBottomNotch'],
+      on: ['facingDirection', 'slantTop', 'slantCurveEnd'],
     })
 
     if (sa) paths.sa = paths.seam.offset(sa).attr('class', 'fabric sa', true)

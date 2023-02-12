@@ -265,6 +265,10 @@ function draftZootFront({
   points.floorIn = points.floor.shift(0, ankleWidth / 2)
   points.floorOut = points.floor.shift(180, ankleWidth / 2)
 
+  console.log({
+    Fknee: points.kneeIn.dist(points.kneeOut),
+    ankle: points.floorIn.dist(points.floorOut),
+  })
   let pFrom = points.seatOut
   let pFromCp1 = points.seatOutCp2
 
@@ -378,10 +382,15 @@ function draftZootFront({
   console.log({ paths: JSON.parse(JSON.stringify(paths)) })
 
   // Store waistband length
-  store.set('waistbandFront', points.styleWaistIn.dist(points.slantTop))
+  // store.set('waistbandFront', points.styleWaistIn.dist(points.slantTop))
+  store.set(
+    'waistbandFront',
+    points.styleWaistIn.dist(points.slantTop) + points.slantTop.dist(points.styleWaistOut)
+  )
   store.set('waistbandFly', points.styleWaistIn.dist(points.flyTop))
   store.set('legWidthFront', points.floorIn.dist(points.floorOut))
 
+  console.log({ waistbandFront: store.get('waistbandFront') })
   console.log({ knee: points.kneeIn.dist(points.kneeOut), floor: store.get('legWidthFront') })
   console.log({ flyAngle: points.styleWaistIn.angle(points.cfSeat) })
 
@@ -392,6 +401,14 @@ function draftZootFront({
       .length(),
   })
   console.log({ sideSeam: sideSeam().length() })
+
+  console.log({
+    crossFront: new Path()
+      .move(points.fork)
+      .curve(points.crotchSeamCurveCp1, points.crotchSeamCurveCp2, points.crotchSeamCurveStart)
+      .line(points.styleWaistIn)
+      .length(),
+  })
 
   store.set(
     'frontInSeam',
@@ -446,12 +463,15 @@ function draftZootFront({
     //   .pop()
     // points.slantTopNotch = points.slantTop.shiftFractionTowards(points.slantCurveStart, 0.1)
     // store.set('slantTopNotchDistance', points.slantTop.dist(points.slantTopNotch))
+
+    for (const i in snippets) {
+      delete snippets[i]
+    }
     macro('sprinkle', {
       snippet: 'notch',
       on: [
         'slantTop',
-        'slantBottomNotch',
-        'slantTopNotch',
+        'slantCurveEnd',
         'topPleat',
         'grainlineBottom',
         'flyBottom',
@@ -652,12 +672,12 @@ export const front = {
     waistbandFactor: 0.1,
 
     // Fit (from Titan)
-    waistEase: { pct: 1, min: 0, max: 5, menu: 'fit' },
+    waistEase: { pct: 0, min: -4, max: 5, menu: 'fit' },
     seatEase: { pct: 5, min: 0, max: 10, menu: 'fit' },
     kneeEase: { pct: 15, min: 10, max: 30, menu: 'fit' },
 
     // Style (from Titan)
-    waistHeight: { pct: -4, min: -15, max: 40, menu: 'style' },
+    waistHeight: { pct: 34, min: -15, max: 50, menu: 'style' },
     waistbandWidth: {
       pct: 3,
       min: 1,

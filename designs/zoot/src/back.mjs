@@ -1,5 +1,6 @@
 import { back as charlieBack } from '@freesewing/charlie'
 import { front } from './front.mjs'
+import { frontPocketFacingBack } from './front-pocket-facing-back.mjs'
 
 function draftZootBack({
   points,
@@ -141,16 +142,19 @@ function draftZootBack({
   //     .shiftTowards(points.pocketCenter, dist)
   //     .rotate(90, points.backDartRight)
 
-  //   // Store waistband length
-  //   store.set(
-  //     'waistbandBack',
-  //     new Path()
-  //       .move(points.styleWaistIn)
-  //       .curve(points.cbCp, points.backDartLeftCp, points.backDartLeft)
-  //       .length() +
-  //       new Path().move(points.backDartRight).curve_(points.backDartRightCp, points.slantOut).length()
-  //   )
-  //   store.set('legWidthBack', points.floorIn.dist(points.floorOut))
+  // Store waistband length
+  store.set(
+    'waistbandBack',
+    new Path()
+      .move(points.styleWaistIn)
+      .curve(points.cbCp, points.backDartLeftCp, points.backDartLeft)
+      .length() +
+      new Path()
+        .move(points.backDartRight)
+        .curve_(points.backDartRightCp, points.styleWaistOut)
+        .length()
+  )
+  store.set('legWidthBack', points.floorIn.dist(points.floorOut))
 
   //   // Round the slant
   //   points.slantCurveStart = points.slantBottom.shiftFractionTowards(
@@ -261,6 +265,19 @@ function draftZootBack({
       .length(),
   })
 
+  console.log({
+    crossBack: new Path()
+      .move(points.styleWaistIn)
+      .line(points.crossSeamCurveStart)
+      .curve(points.crossSeamCurveCp1, points.crossSeamCurveCp2, points.fork)
+      .length(),
+  })
+
+  console.log({
+    Bknee: points.kneeIn.dist(points.kneeOut),
+    ankle: points.floorIn.dist(points.floorOut),
+  })
+
   if (complete) {
     paths.pocketLine = new Path()
       .move(points.pocketLeft)
@@ -340,10 +357,12 @@ function draftZootBack({
         .attr('class', 'fabric sa')
     }
     log.info(
-      `Inseam height: ${units(points.fork.dy(points.floorIn))} | ` +
+      `Zoot | ` +
+        `Inseam height: ${units(points.fork.dy(points.floorIn))} | ` +
         `Waist: ${units((store.get('waistbandBack') + store.get('waistbandFront')) * 2)} | ` +
         `Bottom leg width: ${units((store.get('legWidthBack') + store.get('legWidthFront')) / 2)}`
     )
+    console.log({ waist_Back: store.get('waistbandBack') })
 
     if (paperless) {
       // Clean up paperless dimensions
@@ -458,7 +477,7 @@ function draftZootBack({
 export const back = {
   name: 'zoot.back',
   from: charlieBack,
-  after: front,
+  after: [front, frontPocketFacingBack],
   hideDependencies: true,
   options: {
     // backPocketVerticalPlacement: { pct: 24, min: 18, max: 30, menu: 'pockets.backpockets' },
