@@ -9,7 +9,7 @@ if (process.env.VERCEL_ENV === 'production') {
 
 // Do not build dependabot PRs
 if (process.env.VERCEL_GIT_COMMIT_AUTHOR_LOGIN === 'dependabot[bot]') {
-  console.log('🛑 - Dependebot PR - Do not build')
+  console.log('🛑 - Dependabot PR - Do not build')
   process.exit(0)
 }
 
@@ -23,8 +23,11 @@ if (branch === 'develop') {
 // Only build pull requests that made changes to lab
 if (process.env.VERCEL_GIT_PULL_REQUEST_ID) {
   try {
+    // we need to fetch develop in order to get the merge base
+    execSync(`git fetch origin develop:develop --depth=1`)
+    // now check for changes
     const changes = execSync(
-      `git diff --name-only $(git merge-base develop ${branch}) ${branch} sites/shared/ sites/lab`
+      `git diff --name-only $(git merge-base develop HEAD) HEAD -- ../shared .`
     ).toString()
     if (changes) {
       console.log('✅ - Lab Pull Request - Proceed to build')
