@@ -16,7 +16,7 @@ function draftZootFrontPocketFacing({
   if (complete) {
     macro('sprinkle', {
       snippet: 'notch',
-      on: ['slantTop', 'slantCurveEnd'],
+      on: ['facingDirection', 'slantTop', 'slantCurveEnd'],
     })
   }
 
@@ -26,5 +26,6 @@ function draftZootFrontPocketFacing({
 export const frontPocketFacing = {
   name: 'zoot.frontPocketFacing',
   from: charlieFrontPocketFacing,
+  hideDependencies: true,
   draft: draftZootFrontPocketFacing,
 }

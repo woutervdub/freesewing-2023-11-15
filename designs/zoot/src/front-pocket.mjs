@@ -84,5 +84,6 @@ function draftZootFrontPocket({
 export const frontPocket = {
   name: 'zoot.frontPocket',
   from: front,
+  hideDependencies: true,
   draft: draftZootFrontPocket,
 }
