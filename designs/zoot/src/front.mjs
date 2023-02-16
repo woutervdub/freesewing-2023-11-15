@@ -464,6 +464,11 @@ function draftZootFront({
     // points.slantTopNotch = points.slantTop.shiftFractionTowards(points.slantCurveStart, 0.1)
     // store.set('slantTopNotchDistance', points.slantTop.dist(points.slantTopNotch))
 
+    for (const i in paths) {
+      if (i.startsWith('bartack')) {
+        paths[i].hidden = true
+      }
+    }
     for (const i in snippets) {
       delete snippets[i]
     }
@@ -499,17 +504,17 @@ function draftZootFront({
       .attr('class', 'lining dashed')
 
     // Bartack
-    macro('bartack', {
-      anchor: points.slantTopNotch,
-      angle: points.slantTopNotch.angle(points.slantCurveStart) + 90,
-      length: sa ? sa / 1.5 : 7.5,
-      suffix: 'slantTop',
-    })
-    macro('bartack', {
-      anchor: points.slantBottomNotch,
-      length: sa ? sa / 2 : 5,
-      suffix: 'slantBottom',
-    })
+    // macro('bartack', {
+    //   anchor: points.slantTopNotch,
+    //   angle: points.slantTopNotch.angle(points.slantCurveStart) + 90,
+    //   length: sa ? sa / 1.5 : 7.5,
+    //   suffix: 'slantTop',
+    // })
+    // macro('bartack', {
+    //   anchor: points.slantBottomNotch,
+    //   length: sa ? sa / 2 : 5,
+    //   suffix: 'slantBottom',
+    // })
     // This is too small to do on doll-sized patterns
     if (measurements.waist > 200) {
       macro('bartackFractionAlong', {
@@ -540,6 +545,16 @@ function draftZootFront({
         .close()
         // .trim()
         .attr('class', 'fabric sa')
+
+      points.slantMeetsSide = paths.sa.intersects(
+        new Path()
+          .move(points.slantTop)
+          .line(points.slantTop.shiftOutwards(points.slantCurveStart, 200))
+      )[0]
+      paths.sewing = new Path()
+        .move(points.slantMeetsSide)
+        .line(points.slantTop)
+        .addText('sewAlong')
     }
 
     if (paperless) {
@@ -673,7 +688,7 @@ export const front = {
 
     // Fit (from Titan)
     waistEase: { pct: 0, min: -4, max: 5, menu: 'fit' },
-    seatEase: { pct: 5, min: 0, max: 10, menu: 'fit' },
+    seatEase: { pct: 4, min: 0, max: 10, menu: 'fit' },
     kneeEase: { pct: 15, min: 10, max: 30, menu: 'fit' },
 
     // Style (from Titan)
@@ -716,7 +731,7 @@ export const front = {
     flyWidth: { pct: 15, min: 10, max: 20, menu: 'advanced.fly' },
 
     // Cuff
-    ankleEase: { pct: 90, min: 10, max: 300, menu: 'fit' },
+    ankleEase: { pct: 60, min: 10, max: 300, menu: 'fit' },
     cuff: { bool: false, menu: 'style' },
     cuffSize: { pct: 2.5, min: 0.5, max: 5, menu: 'style' },
 

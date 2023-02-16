@@ -7,6 +7,7 @@ import { front } from './front.mjs'
 import { back } from './back.mjs'
 import { frontPocketFacingBack } from './front-pocket-facing-back.mjs'
 import { frontPocketFacing } from './front-pocket-facing.mjs'
+// Charlie
 import { backPocket } from '@freesewing/charlie'
 import { backPocketFacing } from '@freesewing/charlie'
 import { backPocketInterfacing } from '@freesewing/charlie'

@@ -480,7 +480,7 @@ export const back = {
   after: [front, frontPocketFacingBack],
   hideDependencies: true,
   options: {
-    // backPocketVerticalPlacement: { pct: 24, min: 18, max: 30, menu: 'pockets.backpockets' },
+    backPocketVerticalPlacement: { pct: 26, min: 18, max: 30, menu: 'pockets.backpockets' },
     // backPocketHorizontalPlacement: { pct: 55, min: 48, max: 62, menu: 'pockets.backpockets' },
     // backPocketWidth: { pct: 55, min: 50, max: 60, menu: 'pockets.backpockets' },
     // backPocketDepth: { pct: 60, min: 40, max: 80, menu: 'pockets.backpockets' },

@@ -18,6 +18,17 @@ function draftZootFrontPocketFacing({
       snippet: 'notch',
       on: ['facingDirection', 'slantTop', 'slantCurveEnd'],
     })
+    if (sa) {
+      points.slantMeetsSide = paths.sa.intersects(
+        new Path()
+          .move(points.slantTop)
+          .line(points.slantTop.shiftOutwards(points.slantCurveStart, 200))
+      )[0]
+      paths.sewing = new Path()
+        .move(points.slantMeetsSide)
+        .line(points.slantTop)
+        .addText('sewAlong')
+    }
   }
 
   return part
