@@ -62,6 +62,38 @@ function draftZootBack({
   points.floorIn = points.floor.shift(180, ankleWidth / 2)
   points.floorOut = points.floor.shift(0, ankleWidth / 2)
 
+  if (options.fitKnee) {
+    const kneeInExtra1 = points.kneeIn.shiftFractionTowards(points.knee, -0.05)
+    const kneeInExtra2 = points.kneeIn.shiftOutwards(kneeInExtra1, 200)
+    const kneeOutExtra1 = points.kneeOut.shiftFractionTowards(points.knee, -0.05)
+    const kneeOutExtra2 = points.kneeOut.shiftOutwards(kneeOutExtra1, 200)
+
+    while (
+      utils.lineIntersectsCurve(
+        kneeInExtra1,
+        kneeInExtra2,
+        points.fork,
+        points.forkCp2,
+        points.kneeInCp1,
+        points.floorIn
+      )
+    ) {
+      points.kneeInCp1 = points.kneeInCp1.shiftFractionTowards(points.kneeOutCp2, 0.01)
+    }
+    while (
+      utils.lineIntersectsCurve(
+        kneeOutExtra1,
+        kneeOutExtra2,
+        points.styleWaistOut,
+        points.seatOut,
+        points.kneeOutCp2,
+        points.floorOut
+      )
+    ) {
+      points.kneeOutCp2 = points.kneeOutCp2.shiftFractionTowards(points.kneeInCp1, 0.01)
+    }
+  }
+
   while (
     utils.lineIntersectsCurve(
       points.knee,
@@ -86,7 +118,6 @@ function draftZootBack({
   ) {
     points.kneeInCp1 = points.kneeInCp1.shiftFractionTowards(points.kneeOutCp2, -0.01)
   }
-
   // Mark back pocket
   //   let base = points.styleWaistIn.dist(points.styleWaistOut)
   //   let angle = points.styleWaistIn.angle(points.styleWaistOut)
@@ -154,6 +185,17 @@ function draftZootBack({
         .curve_(points.backDartRightCp, points.styleWaistOut)
         .length()
   )
+  console.log({
+    waistbandBack:
+      new Path()
+        .move(points.styleWaistIn)
+        .curve(points.cbCp, points.backDartLeftCp, points.backDartLeft)
+        .length() +
+      new Path()
+        .move(points.backDartRight)
+        .curve_(points.backDartRightCp, points.styleWaistOut)
+        .length(),
+  })
   store.set('legWidthBack', points.floorIn.dist(points.floorOut))
 
   //   // Round the slant

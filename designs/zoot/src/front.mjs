@@ -214,6 +214,7 @@ function draftZootFront({
           ._curve(points.seatOutCp1, points.seatOut)
           .curve(points.seatOutCp2, points.kneeOutCp1, points.floorOut)
   }
+
   // const sideSeam =
   //   points.waistOut.x < points.seatOut.x
   //     ? new Path()
@@ -271,10 +272,41 @@ function draftZootFront({
   })
   let pFrom = points.seatOut
   let pFromCp1 = points.seatOutCp2
-
+  points.seatOut.addCircle(10)
   if (points.waistOut.x < points.seatOut.x) {
     pFrom = points.styleWaistOut
     pFromCp1 = points.seatOut
+  }
+  if (options.fitKnee) {
+    const kneeInExtra1 = points.kneeIn.shiftFractionTowards(points.knee, -0.05)
+    const kneeInExtra2 = points.kneeIn.shiftOutwards(kneeInExtra1, 200)
+    const kneeOutExtra1 = points.kneeOut.shiftFractionTowards(points.knee, -0.05)
+    const kneeOutExtra2 = points.kneeOut.shiftOutwards(kneeOutExtra1, 200)
+
+    while (
+      utils.lineIntersectsCurve(
+        kneeInExtra1,
+        kneeInExtra2,
+        points.floorIn,
+        points.kneeInCp2,
+        points.forkCp1,
+        points.fork
+      )
+    ) {
+      points.kneeInCp2 = points.kneeInCp2.shiftFractionTowards(points.kneeOutCp1, 0.01)
+    }
+    while (
+      utils.lineIntersectsCurve(
+        kneeOutExtra1,
+        kneeOutExtra2,
+        pFrom,
+        pFromCp1,
+        points.kneeOutCp1,
+        points.floorOut
+      )
+    ) {
+      points.kneeOutCp1 = points.kneeOutCp1.shiftFractionTowards(points.kneeInCp2, 0.01)
+    }
   }
   while (
     utils.lineIntersectsCurve(
@@ -322,6 +354,22 @@ function draftZootFront({
   points.slantCurveCp2 = sideSeam().shiftAlong(
     points.slantBottom.dist(points.slantCurveCp1) + store.get('slantLength')
   )
+  // Construct pocket bag
+  //  points.pocketbagTopRight = points.slantTop.shiftFractionTowards(
+  //   points.styleWaistIn,
+  //   options.frontPocketWidth
+  // )
+  // points.pocketbagBottomRight = points.pocketbagTopRight.shift(
+  //   points.slantTop.angle(points.pocketbagTopRight) - 90,
+  //   points.styleWaistIn.dy(points.fork) * options.frontPocketDepth * 1.5
+  // )
+  // points.pocketbagBottomCp2 = sideSeam().intersectsY(points.pocketbagBottomRight.y).pop()
+  // points.pocketbagBottom = points.pocketbagBottomRight.shiftFractionTowards(
+  //   points.pocketbagBottomCp2,
+  //   0.5
+  // )
+  points.pocketbagBottomCp1 = points.slantCurveCp2.rotate(180, points.slantCurveEnd)
+
   points.pocketbagTopRight = pleatSeam().intersects(
     new Path().move(points.pocketbagTopRight).line(points.pocketbagBottomRight)
   )[0]
@@ -734,6 +782,7 @@ export const front = {
     ankleEase: { pct: 60, min: 10, max: 300, menu: 'fit' },
     cuff: { bool: false, menu: 'style' },
     cuffSize: { pct: 2.5, min: 0.5, max: 5, menu: 'style' },
+    fitKnee: { bool: false, menu: 'style' },
 
     // Pleats
     pleatStyle: {
