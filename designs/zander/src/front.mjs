@@ -290,10 +290,6 @@ function draftZanderFront({
       0.1
     )
   }
-  paths.p1 = new Path()
-    .move(pFrom)
-    .curve(pFromCp1, points.kneeOutCp1, points.floorOut)
-    .addClass('lining')
 
   points.kneeOutCp1 = adjustSide(
     utils,
@@ -766,7 +762,7 @@ export const front = {
     // Cuff
     ankleEase: { pct: 60, min: 10, max: 300, menu: 'fit' },
     cuff: { bool: false, menu: 'style' },
-    cuffSize: { pct: 2.5, min: 0.5, max: 5, menu: 'style' },
+    cuffSize: { pct: 2, min: 0.5, max: 5, menu: 'style' },
     fitKnee: { bool: false, menu: 'style' },
 
     // Pleats
