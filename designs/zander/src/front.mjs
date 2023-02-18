@@ -3,7 +3,16 @@ import { pctBasedOn } from '@freesewing/core'
 import { front as charlieFront } from '@freesewing/charlie'
 import { captureRejectionSymbol } from 'events'
 
-function draftZootFront({
+export const adjustSide = (utils, from, to, start, cp1, cp2, end, target, step) => {
+  let iter = 0
+  while (utils.lineIntersectsCurve(from, to, start, cp1, cp2, end) && iter < 100) {
+    cp2 = cp2.shiftFractionTowards(target, step)
+    iter++
+  }
+  return iter < 150 ? cp2 : null
+}
+
+function draftZanderFront({
   points,
   Point,
   paths,
@@ -34,6 +43,7 @@ function draftZootFront({
 
   const addPleat = (pleats, pleatNr, pointTop, pointBottom) => {
     var pleatSize = ((measurements.waist * options.pleatSize) / 4) * pleatRatios[pleats][pleatNr]
+    console.log({ pleatNr: pleatNr, pleatSize, pleatSize, waist: measurements.waist / 4 })
 
     if (0 == pleatNr) {
       if ('foldInwards' == options.pleatStyle) {
@@ -145,21 +155,6 @@ function draftZootFront({
       'seatY',
       'waistOut',
     ])
-    // paths['pleatA' + pleatNr] = new Path()
-    //   .move(points['pleatMid' + pleatNr])
-    //   .line(points['pleatBot' + pleatNr])
-    //   .setClass('note')
-    //   .addText(pleatNr, 'center')
-    // paths['pleatB' + pleatNr] = new Path()
-    //   .move(points['pleatIn' + pleatNr])
-    //   .line(points['pleatBot' + pleatNr])
-    //   .setClass('note dashed')
-    //   .addText(pleatNr, 'center')
-    // paths['pleatC' + pleatNr] = new Path()
-    //   .move(points['pleatOut' + pleatNr])
-    //   .line(points['pleatBot' + pleatNr])
-    //   .setClass('note dashed')
-    //   .addText(pleatNr, 'center')
   }
   // Helper method to draw the outseam path
   const drawOutseam = () =>
@@ -215,16 +210,6 @@ function draftZootFront({
           .curve(points.seatOutCp2, points.kneeOutCp1, points.floorOut)
   }
 
-  // const sideSeam =
-  //   points.waistOut.x < points.seatOut.x
-  //     ? new Path()
-  //         .move(points.styleWaistOut)
-  //         .curve(points.seatOut, points.kneeOutCp1, points.floorOut)
-  //     : new Path()
-  //         .move(points.styleWaistOut)
-  //         ._curve(points.seatOutCp1, points.seatOut)
-  //         .curve(points.seatOutCp2, points.kneeOutCp1, points.floorOut)
-
   // Draw fly J-seam
   const flyBottom = utils.curveIntersectsY(
     points.crotchSeamCurveStart,
@@ -272,7 +257,6 @@ function draftZootFront({
   })
   let pFrom = points.seatOut
   let pFromCp1 = points.seatOutCp2
-  points.seatOut.addCircle(10)
   if (points.waistOut.x < points.seatOut.x) {
     pFrom = points.styleWaistOut
     pFromCp1 = points.seatOut
@@ -283,55 +267,56 @@ function draftZootFront({
     const kneeOutExtra1 = points.kneeOut.shiftFractionTowards(points.knee, -0.05)
     const kneeOutExtra2 = points.kneeOut.shiftOutwards(kneeOutExtra1, 200)
 
-    while (
-      utils.lineIntersectsCurve(
-        kneeInExtra1,
-        kneeInExtra2,
-        points.floorIn,
-        points.kneeInCp2,
-        points.forkCp1,
-        points.fork
-      )
-    ) {
-      points.kneeInCp2 = points.kneeInCp2.shiftFractionTowards(points.kneeOutCp1, 0.01)
-    }
-    while (
-      utils.lineIntersectsCurve(
-        kneeOutExtra1,
-        kneeOutExtra2,
-        pFrom,
-        pFromCp1,
-        points.kneeOutCp1,
-        points.floorOut
-      )
-    ) {
-      points.kneeOutCp1 = points.kneeOutCp1.shiftFractionTowards(points.kneeInCp2, 0.01)
-    }
-  }
-  while (
-    utils.lineIntersectsCurve(
-      points.knee,
-      points.kneeOut,
-      pFrom,
-      pFromCp1,
-      points.kneeOutCp1,
-      points.floorOut
-    )
-  ) {
-    points.kneeOutCp1 = points.kneeOutCp1.shiftFractionTowards(points.kneeInCp2, -0.01)
-  }
-  while (
-    utils.lineIntersectsCurve(
-      points.knee,
-      points.kneeIn,
+    points.kneeInCp2 = adjustSide(
+      utils,
+      kneeInExtra1,
+      kneeInExtra2,
       points.floorIn,
       points.kneeInCp2,
       points.forkCp1,
-      points.fork
+      points.fork,
+      points.kneeOutCp1,
+      0.1
     )
-  ) {
-    points.kneeInCp2 = points.kneeInCp2.shiftFractionTowards(points.kneeOutCp1, -0.01)
+    points.kneeOutCp1 = adjustSide(
+      utils,
+      kneeOutExtra1,
+      kneeOutExtra2,
+      pFrom,
+      pFromCp1,
+      points.kneeOutCp1,
+      points.floorOut,
+      points.kneeInCp2,
+      0.1
+    )
   }
+  paths.p1 = new Path()
+    .move(pFrom)
+    .curve(pFromCp1, points.kneeOutCp1, points.floorOut)
+    .addClass('lining')
+
+  points.kneeOutCp1 = adjustSide(
+    utils,
+    points.knee,
+    points.kneeOut,
+    pFrom,
+    pFromCp1,
+    points.kneeOutCp1,
+    points.floorOut,
+    points.kneeInCp2,
+    -0.1
+  )
+  points.kneeInCp2 = adjustSide(
+    utils,
+    points.knee,
+    points.kneeIn,
+    points.fork,
+    points.forkCp1,
+    points.kneeInCp2,
+    points.floorIn,
+    points.kneeOutCp1,
+    -0.1
+  )
 
   points.slantLowest = sideSeam().intersectsY(points.fork.y).pop()
   store.set('slantWidth', points.styleWaistOut.dist(points.slantTop))
@@ -702,7 +687,7 @@ function draftZootFront({
 }
 
 export const front = {
-  name: 'zoot.front',
+  name: 'zander.front',
   from: charlieFront,
   hideDependencies: true,
   measurements: [
@@ -766,7 +751,7 @@ export const front = {
 
     // Front pockets
     frontPocketSlantDepth: { pct: 85, min: 70, max: 100, menu: 'pockets.frontpockets' },
-    frontPocketSlantWidth: { pct: 25, min: 15, max: 35, menu: 'pockets.frontpockets' },
+    frontPocketSlantWidth: { pct: 16, min: 0, max: 35, menu: 'pockets.frontpockets' },
     frontPocketSlantRound: { pct: 30, min: 5, max: 50, menu: 'pockets.frontpockets' },
     frontPocketSlantBend: { pct: 25, min: 5, max: 50, menu: 'pockets.frontpockets' },
     frontPocketWidth: { pct: 55, min: 45, max: 65, menu: 'pockets.frontpockets' },
@@ -791,8 +776,8 @@ export const front = {
       menu: 'style',
     },
 
-    pleatSize: { pct: 15, min: 0, max: 45, menu: 'style' },
+    pleatSize: { pct: 20, min: 0, max: 45, menu: 'style' },
     pleatNumber: { count: 2, min: 0, max: 4, menu: 'style' },
   },
-  draft: draftZootFront,
+  draft: draftZanderFront,
 }

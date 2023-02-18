@@ -1,7 +1,7 @@
 import { frontPocket } from './front-pocket.mjs'
 // import { frontPocket } from '@freesewing/charlie'
 
-function draftZootFrontPocketFacingBack({
+function draftZanderFrontPocketFacingBack({
   points,
   Point,
   paths,
@@ -58,7 +58,7 @@ function draftZootFrontPocketFacingBack({
 }
 
 export const frontPocketFacingBack = {
-  name: 'zoot.frontPocketFacingBack',
+  name: 'zander.frontPocketFacingBack',
   from: frontPocket,
-  draft: draftZootFrontPocketFacingBack,
+  draft: draftZanderFrontPocketFacingBack,
 }

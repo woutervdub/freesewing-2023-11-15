@@ -1,6 +1,6 @@
 import { frontPocketFacing as charlieFrontPocketFacing } from '@freesewing/charlie'
 
-function draftZootFrontPocketFacing({
+function draftZanderFrontPocketFacing({
   points,
   Point,
   paths,
@@ -35,8 +35,8 @@ function draftZootFrontPocketFacing({
 }
 
 export const frontPocketFacing = {
-  name: 'zoot.frontPocketFacing',
+  name: 'zander.frontPocketFacing',
   from: charlieFrontPocketFacing,
   hideDependencies: true,
-  draft: draftZootFrontPocketFacing,
+  draft: draftZanderFrontPocketFacing,
 }

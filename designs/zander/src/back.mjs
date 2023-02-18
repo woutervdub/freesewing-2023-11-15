@@ -1,8 +1,8 @@
 import { back as charlieBack } from '@freesewing/charlie'
-import { front } from './front.mjs'
+import { front, adjustSide } from './front.mjs'
 import { frontPocketFacingBack } from './front-pocket-facing-back.mjs'
 
-function draftZootBack({
+function draftZanderBack({
   points,
   Point,
   paths,
@@ -68,110 +68,52 @@ function draftZootBack({
     const kneeOutExtra1 = points.kneeOut.shiftFractionTowards(points.knee, -0.05)
     const kneeOutExtra2 = points.kneeOut.shiftOutwards(kneeOutExtra1, 200)
 
-    while (
-      utils.lineIntersectsCurve(
-        kneeInExtra1,
-        kneeInExtra2,
-        points.fork,
-        points.forkCp2,
-        points.kneeInCp1,
-        points.floorIn
-      )
-    ) {
-      points.kneeInCp1 = points.kneeInCp1.shiftFractionTowards(points.kneeOutCp2, 0.01)
-    }
-    while (
-      utils.lineIntersectsCurve(
-        kneeOutExtra1,
-        kneeOutExtra2,
-        points.styleWaistOut,
-        points.seatOut,
-        points.kneeOutCp2,
-        points.floorOut
-      )
-    ) {
-      points.kneeOutCp2 = points.kneeOutCp2.shiftFractionTowards(points.kneeInCp1, 0.01)
-    }
-  }
-
-  while (
-    utils.lineIntersectsCurve(
-      points.knee,
-      points.kneeOut,
-      points.styleWaistOut,
-      points.seatOut,
-      points.kneeOutCp2,
-      points.floorOut
-    )
-  ) {
-    points.kneeOutCp2 = points.kneeOutCp2.shiftFractionTowards(points.kneeInCp1, -0.01)
-  }
-  while (
-    utils.lineIntersectsCurve(
-      points.knee,
-      points.kneeIn,
+    points.kneeInCp1 = adjustSide(
+      utils,
+      kneeInExtra1,
+      kneeInExtra2,
       points.fork,
       points.forkCp2,
       points.kneeInCp1,
-      points.floorIn
+      points.floorIn,
+      points.kneeOutCp2,
+      0.1
     )
-  ) {
-    points.kneeInCp1 = points.kneeInCp1.shiftFractionTowards(points.kneeOutCp2, -0.01)
+    points.kneeOutCp2 = adjustSide(
+      utils,
+      kneeOutExtra1,
+      kneeOutExtra2,
+      points.styleWaistOut,
+      points.seatOut,
+      points.kneeOutCp2,
+      points.floorOut,
+      points.kneeInCp1,
+      0.1
+    )
   }
-  // Mark back pocket
-  //   let base = points.styleWaistIn.dist(points.styleWaistOut)
-  //   let angle = points.styleWaistIn.angle(points.styleWaistOut)
-  //   store.set('backPocketToWaistband', base * options.backPocketVerticalPlacement)
-  //   store.set('backPocketWidth', base * options.backPocketWidth)
-  //   store.set('backPocketDepth', base * options.backPocketDepth)
-  //   points.waistPocketCenter = points.styleWaistIn.shiftFractionTowards(
-  //     points.styleWaistOut,
-  //     options.backPocketHorizontalPlacement
-  //   )
-  //   points.pocketCenter = points.waistPocketCenter.shift(
-  //     angle - 90,
-  //     store.get('backPocketToWaistband')
-  //   )
-  //   points.pocketRight = points.pocketCenter.shift(angle, store.get('backPocketWidth') / 2)
-  //   points.pocketLeft = points.pocketCenter.shift(angle, store.get('backPocketWidth') / -2)
 
-  //   // Back dart
-  //   points.tmp1 = points.waistPocketCenter.rotate(8.66, points.pocketCenter)
-  //   points.tmp2 = points.waistPocketCenter.rotate(-8.66, points.pocketCenter)
-  //   points.backDartLeft = points.pocketCenter.shiftFractionTowards(points.tmp1, 1.05)
-  //   points.backDartRight = points.pocketCenter.shiftFractionTowards(points.tmp2, 1.05)
-  //   let newBase =
-  //     points.styleWaistIn.dist(points.backDartLeft) + points.styleWaistOut.dist(points.backDartRight)
-  //   let delta = base - newBase
-  //   // Adapt waist to new darted reality
-  //   for (let p of ['styleWaistIn', 'crossSeamCurveStart', 'crossSeamCurveCp1']) {
-  //     points[p] = points[p].shift(angle + 180, delta / 2)
-  //   }
-  //   points.styleWaistOut = points.styleWaistOut.shift(angle, delta / 2)
-
-  //   // Helper object that holds the titan outseam path adapted for the dart
-  //   const titanOutseam = new Path()
-  //     .move(points.styleWaistOut)
-  //     .curve(points.seatOut, points.kneeOutCp2, points.floorOut)
-
-  //   // Keep the seat control point vertically between the (lowered) waist and seat line
-  //   points.seatOutCp2.y = points.styleWaistOut.y + points.styleWaistOut.dy(points.seatOut) / 2
-
-  //   // Construct pocket slant
-  //   points.slantBottom = titanOutseam.shiftAlong(store.get('slantLength'))
-  //   points.slantOut = points.styleWaistIn.shiftOutwards(points.styleWaistOut, store.get('slantWidth'))
-
-  //   // Shape waist
-  //   let dist = points.styleWaistOut.dist(points.waistPocketCenter) / 3
-  //   points.cbCp = points.styleWaistIn
-  //     .shiftTowards(points.crossSeamCurveStart, dist)
-  //     .rotate(90, points.styleWaistIn)
-  //   points.backDartLeftCp = points.backDartLeft
-  //     .shiftTowards(points.pocketCenter, dist)
-  //     .rotate(-90, points.backDartLeft)
-  //   points.backDartRightCp = points.backDartRight
-  //     .shiftTowards(points.pocketCenter, dist)
-  //     .rotate(90, points.backDartRight)
+  points.kneeOutCp2 = adjustSide(
+    utils,
+    points.knee,
+    points.kneeOut,
+    points.styleWaistOut,
+    points.seatOut,
+    points.kneeOutCp2,
+    points.floorOut,
+    points.kneeInCp1,
+    -0.05
+  )
+  points.kneeInCp1 = adjustSide(
+    utils,
+    points.knee,
+    points.kneeIn,
+    points.fork,
+    points.forkCp2,
+    points.kneeInCp1,
+    points.floorIn,
+    points.kneeOutCp2,
+    -0.05
+  )
 
   // Store waistband length
   store.set(
@@ -197,26 +139,6 @@ function draftZootBack({
         .length(),
   })
   store.set('legWidthBack', points.floorIn.dist(points.floorOut))
-
-  //   // Round the slant
-  //   points.slantCurveStart = points.slantBottom.shiftFractionTowards(
-  //     points.slantOut,
-  //     options.frontPocketSlantRound
-  //   )
-  //   points.slantCurveEnd = titanOutseam.shiftAlong(
-  //     points.slantBottom.dist(points.slantCurveStart) + store.get('slantLength')
-  //   )
-  //   points.slantCurveCp1 = points.slantBottom.shiftFractionTowards(
-  //     points.slantCurveStart,
-  //     options.frontPocketSlantBend
-  //   )
-  //   points.slantCurveCp2 = titanOutseam.shiftAlong(
-  //     points.slantBottom.dist(points.slantCurveCp1) + store.get('slantLength')
-  //   )
-
-  // Anchor for sampling/grid
-  // This breaks the samples for reason not clear. See #
-  // points.anchor = points.fork.clone()
 
   // adjusting seams to match front
   const inseam = store.get('frontInSeam')
@@ -517,7 +439,7 @@ function draftZootBack({
 }
 
 export const back = {
-  name: 'zoot.back',
+  name: 'zander.back',
   from: charlieBack,
   after: [front, frontPocketFacingBack],
   hideDependencies: true,
@@ -528,5 +450,5 @@ export const back = {
     // backPocketDepth: { pct: 60, min: 40, max: 80, menu: 'pockets.backpockets' },
     // backPocketFacing: { bool: true, menu: 'pockets.backpockets' },
   },
-  draft: draftZootBack,
+  draft: draftZanderBack,
 }

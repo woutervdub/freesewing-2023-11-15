@@ -1,4 +1,4 @@
-# Change log for: @freesewing/zoot
+# Change log for: @freesewing/zander
 
 
 

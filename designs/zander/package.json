@@ -1,8 +1,8 @@
 {
-  "name": "@freesewing/zoot",
+  "name": "@freesewing/zander",
   "version": "3.0.0-alpha.4",
-  "description": "A FreeSewing pattern that needs a description",
-  "author": "Joost De Cock <joost@joost.at> (https://github.com/joostdecock)",
+  "description": "A FreeSewing pattern for pleated trousers",
+  "author": "Wouter van Wageningen",
   "homepage": "https://freesewing.org/",
   "repository": "github:freesewing/freesewing",
   "license": "MIT",

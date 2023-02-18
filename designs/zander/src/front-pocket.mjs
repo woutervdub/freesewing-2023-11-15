@@ -1,6 +1,6 @@
 import { front } from './front.mjs'
 
-function draftZootFrontPocket({
+function draftZanderFrontPocket({
   points,
   paths,
   Path,
@@ -82,8 +82,8 @@ function draftZootFrontPocket({
 }
 
 export const frontPocket = {
-  name: 'zoot.frontPocket',
+  name: 'zander.frontPocket',
   from: front,
   hideDependencies: true,
-  draft: draftZootFrontPocket,
+  draft: draftZanderFrontPocket,
 }
