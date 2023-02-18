@@ -441,7 +441,8 @@ function draftZanderBack({
 export const back = {
   name: 'zander.back',
   from: charlieBack,
-  after: [front, frontPocketFacingBack],
+  // after: [front, frontPocketFacingBack],
+  after: frontPocketFacingBack,
   hideDependencies: true,
   options: {
     backPocketVerticalPlacement: { pct: 26, min: 18, max: 30, menu: 'pockets.backpockets' },

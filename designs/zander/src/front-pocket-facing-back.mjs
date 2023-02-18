@@ -60,5 +60,6 @@ function draftZanderFrontPocketFacingBack({
 export const frontPocketFacingBack = {
   name: 'zander.frontPocketFacingBack',
   from: frontPocket,
+  // hideDependencies: true,
   draft: draftZanderFrontPocketFacingBack,
 }
