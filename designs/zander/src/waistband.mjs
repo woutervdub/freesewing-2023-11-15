@@ -139,6 +139,7 @@ function draftZanderWaistband({
 
 export const waistband = {
   name: 'zander.waistband',
+  // from: [back, front],
   after: [back, front],
   options: {
     waistbandCurve: { pct: 0, min: 0, max: 35, menu: 'fit' },
