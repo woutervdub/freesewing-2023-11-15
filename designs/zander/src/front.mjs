@@ -224,6 +224,10 @@ function draftZanderFront({
     points.knee,
     points.grainlineBottom
   )
+  store.set(
+    'waistbandFront',
+    points.styleWaistIn.dist(points.slantTop) + points.slantTop.dist(points.styleWaistOut)
+  )
 
   if (options.pleatNumber > 0) {
     var pleatDistance = points.topPleat.dist(points.slantTop) / options.pleatNumber
@@ -412,10 +416,6 @@ function draftZanderFront({
 
   // Store waistband length
   // store.set('waistbandFront', points.styleWaistIn.dist(points.slantTop))
-  store.set(
-    'waistbandFront',
-    points.styleWaistIn.dist(points.slantTop) + points.slantTop.dist(points.styleWaistOut)
-  )
   store.set('waistbandFly', points.styleWaistIn.dist(points.flyTop))
   store.set('legWidthFront', points.floorIn.dist(points.floorOut))
 
@@ -772,7 +772,7 @@ export const front = {
       menu: 'style',
     },
 
-    pleatSize: { pct: 20, min: 0, max: 45, menu: 'style' },
+    pleatSize: { pct: 40, min: 0, max: 65, menu: 'style' },
     pleatNumber: { count: 2, min: 0, max: 4, menu: 'style' },
   },
   draft: draftZanderFront,

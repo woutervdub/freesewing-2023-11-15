@@ -13,8 +13,8 @@ function draftZanderFrontPocketFacingBack({
   part,
 }) {
   // Clean up
-  for (let id in paths) delete paths[id]
-  for (let id in snippets) delete snippets[id]
+  for (const id in paths) delete paths[id]
+  for (const id in snippets) delete snippets[id]
 
   // Anchor for sampling/grid
   points.anchor = points.pocketFacingTop.clone()
@@ -36,11 +36,13 @@ function draftZanderFrontPocketFacingBack({
     .attr('class', 'fabric', true)
 
   if (complete) {
-    points.titleAnchor = points.slantBottomNotch.shift(0, 10)
+    points.titleAnchor = points.slantBottomNotch.shiftFractionTowards(points.anchor, 0.35)
     macro('title', {
       at: points.titleAnchor,
       nr: 12,
-      title: 'frontPocketBagFacing',
+      title: 'frontPocketBagFacingBack',
+      rotation: 90,
+      scale: 0.6,
     })
     macro('grainline', {
       from: points.slantTop,

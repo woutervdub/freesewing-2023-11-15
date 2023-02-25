@@ -195,6 +195,8 @@ function draftCharlieBack({
         `Bottom leg width: ${units((store.get('legWidthBack') + store.get('legWidthFront')) / 2)}`
     )
 
+    console.log({ charlie: (store.get('waistbandBack') + store.get('waistbandFront')) * 2 })
+
     if (paperless) {
       // Clean up paperless dimensions
       macro('rmad')
