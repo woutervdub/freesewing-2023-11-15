@@ -1,8 +1,8 @@
 ![FreeSewing](https://static.freesewing.org/banner.png)
 <p align='center'><a
-  href="https://www.npmjs.com/package/@freesewing/wvw"
+  href="https://www.npmjs.com/package/@freesewing/skully"
   title="@freesewing/wvw on NPM"
-  ><img src="https://img.shields.io/npm/v/@freesewing/wvw.svg"
+  ><img src="https://img.shields.io/npm/v/@freesewing/skully.svg"
   alt="@freesewing/wvw on NPM"/>
   </a><a
   href="https://opensource.org/licenses/MIT"
